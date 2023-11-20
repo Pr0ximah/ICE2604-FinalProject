@@ -19,7 +19,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        login: resolve(__dirname, 'pages/search/index.html')
+        search: resolve(__dirname, 'pages/search/index.html')
       }
     }
   },
@@ -29,6 +29,11 @@ export default defineConfig({
         target: 'https://random-d.uk/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/proxy/, '')
+      },
+      '/data_proxy': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/data_proxy/, '')
       }
     }
   }

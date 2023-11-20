@@ -3,15 +3,16 @@
     --custom-light: #92b5ed;
     --custom-light-1: #bdd2f4;
     --custom-light-2: #d3e1f8;
-    --custom-light-3: #e9f0fb;
-    --custom-light-4: #f6f9fd;
+    --custom-light-3: #e1ebf9;
+    --custom-light-4: #e9f2fe;
+    --custom-light-5: #f6f9fd;
     --custom-dark: #1636b6;
     --custom-dark-1: #142f9f;
     --custom-dark-2: #112988;
     --custom-dark-3: #0e2271;
-    --menu-color: var(--custom-light-3);
+    --menu-color: var(--custom-light-5);
     --menu-text-color: black;
-    --menu-hover-color: var(--custom-light-2);
+    --menu-hover-color: var(--custom-light-3);
     --menu-hover-text-color: black;
     --el-menu-hover-text-color: black;
     --custom-border: 0.5px solid var(--custom-light);
@@ -21,6 +22,7 @@
     --header-height: 40px;
     --border-menu: 1.5px solid var(--custom-light-1);
     --el-text-color-regular: black;
+    --footer-height: 150px;
 }
 
 html,
@@ -40,7 +42,7 @@ div.main {
 .el-button {
     --el-button-bg-color: white;
     --el-button-text-color: black;
-    --el-button-hover-bg-color: var(--custom-light-2);
+    --el-button-hover-bg-color: var(--custom-light-4);
     --el-button-hover-text-color: black;
 }
 
@@ -116,6 +118,12 @@ div.main {
 .el-footer {
     background-color: var(--menu-color);
     border-top: var(--border-menu);
+    height: var(--footer-height);
+    width: 100%;
+}
+
+.el-main {
+    min-height: calc(100vh - var(--footer-height) - var(--header-height));
 }
 
 .el-row.bottom-des-row {

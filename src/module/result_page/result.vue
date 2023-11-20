@@ -1,11 +1,13 @@
 <script setup>
-import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMenu, ElMenuItem, ElRow, ElCol, ElAside, ElFooter, ElText, ElBacktop } from 'element-plus';
+import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMenu, ElMenuItem, ElRow, ElCol, ElFooter, ElText } from 'element-plus';
 import { ref } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import LOGO from "@/assets/LOGO_S.png"
 import LOGO_L from "@/assets/LOGO.png"
+import API from '../../components/axios_instance'
 
 const content = ref("")
+let datalist = ref()
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=.*&?')
@@ -14,6 +16,17 @@ function getQueryContent(name) {
         console.log(decodeURI(r))
         return decodeURI(r).split('=')[1]
     }
+}
+
+function get() {
+    API({
+        url: `/data_proxy/data`,
+        method: 'get'
+    }).then((e)=>{
+        datalist.value = e['data']['data']
+        console.log(datalist.value)
+    }).catch(()=>{
+    })
 }
 
 const searchVal = ref(getQueryContent("search"))
@@ -52,17 +65,22 @@ function backToHome() {
             <ElRow style="width: 100%;" :gutter="80">
                 <ElCol :span="4">
                     left
-                    <div>{{ searchVal }}</div>
+                    <div><ElButton class="default" @click="get" style="margin-top: 20px;"> press </ElButton></div>
                 </ElCol>
                 <ElCol :span="16">
-                    <ElCard shadow="hover"></ElCard>
+                    <ElCard shadow="hover" v-for="data in datalist" style="margin: 20px 20px 20px 20px">
+                        <div style="margin: 5px 5px 5px 5px;">title={{ data["title"] }}</div>
+                        <div style="margin: 5px 5px 5px 5px;">id={{ data["id"] }}</div>
+                    </ElCard>
                 </ElCol>
                 <ElCol :span="4">
                     right
                 </ElCol>
             </ElRow>
+            <!-- 回到顶部 -->
+            <!-- <el-backtop :right="100" :bottom="180" /> -->
         </ElMain>
-        <ElFooter style="position: absolute; bottom: 0; height: 150px; width: 100%;">
+        <ElFooter>
             <ElImage class="bottom-logo" :src="LOGO_L" fit="contain"
                 style="height: 70%; margin: 20px 0px 25px 0px; margin-left: 3%; width: auto;" />
             <div
