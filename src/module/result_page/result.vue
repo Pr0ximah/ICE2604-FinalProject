@@ -6,8 +6,9 @@ import LOGO from "@/assets/LOGO_S.png"
 import LOGO_L from "@/assets/LOGO.png"
 import API from '../../components/axios_instance'
 
-const content = ref("")
 let datalist = ref()
+let result_total_num = ref(0)
+const size_per_page = ref(20)   // 每页显示的条目数
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=.*&?')
@@ -18,15 +19,22 @@ function getQueryContent(name) {
     }
 }
 
+const content = ref(getQueryContent('search'))
+
 function get() {
     API({
         url: `/data_proxy/data`,
         method: 'get'
-    }).then((e)=>{
+    }).then((e) => {
         datalist.value = e['data']['data']
-        console.log(datalist.value)
-    }).catch(()=>{
+        result_total_num = datalist.value.length
+    }).catch(() => {
     })
+}
+
+function gotoLink(url) {
+    console.log(url)
+    window.open(url, "_blank")
 }
 
 const searchVal = ref(getQueryContent("search"))
@@ -40,12 +48,12 @@ function backToHome() {
     <ElContainer style="height: 100%; height: 100%;">
         <ElHeader>
             <ElContainer>
-                <ElMenu mode="horizontal" :ellipsis="false" style="width: 100%;">
+                <ElMenu mode="horizontal" :ellipsis="false" style="width: 100%;" ref="menu">
                     <ElMenuItem :index="0" @click="backToHome">
                         <ElImage class="left-menu-logo" :src="LOGO" fit="contain" />
                     </ElMenuItem>
                     <div style="flex-grow: 1;" />
-                    <ElRow style="align-items: center; width: 20%; padding-right: 20px" justify="center">
+                    <ElRow style="align-items: center; width: 20%; margin-right: 2%" justify="center">
                         <ElCol :span="2" justify="center">
                             <el-icon style="padding-top: 2px; padding-right: 12px; transform: scale(1.1); float: right">
                                 <Search />
@@ -55,9 +63,6 @@ function backToHome() {
                             <ElInput v-model="content" style="height: 30px;"></ElInput>
                         </ElCol>
                     </ElRow>
-                    <ElMenuItem>
-                        <ElText> 关于我们 </ElText>
-                    </ElMenuItem>
                 </ElMenu>
             </ElContainer>
         </ElHeader>
@@ -65,13 +70,19 @@ function backToHome() {
             <ElRow style="width: 100%;" :gutter="80">
                 <ElCol :span="4">
                     left
-                    <div><ElButton class="default" @click="get" style="margin-top: 20px;"> press </ElButton></div>
+                    <div>
+                        <ElButton class="default" @click="get" style="margin-top: 20px;"> press </ElButton>
+                    </div>
                 </ElCol>
                 <ElCol :span="16">
-                    <ElCard shadow="hover" v-for="data in datalist" style="margin: 20px 20px 20px 20px">
-                        <div style="margin: 5px 5px 5px 5px;">title={{ data["title"] }}</div>
-                        <div style="margin: 5px 5px 5px 5px;">id={{ data["id"] }}</div>
+                    <ElCard shadow="hover" v-for="data in datalist" style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;">
+                        <div style="margin: 10px 5px 10px 5px;">title = {{ data["title"] }}</div>
+                        <div style="margin: 10px 5px 10px 5px;">year = {{ data["year"] }}</div>
+                        <div style="margin: 30px 5px 10px 5px;" v-if="data['link'] && data['link'] !== ''">
+                            <ElButton style="default" @click="gotoLink(data['link'])"> link </ElButton>
+                        </div>
                     </ElCard>
+                    <el-pagination layout="prev, pager, next" :total="result_total_num" hide-on-single-page="true" :page-size="size_per_page"/>
                 </ElCol>
                 <ElCol :span="4">
                     right

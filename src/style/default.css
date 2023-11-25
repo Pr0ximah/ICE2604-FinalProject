@@ -23,6 +23,7 @@
     --border-menu: 1.5px solid var(--custom-light-1);
     --el-text-color-regular: black;
     --footer-height: 150px;
+    --el-color-primary: var(--custom-dark);
 }
 
 html,
@@ -90,6 +91,7 @@ div.main {
     --el-menu-hover-bg-color: var(--menu-hover-color);
     --el-menu-text-color: var(--menu-text-color);
     --el-menu-hove-text-color: var(--menu-hover-text-color);
+    --el-menu-active-color: var(--menu-color);
 }
 
 .el-menu--horizontal.el-menu {
@@ -148,4 +150,15 @@ div.main {
 
 .el-message {
     background-color: var(--custom-light-3);
+}
+
+.el-pagination {
+    --el-pagination-hover-color: var(--custom-dark);
+    margin: 20px 10px 20px 10px
+}
+
+.el-main.result {
+    /* background-color: #f9f9f9; */
+    background-color: #fcfdff;
+    /* background-color: #ffffff; */
 }
