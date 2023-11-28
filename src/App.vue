@@ -49,7 +49,7 @@ function gotoResult() {
       </div>
       <div class="main" style="margin-top: 5%; padding: auto;">
         <ElRow justify="center">
-          <ElButton class="default" @click="xb_avaliable = !xb_avaliable" size="large"> {{ xb_button_text }} </ElButton>
+          <!-- <ElButton class="default" @click="xb_avaliable = !xb_avaliable" size="large"> {{ xb_button_text }} </ElButton> -->
         </ElRow>
       </div>
       <transition name="el-zoom-in-top">

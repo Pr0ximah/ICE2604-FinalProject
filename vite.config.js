@@ -24,12 +24,10 @@ export default defineConfig({
     }
   },
   server: {
+    host: 'localhost',
+    port: 17001,
+    https: false,
     proxy: {
-      '/proxy' : {
-        target: 'https://random-d.uk/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/proxy/, '')
-      },
       '/data_proxy': {
         target: 'http://127.0.0.1:8000',
         changeOrigin: true,
