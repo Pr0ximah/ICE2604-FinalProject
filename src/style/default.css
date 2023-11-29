@@ -1,11 +1,16 @@
 :root {
-    --el-font-family: 'Frutiger';
+    --font-family: 'Verdana', Helvetica, '微软雅黑';
+    font-family: var(--font-family);
+    --el-font-family: var(--font-family);
     --custom-light: #92b5ed;
     --custom-light-1: #bdd2f4;
     --custom-light-2: #d3e1f8;
     --custom-light-3: #e1ebf9;
     --custom-light-4: #e9f2fe;
+    --custom-light-4_5: #f0f7ff;
     --custom-light-5: #f6f9fd;
+    --custom-dark-m2: #2a6fdb;
+    --custom-dark-m1: #2160c4;
     --custom-dark: #1636b6;
     --custom-dark-1: #142f9f;
     --custom-dark-2: #112988;
@@ -30,6 +35,7 @@ html,
 body {
     margin: 0px 0px 0px 0px;
     height: 100%;
+    min-width: 1060px;
 }
 
 div#app {
@@ -37,7 +43,7 @@ div#app {
 }
 
 div.main {
-    margin: 8px 8px 8px 8px;
+    margin: 20px 8px 8px 8px;
 }
 
 .el-button {
@@ -154,11 +160,54 @@ div.main {
 
 .el-pagination {
     --el-pagination-hover-color: var(--custom-dark);
-    margin: 20px 10px 20px 10px
+    margin: 40px 10px 60px 10px
 }
 
-.el-main.result {
-    /* background-color: #f9f9f9; */
-    background-color: #fcfdff;
-    /* background-color: #ffffff; */
+.bg-all {
+    background: linear-gradient(var(--custom-light-4), #ffffff);
+}
+
+.nores {
+    text-align: center;
+    font-size: large;
+    font-weight: 550;
+    color: var(--custom-dark);
+    text-shadow: 1px 1px 1px --custom-light;
+    margin-top: 20px;
+}
+
+.el-button.search-btn-res {
+    background-color: var(--custom-dark-m2) !important;
+    color: var(--el-color-white) !important;
+    border: 0px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.el-button.el-button.search-btn-res:hover {
+    background-color: var(--custom-dark-m1) !important;
+}
+
+div.title {
+    font-size: x-large;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 500;
+    line-height: 1.5em;
+    letter-spacing: 0.012em;
+}
+
+#ei + .el-input__suffix {
+    max-width: 20%;
+}
+
+.el-image.logo {
+    transition: all 0.3s;
+}
+
+.el-image.logo:hover {
+    transform: translateY(-3%) scale(1.05, 1.05);
+}
+
+.el-footer.res {
+    margin-top: 0px;
 }
