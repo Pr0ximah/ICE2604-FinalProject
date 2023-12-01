@@ -28,5 +28,5 @@ coverage
 *.sw?
 ICE2604-FinalProject.code-workspac.code-workspace
 
-api/.venv
+.venv
 api/__pycache__
