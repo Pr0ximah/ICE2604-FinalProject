@@ -216,12 +216,19 @@ div.title {
     border-radius: 10px;
 }
 
-.el-card.filter {
+.el-card.preset1 {
     border-style: dashed;
-    box-shadow: 0px 0px 2px var(--custom-light);
+    box-shadow: 0px 0px 3px var(--custom-light);
     transition: all 0.2s;
 }
 
 /* .el-card.filter:hover {
     transform: translateY(-1%) scale(1.01, 1.01);
 } */
+
+div.chart {
+    height: 100%;
+    width: 100%;
+    margin: auto;
+    align-items: center;
+}

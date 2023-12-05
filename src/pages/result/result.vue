@@ -1,26 +1,29 @@
 <script setup>
-import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMenu, ElMenuItem, ElRow, ElCol, ElFooter, ElText } from 'element-plus';
+import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMenu, ElMenuItem, ElRow, ElCol, ElFooter, ElText, ElCheckboxGroup } from 'element-plus';
 import { ElMessage } from 'element-plus';
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch, onBeforeMount } from 'vue'
 import { Search, Calendar, User, Star } from '@element-plus/icons-vue'
 import LOGO from "@/assets/LOGO_S.png"
 import LOGO_L from "@/assets/LOGO.png"
 import API from '../../components/axios_instance'
+import chart from '../../components/echarts/chart.vue'
 
+let chartYear = ref()
 let datalist = ref()
 let datalistAll = ref()
+let childData = ref()
 let result_total_num = ref(0)
 const size_per_page = ref(15)   // 每页显示的条目数
 let emptyResult = ref(true)
 let searchOptionVal = ref("")
 let currentPage = ref(1)
-let fitlerYearList = ref([{ "year": 1991, "num": 2 }, { "year": 1992, "num": 3 }, { "year": 2020, "num": 10 }])
+let filterYearList = ref([{"year": 1991, "num": 1}])
+const filterYearCheckList = ref([])
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
     let r = window.location.search.match(reg)
     if (r != null) {
-        console.log(decodeURI(r[0]))
         return decodeURI(r[0]).split('=')[1]
     }
 }
@@ -35,16 +38,17 @@ function get() {
         method: 'get'
     }).then((e) => {
         datalistAll.value = e['data']['data']
-        console.log(datalistAll.value)
         result_total_num = datalistAll.value.length
+        childData.value = datalistAll.value
         emptyResult = (result_total_num == 0)
-        console.log(`empty: ${emptyResult}`)
         const type = getQueryContent('type')
         if (searchOptionVal.value != type) {
             searchOptionVal.value = type
         }
         switchPage()
     }).catch(() => {
+    }).then(() => {
+        chartYear.value.init()
     })
 }
 
@@ -54,9 +58,7 @@ function switchPage() {
     if (end >= result_total_num) {
         end = result_total_num
     }
-    console.log(start, end)
     datalist.value = datalistAll.value.slice(start, end)
-    console.log(datalist.value)
 }
 
 watch(currentPage, () => {
@@ -67,13 +69,11 @@ watch(currentPage, () => {
 })
 
 function gotoLink(url) {
-    console.log(url)
     window.open(url, "_blank")
 }
 
 function convertList(lists) {
     let res = ""
-    console.log(lists)
     for (var i = 0; i < lists.length; i++) {
         res += lists[i]
         res += ", "
@@ -119,8 +119,12 @@ function gotoResult() {
     window.open(`/search.html?content=${content.value}&type=${searchOptionVal.value}`, "_self")
 }
 
-onMounted(() => {
+onBeforeMount(() => {
     get()
+})
+
+onMounted(() => {
+    chartYear.value.init()
 })
 </script>
 
@@ -132,24 +136,13 @@ onMounted(() => {
                     <ElMenuItem :index="0" @click="backToHome">
                         <ElImage class="left-menu-logo" :src="LOGO" fit="contain" />
                     </ElMenuItem>
-                    <!-- <div style="flex-grow: 1;" />
-                    <ElRow style="align-items: center; width: 20%; margin-right: 2%" justify="center">
-                        <ElCol :span="2" justify="center">
-                            <el-icon style="padding-top: 2px; padding-right: 12px; transform: scale(1.1); float: right">
-                                <Search />
-                            </el-icon>
-                        </ElCol>
-                        <ElCol :span="22">
-                            <ElInput v-model="content" style="height: 30px;" @keydown.enter=search></ElInput>
-                        </ElCol>
-                    </ElRow> -->
                 </ElMenu>
             </ElContainer>
         </ElHeader>
         <ElMain class="result">
-            <ElRow style="width: 100%;" :gutter="40">
-                <ElCol :span="4" style="height: 100vh">
-                    <ElCard class="filter" style="margin-top: 10%; width: 100%;">
+            <ElRow style="width: 100%;" :gutter="30">
+                <ElCol :span="3" style="height: 100vh">
+                    <ElCard class="preset1" style="margin-top: 10%; width: 100%;">
                         <div style="text-align: center;">
                             <ElText style="font-size: medium; text-align: center;">filter</ElText>
                         </div>
@@ -158,10 +151,12 @@ onMounted(() => {
                             <div style="margin-bottom: 5px;">
                                 <ElText>Year</ElText>
                             </div>
-                            <ElCheckbox v-for="year in fitlerYearList">
-                                <div style="font-size: small;">{{ year["year"] }} <span
-                                        style="color: grey; font-size: small">({{ year["num"] }})</span></div>
-                            </ElCheckbox>
+                            <ElCheckboxGroup v-model="filterYearCheckList" @change="console.log(filterYearCheckList)">
+                                <ElCheckbox v-for="year in filterYearList" :label="year['year']">
+                                    <div style="font-size: small;" @click="console.log(year['year'])">{{ year['year'] }}<span
+                                            style="color: grey; font-size: small">({{ year["num"] }})</span></div>
+                                </ElCheckbox>
+                            </ElCheckboxGroup>
                         </div>
                     </ElCard>
                 </ElCol>
@@ -199,6 +194,7 @@ onMounted(() => {
                     <div v-if="emptyResult" class="nores"> Sorry! Found no result </div>
                     <ElCard shadow="hover" v-for="data in datalist"
                         style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;">
+                        <!-- v-show="filterYearCheckList.includes(data['_source']['year'])"> -->
                         <div style="margin: 0px 5px 20px 5px;" class="title"> {{ data['_source']["title"] }} </div>
                         <div style="margin: 10px 5px 10px 5px; align-items: center;">
                             <span style="margin-left: 5px; margin-right: 5px;">
@@ -232,8 +228,12 @@ onMounted(() => {
                     <el-pagination layout="prev, pager, next" :total="result_total_num" hide-on-single-page="true"
                         :page-size="size_per_page" v-model:current-page="currentPage" />
                 </ElCol>
-                <ElCol :span="4">
-                    right
+                <ElCol :span="5">
+                    <ElCard style="margin-top: 20px;" class="preset1">
+                        <div style="height: 200px;">
+                            <chart ref="chartYear" :data="childData"></chart>
+                        </div>
+                    </ElCard>
                 </ElCol>
             </ElRow>
         </ElMain>
@@ -254,9 +254,10 @@ onMounted(() => {
                         <ElText> Final Project </ElText>
                     </ElRow>
                     <ElRow class="bottom-des-row">
-                    <ElText> © Course Group 10 </ElText>
-                </ElRow>
-            </ElCol>
-        </div>
-    </ElFooter>
-</ElContainer></template>
+                        <ElText> © Course Group 10 </ElText>
+                    </ElRow>
+                </ElCol>
+            </div>
+        </ElFooter>
+    </ElContainer>
+</template>
