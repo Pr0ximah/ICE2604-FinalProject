@@ -12,14 +12,16 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '~@': fileURLToPath(new URL('./src', import.meta.url)),
     }
   },
   build: {
+    emptyOutDir: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        search: resolve(__dirname, 'pages/search.html'),
+        index: resolve(__dirname, '/index.html'),
+        search: resolve(__dirname, '/search.html'),
       }
     }
   },
