@@ -211,3 +211,17 @@ div.title {
 .el-footer.res {
     margin-top: 0px;
 }
+
+.el-card {
+    border-radius: 10px;
+}
+
+.el-card.filter {
+    border-style: dashed;
+    box-shadow: 0px 0px 2px var(--custom-light);
+    transition: all 0.2s;
+}
+
+/* .el-card.filter:hover {
+    transform: translateY(-1%) scale(1.01, 1.01);
+} */

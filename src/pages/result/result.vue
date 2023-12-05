@@ -14,6 +14,7 @@ const size_per_page = ref(15)   // 每页显示的条目数
 let emptyResult = ref(true)
 let searchOptionVal = ref("")
 let currentPage = ref(1)
+let fitlerYearList = ref([{ "year": 1991, "num": 2 }, { "year": 1992, "num": 3 }, { "year": 2020, "num": 10 }])
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
@@ -146,11 +147,25 @@ onMounted(() => {
             </ElContainer>
         </ElHeader>
         <ElMain class="result">
-            <ElRow style="width: 100%;" :gutter="80">
-                <!-- <ElCol :span="4">
-                    left
-                </ElCol> -->
-                <ElCol :span="18" style="margin-left: 5%;">
+            <ElRow style="width: 100%;" :gutter="40">
+                <ElCol :span="4" style="height: 100vh">
+                    <ElCard class="filter" style="margin-top: 10%; width: 100%;">
+                        <div style="text-align: center;">
+                            <ElText style="font-size: medium; text-align: center;">filter</ElText>
+                        </div>
+                        <ElDivider border-style="dashed" style="margin-top: 15px; margin-bottom: 15px;"></ElDivider>
+                        <div style="margin-left: 6%;">
+                            <div style="margin-bottom: 5px;">
+                                <ElText>Year</ElText>
+                            </div>
+                            <ElCheckbox v-for="year in fitlerYearList">
+                                <div style="font-size: small;">{{ year["year"] }} <span
+                                        style="color: grey; font-size: small">({{ year["num"] }})</span></div>
+                            </ElCheckbox>
+                        </div>
+                    </ElCard>
+                </ElCol>
+                <ElCol :span="16">
                     <ElRow justify="center" :gutter="20" style="margin: calc(min(4%, 45px)); height: calc(max(4vh, 45px));">
                         <ElCol :span="18" style="height: 100%;">
                             <ElInput id="ei" v-model="content" style="height: 100%; font-size: large;"
@@ -176,7 +191,8 @@ onMounted(() => {
                         </ElCol>
                     </ElRow>
                     <div v-if="!emptyResult"
-                        style="font-family:sans-serif; color: gray; margin-right: 10px; margin-bottom: 20px;"> Search done.
+                        style="font-family:sans-serif; color: gray; margin-right: 10px; margin-bottom: 20px; margin-left: 20px;">
+                        Search done.
                         Found
                         {{ result_total_num
                         }} {{ (result_total_num === 1 ? "result" : "results") }}. </div>
@@ -238,9 +254,9 @@ onMounted(() => {
                         <ElText> Final Project </ElText>
                     </ElRow>
                     <ElRow class="bottom-des-row">
-                        <ElText> © Course Group 10 </ElText>
-                    </ElRow>
-                </ElCol>
-            </div>
-        </ElFooter>
+                    <ElText> © Course Group 10 </ElText>
+                </ElRow>
+            </ElCol>
+        </div>
+    </ElFooter>
 </ElContainer></template>
