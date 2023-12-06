@@ -35,7 +35,7 @@ function getData_authorSearch(dic) {
     //         lst[j] = tmp
     //     }
     // }
-    lst.sort(function(a, b){return a-b})
+    lst.sort(function (a, b) { return a - b })
     return lst
 }
 function changeToBar_authorSearch(dic) {
@@ -80,7 +80,7 @@ function changeToBar_authorSearch(dic) {
         //         lst[j] = tmp
         //     }
         // }
-        lst.sort(function(a, b){return a[0]-b[0]})
+        lst.sort(function (a, b) { return a[0] - b[0] })
     }
     return lst
 }
@@ -94,8 +94,8 @@ function getydata(dic) {
 }
 function Bar_authorSearch(dic) {
     let lst_xdata = getData_authorSearch(dic)
-    console.log("xdata")
-    console.log(lst_xdata)
+    // console.log("xdata")
+    // console.log(lst_xdata)
     let lst_ydata = getydata(dic)
     let option = {
         color: ['#2a6fdb'],
@@ -109,6 +109,7 @@ function Bar_authorSearch(dic) {
             }
         },
         toolbox: {
+            show: lst_xdata.length > 0,
             feature: {
                 // dataView: { show: true, readOnly: false },
                 magicType: { show: true, type: ['line', 'bar'] },
@@ -118,16 +119,18 @@ function Bar_authorSearch(dic) {
             right: '0',
         },
         title: {
-            show: true,
-            text: "Count / Year"
+            show: lst_xdata.length > 0,
+            text: "Count / Year",
         },
         xAxis: [
             {
+                show: lst_xdata.length > 0,
                 type: 'category',
                 data: lst_xdata,
                 axisPointer: {
                     type: 'shadow'
                 },
+                invisible: lst_xdata.length === 0,
             }
         ],
         yAxis: [
@@ -161,6 +164,20 @@ function Bar_authorSearch(dic) {
         textStyle: {
             fontFamily: 'Helvetica',
         },
+        graphic: {
+            type: 'text',
+            left: 'center',
+            top: 'middle',
+            silent: true,
+            invisible: lst_xdata.length > 0,
+            style: {
+                fill: '#9d9d9d',
+                fontWeight: 'bold',
+                text: 'No data',
+                // fontFamily: 'Microsoft YaHei',
+                fontSize: '25px'
+            }
+        }
     }
     return option
 }

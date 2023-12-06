@@ -4,9 +4,7 @@ import { Search } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import LOGO from '/src/assets/LOGO.png'
 // import API from './components/axios_instance'
-// import wp1 from './assets/HOMEPAPERS/HOMEPAPER0.png'
 
-const imgurl = "https://www.cs.sjtu.edu.cn/~wang-xb/ieei/images/xinbing.jpg"
 const wallpapercnt = 16
 const enableAll = ref(false)
 const wallpaperurl = '/HOMEPAPERS/HOMEPAPER' + String(Math.floor(Math.random() * wallpapercnt)) + '.png'
@@ -83,21 +81,6 @@ function gotoResult() {
           </ElCol>
         </ElRow>
       </div>
-      <!-- <div class="main" style="margin-top: 5%; padding: auto;">
-        <ElRow justify="center">
-          <ElButton class="default" @click="xb_avaliable = !xb_avaliable" size="large"> {{ xb_button_text }} </ElButton>
-        </ElRow>
-      </div>
-      <transition name="el-zoom-in-top">
-        <div class="main" v-show="xb_avaliable" style="padding: auto;">
-          <ElRow justify="center">
-            <ElImage :src="imgurl" fit="contain" style="margin: 5px;" />
-          </ElRow>
-        </div>
-      </transition>
-      <div>
-        <ElButton class="default" @click="gotoResult"> test -- goto result page </ElButton>
-      </div> -->
       <div style="position:absolute; bottom: 30px; text-align: center; margin: auto; width: 98%; color: #ffffff; text-shadow: 1px 1px 1px black;">
         <div style="margin: auto"> SJTU ICE2604 Final Project </div>
         <div style="margin: auto"> © Course Group 10 </div>
@@ -105,9 +88,3 @@ function gotoResult() {
     </ElMain>
   </ElContainer>
 </template>
-
-<!-- <style scoped>
-  .el-main.mainpage {
-    background-image: url(`${wallpaperurl}`);
-  }
-</style> -->
