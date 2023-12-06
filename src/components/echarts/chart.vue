@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, ref, toRaw, watch } from 'vue'
+import { ref, toRaw, watch } from 'vue'
 import * as echarts from 'echarts'
 
 const chart = ref()
@@ -28,13 +28,14 @@ function getData_authorSearch(dic) {
             lst.push(dic[key]["year"])
         }
     }
-    for (var j = 0; j < lst.length - 1; j++) {
-        if (lst[j] > lst[j + 1]) {
-            var tmp = lst[j + 1]
-            lst[j + 1] = lst[j]
-            lst[j] = tmp
-        }
-    }
+    // for (var j = 0; j < lst.length - 1; j++) {
+    //     if (lst[j] > lst[j + 1]) {
+    //         var tmp = lst[j + 1]
+    //         lst[j + 1] = lst[j]
+    //         lst[j] = tmp
+    //     }
+    // }
+    lst.sort(function(a, b){return a-b})
     return lst
 }
 function changeToBar_authorSearch(dic) {
@@ -72,13 +73,14 @@ function changeToBar_authorSearch(dic) {
         }
     }
     for (var m = 1; m < lst.length - 1; m++) {
-        for (var j = 1; j < lst.length - 1; j++) {
-            if (lst[j][0] > lst[j + 1][0]) {
-                var tmp = lst[j + 1]
-                lst[j + 1] = lst[j]
-                lst[j] = tmp
-            }
-        }
+        // for (var j = 1; j < lst.length - 1; j++) {
+        //     if (lst[j][0] > lst[j + 1][0]) {
+        //         var tmp = lst[j + 1]
+        //         lst[j + 1] = lst[j]
+        //         lst[j] = tmp
+        //     }
+        // }
+        lst.sort(function(a, b){return a[0]-b[0]})
     }
     return lst
 }
@@ -92,6 +94,8 @@ function getydata(dic) {
 }
 function Bar_authorSearch(dic) {
     let lst_xdata = getData_authorSearch(dic)
+    console.log("xdata")
+    console.log(lst_xdata)
     let lst_ydata = getydata(dic)
     let option = {
         color: ['#2a6fdb'],
@@ -188,7 +192,7 @@ function refreshChart() {
         searchResult.push(searchResultRaw[i]['_source'])
     }
 
-    console.log(searchResult)
+    // console.log(searchResult)
     let option = Bar_authorSearch(searchResult)
     chart.value.setAttribute('_echarts_instance_', '')
     let myChart = echarts.init(chart.value);
