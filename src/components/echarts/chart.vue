@@ -8,10 +8,9 @@ const props = defineProps({
     data: Object
 })
 
-watch (props, () => {
+watch(props, () => {
     refreshChart()
 })
-
 defineExpose({ init, refreshChart })
 
 // authorSearch
@@ -112,11 +111,11 @@ function Bar_authorSearch(dic) {
                 // restore: { show: true },
                 // saveAsImage: { show: true }
             },
-            x: '75%',
+            right: '0',
         },
         title: {
             show: true,
-            text: "Paper Count / Year"
+            text: "Count / Year"
         },
         xAxis: [
             {
@@ -176,6 +175,10 @@ function init() {
 
     let option = Bar_authorSearch(searchResult)
     myChart.setOption(option);
+
+    window.addEventListener('resize', function () {
+        myChart.resize();
+    });
 }
 
 function refreshChart() {
@@ -187,7 +190,6 @@ function refreshChart() {
 
     console.log(searchResult)
     let option = Bar_authorSearch(searchResult)
-    // let myChart = echarts.getInstanceByDom(chart.value)
     chart.value.setAttribute('_echarts_instance_', '')
     let myChart = echarts.init(chart.value);
     myChart.setOption(option, true, true);

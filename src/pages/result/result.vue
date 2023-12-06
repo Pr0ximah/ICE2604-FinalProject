@@ -188,7 +188,7 @@ onMounted(() => {
             </ElContainer>
         </ElHeader>
         <ElMain class="result">
-            <ElRow style="width: 100%;" :gutter="30">
+            <ElRow style="width: 100%; margin: auto;" :gutter="30" justify="center">
                 <ElCol :span="3" style="height: 100%">
                     <ElCard class="preset1" style="margin-top: 10%; width: 100%;">
                         <div style="text-align: center;">
