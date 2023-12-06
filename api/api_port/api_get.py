@@ -16,7 +16,8 @@ def GetYear(data):
         else:
             Year_number[year] = 1
     year_list = [{"year": i, "num": j} for i, j in Year_number.items()]
-    return year_list
+    sorted_year_list = sorted(year_list, key=lambda x: x["year"])
+    return sorted_year_list
 
 @app_get.get("/search/content={content}&type={type}")
 def read_all_data(type:str, content:str):
