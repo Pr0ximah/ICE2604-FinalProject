@@ -15,7 +15,8 @@ def GetYear(data):
             Year_number[year] += 1
         else:
             Year_number[year] = 1
-    return Year_number
+    year_list = [{"year": i, "num": j} for i, j in Year_number.items()]
+    return year_list
 
 @app_get.get("/search/content={content}&type={type}")
 def read_all_data(type:str, content:str):
