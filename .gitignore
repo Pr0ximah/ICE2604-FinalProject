@@ -30,3 +30,4 @@ ICE2604-FinalProject.code-workspac.code-workspace
 
 .venv
 api/__pycache__
+api/api_port/__pycache__

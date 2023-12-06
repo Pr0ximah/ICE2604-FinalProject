@@ -31,7 +31,7 @@ export default defineConfig({
     https: false,
     proxy: {
       '/data_proxy': {
-        target: 'http://127.0.0.1:8000',
+        target: 'http://127.0.0.1:8000/api_port/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/data_proxy/, '')
       }

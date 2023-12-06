@@ -1,8 +1,8 @@
 <script setup>
 import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMenu, ElMenuItem, ElRow, ElCol, ElFooter, ElText, ElCheckboxGroup } from 'element-plus';
 import { ElMessage } from 'element-plus';
-import { onMounted, reactive, ref, watch, onBeforeMount } from 'vue'
-import { Search, Calendar, User, Star } from '@element-plus/icons-vue'
+import { onMounted, reactive, ref, watch, onBeforeMount, toRaw, nextTick } from 'vue'
+import { Search, Calendar, User, Star, Select, CloseBold } from '@element-plus/icons-vue'
 import LOGO from "@/assets/LOGO_S.png"
 import LOGO_L from "@/assets/LOGO.png"
 import API from '../../components/axios_instance'
@@ -10,15 +10,17 @@ import chart from '../../components/echarts/chart.vue'
 
 let chartYear = ref()
 let datalist = ref()
+let datalistAllFiltered = ref()
 let datalistAll = ref()
 let childData = ref()
+let filterButtonStatus = ref(true)
 let result_total_num = ref(0)
 const size_per_page = ref(15)   // 每页显示的条目数
 let emptyResult = ref(true)
 let searchOptionVal = ref("")
 let currentPage = ref(1)
-let filterYearList = ref([{"year": 1991, "num": 1}])
-const filterYearCheckList = ref([])
+let filterYearList = ref()
+const filterYearChecked = ref([])
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
@@ -38,7 +40,11 @@ function get() {
         method: 'get'
     }).then((e) => {
         datalistAll.value = e['data']['data']
+        filterYearList.value = e['data']['year_list']
         result_total_num = datalistAll.value.length
+        datalistAllFiltered.value = datalistAll.value
+        filterButtonStatus.value = true
+        selectAllYear()
         childData.value = datalistAll.value
         emptyResult = (result_total_num == 0)
         const type = getQueryContent('type')
@@ -52,14 +58,47 @@ function get() {
     })
 }
 
+function selectAllYear() {
+    for (let i = 0; i < filterYearList.value.length; i++) {
+        filterYearChecked.value.push(filterYearList.value[i]['year'])
+    }
+    refreshFilterYear()
+}
+
+function selectNoneYear() {
+    filterYearChecked.value = []
+    refreshFilterYear()
+}
+
+function refreshFilterYear() {
+    datalistAllFiltered.value = []
+    for (let i = 0; i < datalistAll.value.length; i++) {
+        if (toRaw(filterYearChecked)['_rawValue'].includes(toRaw(datalistAll)['_rawValue'][i]['_source']['year'])) {
+            datalistAllFiltered.value.push(datalistAll.value[i])
+        }
+    }
+    result_total_num = datalistAllFiltered.value.length
+    childData.value = datalistAllFiltered.value
+    // console.log(childData.value)
+    currentPage.value = 1
+    switchPage()
+}
+
 function switchPage() {
     let start = (currentPage.value - 1) * size_per_page.value
     let end = currentPage.value * size_per_page.value
     if (end >= result_total_num) {
         end = result_total_num
     }
-    datalist.value = datalistAll.value.slice(start, end)
+    datalist.value = datalistAllFiltered.value.slice(start, end)
 }
+
+watch(filterYearChecked, () => {
+    refreshFilterYear()
+    window.scrollTo({
+        top: 0
+    })
+})
 
 watch(currentPage, () => {
     switchPage()
@@ -67,6 +106,15 @@ watch(currentPage, () => {
         top: 0
     })
 })
+
+function switchFilterStatus() {
+    filterButtonStatus.value = !filterButtonStatus.value
+    if (filterButtonStatus.value) {
+        selectAllYear()
+    } else {
+        selectNoneYear()
+    }
+}
 
 function gotoLink(url) {
     window.open(url, "_blank")
@@ -141,19 +189,23 @@ onMounted(() => {
         </ElHeader>
         <ElMain class="result">
             <ElRow style="width: 100%;" :gutter="30">
-                <ElCol :span="3" style="height: 100vh">
+                <ElCol :span="3" style="height: 100%">
                     <ElCard class="preset1" style="margin-top: 10%; width: 100%;">
                         <div style="text-align: center;">
                             <ElText style="font-size: medium; text-align: center;">filter</ElText>
+                            <ElButton @click="switchFilterStatus" class="default" style="margin-left: 5%;" size="large" circle="true">
+                                <el-icon v-if="!filterButtonStatus"><Select /></el-icon>
+                                <el-icon v-if="filterButtonStatus"><CloseBold /></el-icon>
+                            </ElButton>
                         </div>
                         <ElDivider border-style="dashed" style="margin-top: 15px; margin-bottom: 15px;"></ElDivider>
                         <div style="margin-left: 6%;">
                             <div style="margin-bottom: 5px;">
                                 <ElText>Year</ElText>
                             </div>
-                            <ElCheckboxGroup v-model="filterYearCheckList" @change="console.log(filterYearCheckList)">
+                            <ElCheckboxGroup v-model="filterYearChecked">
                                 <ElCheckbox v-for="year in filterYearList" :label="year['year']">
-                                    <div style="font-size: small;" @click="console.log(year['year'])">{{ year['year'] }}<span
+                                    <div style="font-size: small;">{{ year['year'] }}<span
                                             style="color: grey; font-size: small">({{ year["num"] }})</span></div>
                                 </ElCheckbox>
                             </ElCheckboxGroup>
@@ -230,7 +282,7 @@ onMounted(() => {
                 </ElCol>
                 <ElCol :span="5">
                     <ElCard style="margin-top: 20px;" class="preset1">
-                        <div style="height: 200px;">
+                        <div style="height: 200px;" >
                             <chart ref="chartYear" :data="childData"></chart>
                         </div>
                     </ElCard>
