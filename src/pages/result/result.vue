@@ -7,6 +7,7 @@ import LOGO from "@/assets/LOGO_S.png"
 import LOGO_L from "@/assets/LOGO.png"
 import API from '../../components/axios_instance'
 import chart from '../../components/echarts/chart.vue'
+import no_res_logo from '@/assets/no-result.png'
 
 let chartYear = ref()
 let datalist = ref()
@@ -21,6 +22,10 @@ let searchOptionVal = ref("")
 let currentPage = ref(1)
 let filterYearList = ref()
 const filterYearChecked = ref([])
+const filterYearRange = ref([0, 0])
+const filterYearRangeMax = ref(0)
+const filterYearRangeMin = ref(0)
+let filterYearRangeShow = ref(false)
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
@@ -45,6 +50,15 @@ function get() {
         datalistAllFiltered.value = datalistAll.value
         filterButtonStatus.value = true
         selectAllYear()
+        if (datalistAll.value.length !== 0) {
+            filterYearRangeMax.value = filterYearList['_rawValue'][filterYearList.value.length - 1]['year']
+            filterYearRangeMin.value = filterYearList['_rawValue'][0]['year']
+            filterYearRange.value[0] = filterYearRangeMin.value
+            filterYearRange.value[1] = filterYearRangeMax.value
+            filterYearRangeShow.value = true
+        } else {
+            filterYearRangeShow.value = false
+        }
         childData.value = datalistAll.value
         emptyResult = (result_total_num == 0)
         const type = getQueryContent('type')
@@ -65,6 +79,18 @@ function selectAllYear() {
     refreshFilterYear()
 }
 
+function refreshFilterYearRange() {
+    let filterYearCheckedNew = []
+    for (let i = 0; i < filterYearList.value.length; i++) {
+        let year = filterYearList['_rawValue'][i]['year']
+        console.log(year)
+        if (year >= filterYearRange['_rawValue'][0] && year <= filterYearRange['_rawValue'][1]) {
+            filterYearCheckedNew.push(year)
+        }
+    }
+    filterYearChecked.value = filterYearCheckedNew
+}
+
 function selectNoneYear() {
     filterYearChecked.value = []
     refreshFilterYear()
@@ -79,7 +105,6 @@ function refreshFilterYear() {
     }
     result_total_num = datalistAllFiltered.value.length
     childData.value = datalistAllFiltered.value
-    // console.log(childData.value)
     currentPage.value = 1
     switchPage()
 }
@@ -105,6 +130,10 @@ watch(currentPage, () => {
     window.scrollTo({
         top: 0
     })
+})
+
+watch(filterYearRange, () => {
+    refreshFilterYearRange()
 })
 
 function switchFilterStatus() {
@@ -188,20 +217,20 @@ onMounted(() => {
             </ElContainer>
         </ElHeader>
         <ElMain class="result">
-            <ElRow style="width: 100%;" :gutter="30">
+            <ElRow style="width: 100%; margin: auto;" :gutter="30" justify="center">
                 <ElCol :span="3" style="height: 100%">
                     <ElCard class="preset1" style="margin-top: 10%; width: 100%;">
                         <div style="text-align: center;">
-                            <ElText style="font-size: medium; text-align: center;">filter</ElText>
-                            <ElButton @click="switchFilterStatus" class="default" style="margin-left: 5%;" size="large" circle="true">
+                            <ElText style="font-size: x-large; text-align: center; letter-spacing: 0.06em;">filter</ElText>
+                            <ElButton @click="switchFilterStatus" class="default" style="margin-left: 5%;" size="large" circle="true" :disabled="emptyResult">
                                 <el-icon v-if="!filterButtonStatus"><Select /></el-icon>
                                 <el-icon v-if="filterButtonStatus"><CloseBold /></el-icon>
                             </ElButton>
                         </div>
                         <ElDivider border-style="dashed" style="margin-top: 15px; margin-bottom: 15px;"></ElDivider>
                         <div style="margin-left: 6%;">
-                            <div style="margin-bottom: 5px;">
-                                <ElText>Year</ElText>
+                            <div style="margin-bottom: 10px;">
+                                <ElText style="font-size: medium; color: gray">Year</ElText>
                             </div>
                             <ElCheckboxGroup v-model="filterYearChecked">
                                 <ElCheckbox v-for="year in filterYearList" :label="year['year']">
@@ -209,6 +238,7 @@ onMounted(() => {
                                             style="color: grey; font-size: small">({{ year["num"] }})</span></div>
                                 </ElCheckbox>
                             </ElCheckboxGroup>
+                            <ElSlider style="margin-top: 15px;" v-model="filterYearRange" range :max="filterYearRangeMax" :min="filterYearRangeMin" v-if="filterYearRangeShow"/>
                         </div>
                     </ElCard>
                 </ElCol>
@@ -243,7 +273,10 @@ onMounted(() => {
                         Found
                         {{ result_total_num
                         }} {{ (result_total_num === 1 ? "result" : "results") }}. </div>
-                    <div v-if="emptyResult" class="nores"> Sorry! Found no result </div>
+                    <div v-if="emptyResult" class="nores" style="margin-top: 8%;">
+                        <div>Sorry! Found no result</div>
+                        <ElImage :src="no_res_logo" fit="contain" style="margin: 50px;" />
+                    </div>
                     <ElCard shadow="hover" v-for="data in datalist"
                         style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;">
                         <!-- v-show="filterYearCheckList.includes(data['_source']['year'])"> -->
@@ -282,7 +315,7 @@ onMounted(() => {
                 </ElCol>
                 <ElCol :span="5">
                     <ElCard style="margin-top: 20px;" class="preset1">
-                        <div style="height: 200px;" >
+                        <div style="height: 200px;">
                             <chart ref="chartYear" :data="childData"></chart>
                         </div>
                     </ElCard>

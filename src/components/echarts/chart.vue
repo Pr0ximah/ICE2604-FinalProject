@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, ref, toRaw, watch } from 'vue'
+import { ref, toRaw, watch } from 'vue'
 import * as echarts from 'echarts'
 
 const chart = ref()
@@ -8,10 +8,9 @@ const props = defineProps({
     data: Object
 })
 
-watch (props, () => {
+watch(props, () => {
     refreshChart()
 })
-
 defineExpose({ init, refreshChart })
 
 // authorSearch
@@ -29,13 +28,14 @@ function getData_authorSearch(dic) {
             lst.push(dic[key]["year"])
         }
     }
-    for (var j = 0; j < lst.length - 1; j++) {
-        if (lst[j] > lst[j + 1]) {
-            var tmp = lst[j + 1]
-            lst[j + 1] = lst[j]
-            lst[j] = tmp
-        }
-    }
+    // for (var j = 0; j < lst.length - 1; j++) {
+    //     if (lst[j] > lst[j + 1]) {
+    //         var tmp = lst[j + 1]
+    //         lst[j + 1] = lst[j]
+    //         lst[j] = tmp
+    //     }
+    // }
+    lst.sort(function (a, b) { return a - b })
     return lst
 }
 function changeToBar_authorSearch(dic) {
@@ -73,13 +73,14 @@ function changeToBar_authorSearch(dic) {
         }
     }
     for (var m = 1; m < lst.length - 1; m++) {
-        for (var j = 1; j < lst.length - 1; j++) {
-            if (lst[j][0] > lst[j + 1][0]) {
-                var tmp = lst[j + 1]
-                lst[j + 1] = lst[j]
-                lst[j] = tmp
-            }
-        }
+        // for (var j = 1; j < lst.length - 1; j++) {
+        //     if (lst[j][0] > lst[j + 1][0]) {
+        //         var tmp = lst[j + 1]
+        //         lst[j + 1] = lst[j]
+        //         lst[j] = tmp
+        //     }
+        // }
+        lst.sort(function (a, b) { return a[0] - b[0] })
     }
     return lst
 }
@@ -93,6 +94,8 @@ function getydata(dic) {
 }
 function Bar_authorSearch(dic) {
     let lst_xdata = getData_authorSearch(dic)
+    // console.log("xdata")
+    // console.log(lst_xdata)
     let lst_ydata = getydata(dic)
     let option = {
         color: ['#2a6fdb'],
@@ -106,25 +109,28 @@ function Bar_authorSearch(dic) {
             }
         },
         toolbox: {
+            show: lst_xdata.length > 0,
             feature: {
                 // dataView: { show: true, readOnly: false },
                 magicType: { show: true, type: ['line', 'bar'] },
                 // restore: { show: true },
                 // saveAsImage: { show: true }
             },
-            x: '75%',
+            right: '0',
         },
         title: {
-            show: true,
-            text: "Paper Count / Year"
+            show: lst_xdata.length > 0,
+            text: "Count / Year",
         },
         xAxis: [
             {
+                show: lst_xdata.length > 0,
                 type: 'category',
                 data: lst_xdata,
                 axisPointer: {
                     type: 'shadow'
                 },
+                invisible: lst_xdata.length === 0,
             }
         ],
         yAxis: [
@@ -158,6 +164,20 @@ function Bar_authorSearch(dic) {
         textStyle: {
             fontFamily: 'Helvetica',
         },
+        graphic: {
+            type: 'text',
+            left: 'center',
+            top: 'middle',
+            silent: true,
+            invisible: lst_xdata.length > 0,
+            style: {
+                fill: '#9d9d9d',
+                fontWeight: 'bold',
+                text: 'No data',
+                // fontFamily: 'Microsoft YaHei',
+                fontSize: '25px'
+            }
+        }
     }
     return option
 }
@@ -176,6 +196,10 @@ function init() {
 
     let option = Bar_authorSearch(searchResult)
     myChart.setOption(option);
+
+    window.addEventListener('resize', function () {
+        myChart.resize();
+    });
 }
 
 function refreshChart() {
@@ -185,9 +209,8 @@ function refreshChart() {
         searchResult.push(searchResultRaw[i]['_source'])
     }
 
-    console.log(searchResult)
+    // console.log(searchResult)
     let option = Bar_authorSearch(searchResult)
-    // let myChart = echarts.getInstanceByDom(chart.value)
     chart.value.setAttribute('_echarts_instance_', '')
     let myChart = echarts.init(chart.value);
     myChart.setOption(option, true, true);
