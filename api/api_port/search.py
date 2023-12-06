@@ -1,7 +1,10 @@
 import json
 from elasticsearch import Elasticsearch 
 
+# es = Elasticsearch(options={'transport': transport, 'timeout': 10})
 es = Elasticsearch(['http://localhost:9200'])
+
+# es = Elasticsearch(transport=transport)
 
 def get_json(string):
     return json.dumps(string, sort_keys=True, indent=4, separators=(',', ':'))
@@ -10,7 +13,7 @@ def json_print(string):
     print(json.dumps(string, sort_keys=True, indent=4, separators=(',', ':')))
     return
 
-with open('MetaData.json','r',encoding='utf8')as fp:
+with open('api/api_port/MetaData.json','r',encoding='utf8')as fp:
     json_data = json.load(fp)
 
 mappings = {
@@ -50,6 +53,7 @@ for value in json_data.values():
 
 # es.indices.delete(index = 'mydatabase')
 es.indices.create(index ='mydatabase',body =mappings,ignore=400)
+# es.indices.create(index='mydatabase', body=mappings, ignore=400, headers={'Content-Type': 'application/json'}
 for i in range(100):
     body = {"paper_id":paper_id[i],"title":title[i],"year":year[i],"authors":authors[i],"keywords":keywords[i]}
     res = es.index(index="mydatabase",id=i,body=body)
@@ -140,9 +144,12 @@ def get_result(type: str, content: str):
         res = search_keywords(content)
     return get_json(res)
     
+
 if __name__ == '__main__':
     # json_print(search_title("of"))
     # json_print(search_year("1990"))
     # json_print(search_author("R. Arjmandzadeh"))
     # json_print(search_keywords("mantle"))
     print(get_result('Year', '1981'))
+
+
