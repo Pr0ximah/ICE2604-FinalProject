@@ -120,9 +120,9 @@ function switchPage() {
 
 watch(filterYearChecked, () => {
     refreshFilterYear()
-    window.scrollTo({
-        top: 0
-    })
+    // window.scrollTo({
+    //     top: 0
+    // })
 })
 
 watch(currentPage, () => {
@@ -222,23 +222,23 @@ onMounted(() => {
                     <ElCard class="preset1" style="margin-top: 10%; width: 100%;">
                         <div style="text-align: center;">
                             <ElText style="font-size: x-large; text-align: center; letter-spacing: 0.06em;">filter</ElText>
-                            <ElButton @click="switchFilterStatus" class="default" style="margin-left: 5%;" size="large" circle="true" :disabled="emptyResult">
+                            <ElButton @click="switchFilterStatus" class="default" style="margin-left: 5%;" size="medium" circle="true" :disabled="emptyResult">
                                 <el-icon v-if="!filterButtonStatus"><Select /></el-icon>
                                 <el-icon v-if="filterButtonStatus"><CloseBold /></el-icon>
                             </ElButton>
                         </div>
                         <ElDivider border-style="dashed" style="margin-top: 15px; margin-bottom: 15px;"></ElDivider>
-                        <div style="margin-left: 6%;">
+                        <div style="margin-left: 6%; margin-right: 6%;">
                             <div style="margin-bottom: 10px;">
                                 <ElText style="font-size: medium; color: gray">Year</ElText>
                             </div>
-                            <ElCheckboxGroup v-model="filterYearChecked">
-                                <ElCheckbox v-for="year in filterYearList" :label="year['year']">
-                                    <div style="font-size: small;">{{ year['year'] }}<span
-                                            style="color: grey; font-size: small">({{ year["num"] }})</span></div>
+                            <ElCheckboxGroup v-model="filterYearChecked" style="justify-items: center;">
+                                <ElCheckbox v-for="year in filterYearList" :label="year['year']" style="margin:1px 10px 1px 10px">
+                                    <div style="font-size: small; margin: auto;">{{ year['year'] }} <span
+                                            style="color: grey; font-size: small">({{ year["num"] }}) </span></div>
                                 </ElCheckbox>
                             </ElCheckboxGroup>
-                            <ElSlider style="margin-top: 15px;" v-model="filterYearRange" range :max="filterYearRangeMax" :min="filterYearRangeMin" v-if="filterYearRangeShow"/>
+                            <ElSlider style="margin-top: 15px; margin-left: 5px; margin-right: 5px; width: auto;" v-model="filterYearRange" range :max="filterYearRangeMax" :min="filterYearRangeMin" v-if="filterYearRangeShow"/>
                         </div>
                     </ElCard>
                 </ElCol>
