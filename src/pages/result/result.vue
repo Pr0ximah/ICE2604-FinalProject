@@ -8,6 +8,7 @@ import LOGO_L from "@/assets/LOGO_DARK.png"
 import API from '../../components/axios_instance'
 import chart from '../../components/echarts/chart.vue'
 import no_res_logo from '@/assets/no-result.png'
+import server_error_logo from '@/assets/server_error.png'
 
 let chartYear = ref()
 let datalist = ref()
@@ -21,6 +22,7 @@ let emptyResult = ref(true)
 let searchOptionVal = ref("")
 let currentPage = ref(1)
 let filterYearList = ref()
+const server_error = ref(false)
 const filterYearChecked = ref([])
 const filterYearRange = ref([0, 0])
 const filterYearRangeMax = ref(0)
@@ -46,6 +48,7 @@ function get() {
         url: base + `/search/content=${content}&type=${type}`,
         method: 'get'
     }).then((e) => {
+        server_error.value = false;
         datalistAll.value = e['data']['data']
         filterYearList.value = e['data']['year_list']
         result_total_num = datalistAll.value.length
@@ -57,9 +60,13 @@ function get() {
             filterYearRangeMin.value = filterYearList['_rawValue'][0]['year']
             filterYearRange.value[0] = filterYearRangeMin.value
             filterYearRange.value[1] = filterYearRangeMax.value
-            filterYearRangeShow.value = true
+            if (filterYearRangeMin.value === filterYearRangeMax.value) {
+                filterYearRangeShow.value = false;
+            } else {
+                filterYearRangeShow.value = true;
+            }
         } else {
-            filterYearRangeShow.value = false
+            filterYearRangeShow.value = false;
         }
         childData.value = datalistAll.value
         emptyResult = (result_total_num == 0)
@@ -69,6 +76,11 @@ function get() {
         }
         switchPage()
     }).catch(() => {
+        server_error.value = true;
+        const type = getQueryContent('type')
+        if (searchOptionVal.value != type) {
+            searchOptionVal.value = type
+        }
     }).then(() => {
         chartYear.value.init()
     })
@@ -85,7 +97,6 @@ function refreshFilterYearRange() {
     let filterYearCheckedNew = []
     for (let i = 0; i < filterYearList.value.length; i++) {
         let year = filterYearList['_rawValue'][i]['year']
-        console.log(year)
         if (year >= filterYearRange['_rawValue'][0] && year <= filterYearRange['_rawValue'][1]) {
             filterYearCheckedNew.push(year)
         }
@@ -198,9 +209,9 @@ function search() {
 //     window.open(`/search.html?content=${content.value}&type=${searchOptionVal.value}`, "_self")
 // }
 function gotoResult() {
-  let inputVal = encodeURIComponent(content.value)
-  let optionVal = encodeURIComponent(searchOptionVal.value)
-  window.open(`./search.html?content=${inputVal}&type=${optionVal}`, "_self")
+    let inputVal = encodeURIComponent(content.value)
+    let optionVal = encodeURIComponent(searchOptionVal.value)
+    window.open(`./search.html?content=${inputVal}&type=${optionVal}`, "_self")
 }
 
 
@@ -219,7 +230,7 @@ onMounted(() => {
             <ElContainer>
                 <ElMenu mode="horizontal" :ellipsis="false" style="width: 100%;" ref="menu">
                     <ElMenuItem :index="0" @click="backToHome">
-                        <ElImage class="left-menu-logo" :src="LOGO_S" fit="contain"/>
+                        <ElImage class="left-menu-logo" :src="LOGO_S" fit="contain" />
                     </ElMenuItem>
                 </ElMenu>
             </ElContainer>
@@ -230,9 +241,12 @@ onMounted(() => {
                     <ElCard class="preset1" style="margin-top: 10%; width: 100%;">
                         <div style="text-align: center;">
                             <ElText style="font-size: x-large; text-align: center; letter-spacing: 0.06em;">filter</ElText>
-                            <ElButton @click="switchFilterStatus" class="default" style="margin-left: 5%;" size="medium" circle="true" :disabled="emptyResult">
+                            <ElButton @click="switchFilterStatus" class="default" style="margin-left: 5%;" size="medium"
+                                circle="true" :disabled="emptyResult">
                                 <el-icon v-if="!filterButtonStatus"><Select /></el-icon>
-                                <el-icon v-if="filterButtonStatus"><CloseBold /></el-icon>
+                                <el-icon v-if="filterButtonStatus">
+                                    <CloseBold />
+                                </el-icon>
                             </ElButton>
                         </div>
                         <ElDivider border-style="dashed" style="margin-top: 15px; margin-bottom: 15px;"></ElDivider>
@@ -241,12 +255,15 @@ onMounted(() => {
                                 <ElText style="font-size: medium; color: gray">Year</ElText>
                             </div>
                             <ElCheckboxGroup v-model="filterYearChecked" style="justify-items: center;">
-                                <ElCheckbox v-for="year in filterYearList" :label="year['year']" style="margin:1px 10px 1px 10px">
+                                <ElCheckbox v-for="year in filterYearList" :label="year['year']"
+                                    style="margin:1px 10px 1px 10px">
                                     <div style="font-size: small; margin: auto;">{{ year['year'] }} <span
                                             style="color: grey; font-size: small">({{ year["num"] }}) </span></div>
                                 </ElCheckbox>
                             </ElCheckboxGroup>
-                            <ElSlider style="margin-top: 15px; margin-left: 5px; margin-right: 5px; width: auto;" v-model="filterYearRange" range :max="filterYearRangeMax" :min="filterYearRangeMin" v-if="filterYearRangeShow"/>
+                            <ElSlider style="margin-top: 15px; margin-left: 5px; margin-right: 5px; width: auto;"
+                                v-model="filterYearRange" range :max="filterYearRangeMax" :min="filterYearRangeMin"
+                                v-if="filterYearRangeShow" />
                         </div>
                     </ElCard>
                 </ElCol>
@@ -281,9 +298,13 @@ onMounted(() => {
                         Found
                         {{ result_total_num
                         }} {{ (result_total_num === 1 ? "result" : "results") }}. </div>
-                    <div v-if="emptyResult" class="nores" style="margin-top: 8%;">
+                    <div v-if="emptyResult && !server_error" class="nores" style="margin-top: 8%;">
                         <div>Sorry! Found no result</div>
                         <ElImage :src="no_res_logo" fit="contain" style="margin: 50px;" />
+                    </div>
+                    <div v-if="server_error" class="server_error" style="margin-top: 5%;">
+                        <div>Oops! Something went wrong with server, please try again later.</div>
+                        <ElImage :src="server_error_logo" fit="contain" style="margin: 50px;" />
                     </div>
                     <ElCard shadow="hover" v-for="data in datalist"
                         style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;">
@@ -350,7 +371,6 @@ onMounted(() => {
                         <ElText> © Course Group 10 </ElText>
                     </ElRow>
                 </ElCol>
-            </div>
-        </ElFooter>
-    </ElContainer>
-</template>
+        </div>
+    </ElFooter>
+</ElContainer></template>
