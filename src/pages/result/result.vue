@@ -319,35 +319,46 @@ onMounted(() => {
                     </div>
                     <ElCard shadow="hover" v-for="data in datalist"
                         style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;">
-                        <div style="margin: 0px 5px 20px 5px;" class="title" @click="gotoOrigin(data['_source']['link'])">
-                            {{ data['_source']["title"] }} </div>
+                        <template #header>
+                            <!-- <div style="margin: 0px 5px 20px 5px;" class="title"> -->
+                            <div class="title">
+                                <span class="title" @click="gotoOrigin(data['_source']['link'])">{{ data['_source']["title"]
+                                }}</span>
+                            </div>
+                        </template>
                         <div style="margin: 10px 5px 10px 5px; align-items: center;">
-                            <span style="margin-left: 5px; margin-right: 5px;">
-                                <el-icon>
-                                    <Calendar />
-                                </el-icon>
-                                <!-- <span class="year" style="margin-left: 4px;" @click="gotoYear(data['_source']['year'])"> -->
-                                <span class="year" style="margin-left: 4px;">
-                                    {{ data['_source']["year"] }}
+                            <ElTooltip effect="customized" content="Year" placement="right" show-after="800">
+                                <span style="margin-left: 5px; margin-right: 5px;">
+                                    <el-icon>
+                                        <Calendar />
+                                    </el-icon>
+                                    <!-- <span class="year" style="margin-left: 4px;" @click="gotoYear(data['_source']['year'])"> -->
+                                    <span class="year" style="margin-left: 6px;">
+                                        {{ data['_source']["year"] }}
+                                    </span>
                                 </span>
-                            </span>
+                            </ElTooltip>
                         </div>
                         <div style="margin: 10px 5px 10px 5px; align-items: center;">
+                            <ElTooltip effect="customized" content="Authors" placement="right" show-after="800">
                             <span style="margin-left: 5px; margin-right: 5px; font-size: smaller;">
                                 <el-icon>
                                     <User />
                                 </el-icon>
                                 {{ convertList(data['_source']['authors']) }}
                             </span>
+                            </ElTooltip>
                         </div>
                         <div v-if="data['_source']['keywords'].length !== 0"
                             style="margin: 10px 5px 10px 5px; align-items: center;">
+                            <ElTooltip effect="customized" content="Keywords" placement="right" show-after="800">
                             <span style="margin-left: 5px; margin-right: 5px; font-size: smaller;">
                                 <el-icon>
                                     <Star />
                                 </el-icon>
                                 {{ convertList(data['_source']['keywords']) }}
                             </span>
+                            </ElTooltip>
                         </div>
                         <div style="margin: 20px 5px 10px 5px;" v-if="data['_source']['link'] && data['link'] !== ''">
                             <ElButton class="icon" @click="fetchPDF(data['_source']['link'])">

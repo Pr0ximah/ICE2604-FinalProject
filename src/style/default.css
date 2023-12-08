@@ -263,22 +263,18 @@ div.server_error {
 
 .el-button.icon {
     background-color: white;
-    color: var(--custom-dark-3);
+    /* color: var(--custom-dark-3); */
     border-color: var(--custom-light);
 }
 
 .el-button.icon:hover {
     /* background-color: var(--custom-light-4); */
-    color: var(--custom-dark-3);
+    /* color: var(--custom-dark-3); */
     box-shadow: inset 0px 0px 2px var(--custom-dark);
     border-color: var(--custom-dark-m1);
 }
 
-.el-card:hover {
-    transform: scale(1.006);
-}
-
-div.title:hover {
+span.title:hover {
     text-decoration: underline;
     text-decoration-thickness: 0.04em;
     text-decoration-color: var(--custom-dark-3);
@@ -292,3 +288,14 @@ div.title:hover {
     text-decoration-color: var(--custom-dark-3);
     text-underline-offset: 2px;
 } */
+
+.el-popper.is-customized {
+    background-color: var(--custom-light-5);
+    border: 1px solid var(--custom-dark);
+    font-size: smaller;
+}
+
+.el-popper.is-customized .el-popper__arrow::before {
+    background-color: var(--custom-light-5);
+    border: 1px solid var(--custom-dark);
+}
