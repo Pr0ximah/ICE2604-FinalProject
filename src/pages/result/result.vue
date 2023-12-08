@@ -9,7 +9,7 @@ import API from '../../components/axios_instance'
 import chart from '../../components/echarts/chart.vue'
 import no_res_logo from '@/assets/no-result.png'
 import server_error_logo from '@/assets/server_error.png'
-import Link_Icon from '@/assets/link_icon.png'
+import pdf_icon from '@/assets/link_icon.png'
 
 let chartYear = ref()
 let datalist = ref()
@@ -105,6 +105,12 @@ function refreshFilterYearRange() {
     filterYearChecked.value = filterYearCheckedNew
 }
 
+function gotoYear(year) {
+    searchOptionVal.value = 'Year'
+    content.value = year
+    search()
+}
+
 function selectNoneYear() {
     filterYearChecked.value = []
     refreshFilterYear()
@@ -159,7 +165,7 @@ function switchFilterStatus() {
     }
 }
 
-function gotoLink(url) {
+function fetchPDF(url) {
     window.open(url, "_blank")
 }
 
@@ -206,15 +212,19 @@ function search() {
     }
 }
 
-// function gotoResult() {
-//     window.open(`/search.html?content=${content.value}&type=${searchOptionVal.value}`, "_self")
-// }
 function gotoResult() {
     let inputVal = encodeURIComponent(content.value)
     let optionVal = encodeURIComponent(searchOptionVal.value)
     window.open(`./search.html?content=${inputVal}&type=${optionVal}`, "_self")
 }
 
+function gotoOrigin(url) {
+    if (url !== undefined) {
+        window.open(url, "_blank")
+    } else {
+        ElMessage("暂无原文链接")
+    }
+}
 
 onBeforeMount(() => {
     get()
@@ -309,14 +319,17 @@ onMounted(() => {
                     </div>
                     <ElCard shadow="hover" v-for="data in datalist"
                         style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;">
-                        <!-- v-show="filterYearCheckList.includes(data['_source']['year'])"> -->
-                        <div style="margin: 0px 5px 20px 5px;" class="title"> {{ data['_source']["title"] }} </div>
+                        <div style="margin: 0px 5px 20px 5px;" class="title" @click="gotoOrigin(data['_source']['link'])">
+                            {{ data['_source']["title"] }} </div>
                         <div style="margin: 10px 5px 10px 5px; align-items: center;">
                             <span style="margin-left: 5px; margin-right: 5px;">
                                 <el-icon>
                                     <Calendar />
                                 </el-icon>
-                                {{ data['_source']["year"] }}
+                                <!-- <span class="year" style="margin-left: 4px;" @click="gotoYear(data['_source']['year'])"> -->
+                                <span class="year" style="margin-left: 4px;">
+                                    {{ data['_source']["year"] }}
+                                </span>
                             </span>
                         </div>
                         <div style="margin: 10px 5px 10px 5px; align-items: center;">
@@ -337,9 +350,9 @@ onMounted(() => {
                             </span>
                         </div>
                         <div style="margin: 20px 5px 10px 5px;" v-if="data['_source']['link'] && data['link'] !== ''">
-                            <ElButton class="icon" @click="gotoLink(data['_source']['link'])">
-                                <ElImage class="icon" :src="Link_Icon" fit="contain"/>
-                                <span>origin link</span>
+                            <ElButton class="icon" @click="fetchPDF(data['_source']['link'])">
+                                <ElImage class="icon" :src="pdf_icon" fit="contain" />
+                                <span>origin pdf</span>
                             </ElButton>
                         </div>
                     </ElCard>
