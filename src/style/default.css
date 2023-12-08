@@ -88,8 +88,9 @@ div.main {
 }
 
 .el-image.logo {
-    margin-top: 4%;
-    margin-bottom: 1%;
+    transform: scale(2);
+    margin-top: 10%;
+    margin-bottom: 4%;
 }
 
 .el-menu {
@@ -118,7 +119,7 @@ div.main {
 
 .el-image.left-menu-logo {
     height: var(--header-height);
-    width: calc(var(--header-height) + 10px);
+    width: calc(var(--header-height) + 60px);
     margin: 0px;
     transform: scale(0.8);
 }
@@ -205,7 +206,7 @@ div.title {
 }
 
 .el-image.logo:hover {
-    transform: translateY(-3%) scale(1.05, 1.05);
+    transform: translateY(-3%) scale(2.1, 2.1);
 }
 
 .el-footer.res {
@@ -230,4 +231,17 @@ div.chart {
     width: 100%;
     margin: auto;
     align-items: center;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: var(--custom-dark-m2);
+    border-color: var(--custom-dark-m2);
+}
+
+.el-checkbox__input.is-checked+.el-checkbox__label {
+    color: var(--custom-dark-m2);
+}
+
+.el-slider {
+    --el-slider-main-bg-color: var(--custom-dark-m2)
 }

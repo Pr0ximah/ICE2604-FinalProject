@@ -47,7 +47,9 @@ function search() {
 }
 
 function gotoResult() {
-  window.open(`./search.html?content=${input.value}&type=${searchOptionVal.value}`, "_self")
+  let inputVal = encodeURIComponent(input.value)
+  let optionVal = encodeURIComponent(searchOptionVal.value)
+  window.open(`./search.html?content=${inputVal}&type=${optionVal}`, "_self")
 }
 </script>
 
@@ -58,7 +60,7 @@ function gotoResult() {
         <ElImage class="logo" :src="LOGO" />
       </ElRow>
       <div class="main">
-        <ElRow :gutter="10" justify="center">
+        <ElRow :gutter="20" justify="center">
           <ElCol :span="10">
             <ElInput style="height: 45px; font-size: large;" v-model="input" placeholder="" @keydown.enter=search>
               <template #suffix>
@@ -73,7 +75,7 @@ function gotoResult() {
               </template>
             </ElInput>
           </ElCol>
-          <ElCol :span="2">
+          <ElCol :span="1.2">
             <ElButton class="search-btn" style="height: 45px;" @click="search"> 搜索 <ElIcon>
                 <Search />
               </ElIcon>
@@ -81,7 +83,8 @@ function gotoResult() {
           </ElCol>
         </ElRow>
       </div>
-      <div style="position:absolute; bottom: 30px; text-align: center; margin: auto; width: 98%; color: #ffffff; text-shadow: 1px 1px 1px black;">
+      <div
+        style="position:absolute; bottom: 30px; text-align: center; margin: auto; width: 98%; color: #ffffff; text-shadow: 1px 1px 1px black;">
         <div style="margin: auto"> SJTU ICE2604 Final Project </div>
         <div style="margin: auto"> © Course Group 10 </div>
       </div>

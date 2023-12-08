@@ -3,8 +3,8 @@ import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMe
 import { ElMessage } from 'element-plus';
 import { onMounted, reactive, ref, watch, onBeforeMount, toRaw, nextTick } from 'vue'
 import { Search, Calendar, User, Star, Select, CloseBold } from '@element-plus/icons-vue'
-import LOGO from "@/assets/LOGO_S.png"
-import LOGO_L from "@/assets/LOGO.png"
+import LOGO_S from "@/assets/LOGO_S_LONG.png"
+import LOGO_L from "@/assets/LOGO_DARK.png"
 import API from '../../components/axios_instance'
 import chart from '../../components/echarts/chart.vue'
 import no_res_logo from '@/assets/no-result.png'
@@ -29,9 +29,9 @@ let filterYearRangeShow = ref(false)
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
-    let r = window.location.search.match(reg)
+    let r = window.location.href.match(reg)
     if (r != null) {
-        return decodeURI(r[0]).split('=')[1]
+        return decodeURIComponent(r[1])
     }
 }
 
@@ -40,8 +40,10 @@ const enableAll = ref(false)
 
 function get() {
     const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
+    const content = encodeURIComponent(getQueryContent('content'))
+    const type = encodeURIComponent(getQueryContent('type'))
     API({
-        url: base + `/search/content=${getQueryContent('content')}&type=${getQueryContent('type')}`,
+        url: base + `/search/content=${content}&type=${type}`,
         method: 'get'
     }).then((e) => {
         datalistAll.value = e['data']['data']
@@ -192,9 +194,15 @@ function search() {
     }
 }
 
+// function gotoResult() {
+//     window.open(`/search.html?content=${content.value}&type=${searchOptionVal.value}`, "_self")
+// }
 function gotoResult() {
-    window.open(`/search.html?content=${content.value}&type=${searchOptionVal.value}`, "_self")
+  let inputVal = encodeURIComponent(content.value)
+  let optionVal = encodeURIComponent(searchOptionVal.value)
+  window.open(`./search.html?content=${inputVal}&type=${optionVal}`, "_self")
 }
+
 
 onBeforeMount(() => {
     get()
@@ -211,7 +219,7 @@ onMounted(() => {
             <ElContainer>
                 <ElMenu mode="horizontal" :ellipsis="false" style="width: 100%;" ref="menu">
                     <ElMenuItem :index="0" @click="backToHome">
-                        <ElImage class="left-menu-logo" :src="LOGO" fit="contain" />
+                        <ElImage class="left-menu-logo" :src="LOGO_S" fit="contain"/>
                     </ElMenuItem>
                 </ElMenu>
             </ElContainer>
@@ -324,7 +332,7 @@ onMounted(() => {
         </ElMain>
         <ElFooter class="res">
             <ElImage class="bottom-logo" :src="LOGO_L" fit="contain"
-                style="height: 70%; margin: 20px 0px 25px 0px; margin-left: 3%; width: auto;" />
+                style="height: 70%; margin: 20px 0px 25px 0px; margin-left: 1%; width: auto;" />
             <div
                 style="float:right; height: 100%; display: flex; align-items: center; justify-content: center; padding-right: 3%;">
                 <ElCol>
