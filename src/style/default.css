@@ -245,3 +245,11 @@ div.chart {
 .el-slider {
     --el-slider-main-bg-color: var(--custom-dark-m2)
 }
+
+div.server_error {
+    text-align: center;
+    font-size: large;
+    font-weight: 550;
+    color: gray;
+    margin-top: 20px;
+}
