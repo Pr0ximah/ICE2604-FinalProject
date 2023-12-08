@@ -9,6 +9,7 @@
     --custom-light-4: #e9f2fe;
     --custom-light-4_5: #f0f7ff;
     --custom-light-5: #f6f9fd;
+    --custom-dark-m3: #5188e1;
     --custom-dark-m2: #2a6fdb;
     --custom-dark-m1: #2160c4;
     --custom-dark: #1636b6;
@@ -252,4 +253,20 @@ div.server_error {
     font-weight: 550;
     color: gray;
     margin-top: 20px;
+}
+
+.el-image.icon {
+    width: 15px;
+    margin: 0px;
+    margin-right: 5px;
+}
+
+.el-button.icon {
+    background-color: var(--custom-light-5);
+    color: var(--custom-dark-3);
+}
+
+.el-button.icon:hover {
+    background-color: var(--custom-light-2);
+    color: var(--custom-dark-3);
 }

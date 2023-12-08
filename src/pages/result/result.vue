@@ -9,6 +9,7 @@ import API from '../../components/axios_instance'
 import chart from '../../components/echarts/chart.vue'
 import no_res_logo from '@/assets/no-result.png'
 import server_error_logo from '@/assets/server_error.png'
+import Link_Icon from '@/assets/link_icon.png'
 
 let chartYear = ref()
 let datalist = ref()
@@ -335,8 +336,11 @@ onMounted(() => {
                                 {{ convertList(data['_source']['keywords']) }}
                             </span>
                         </div>
-                        <div style="margin: 30px 5px 10px 5px;" v-if="data['_source']['link'] && data['link'] !== ''">
-                            <ElButton style="default" @click="gotoLink(data['_source']['link'])"> link </ElButton>
+                        <div style="margin: 20px 5px 10px 5px;" v-if="data['_source']['link'] && data['link'] !== ''">
+                            <ElButton class="icon" @click="gotoLink(data['_source']['link'])">
+                                <ElImage class="icon" :src="Link_Icon" fit="contain"/>
+                                <span>origin link</span>
+                            </ElButton>
                         </div>
                     </ElCard>
                     <el-pagination layout="prev, pager, next" :total="result_total_num" hide-on-single-page="true"
@@ -371,6 +375,7 @@ onMounted(() => {
                         <ElText> © Course Group 10 </ElText>
                     </ElRow>
                 </ElCol>
-        </div>
-    </ElFooter>
-</ElContainer></template>
+            </div>
+        </ElFooter>
+    </ElContainer>
+</template>
