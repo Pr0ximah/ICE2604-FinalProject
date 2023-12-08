@@ -14,92 +14,8 @@ def json_print(string):
 with open('api/api_port/MetaData.json','r',encoding='utf8') as fp:
     json_data = json.load(fp)
 
-body = {
-    # "settings": {
-    #   "index": {
-    #   "analysis": {
-    #       "filter": {},
-    #       "analyzer": {
-    #         "keyword_analyzer": {
-    #           "filter": [
-    #             "lowercase",
-    #             "asciifolding",
-    #             "trim"
-    #           ],
-    #           "char_filter": [],
-    #           "type": "custom",
-    #           "tokenizer": "keyword"
-    #         },
-    #         "edge_ngram_analyzer": {
-    #           "filter": [
-    #             "lowercase"
-    #           ],
-    #           "tokenizer": "edge_ngram_tokenizer"
-    #         },
-    #         "edge_ngram_search_analyzer": {
-    #           "tokenizer": "lowercase"
-    #         }
-    #       },
-    #       "tokenizer": {
-    #         "edge_ngram_tokenizer": {
-    #           "type": "edge_ngram",
-    #           "min_gram": 2,
-    #           "max_gram": 5,
-    #           "token_chars": [
-    #             "letter"
-    #           ]
-    #         }
-    #       }
-    #     }
-    #   }
-    # },
-    
-    # "mappings" : {
-    #   "properties" : {
-    #     "date" : {
-    #         "type" : "text"
-    #     },
-    #     "paper_id" : {
-    #         "type" : "text",
-    #     },
-    #     "title" : {
-    #         "type" : "text",
-    #         "fields": {
-    #             "keywordstring":{
-    #                 "type": "text",
-    #                 "analyzer": "keyword_analyzer"
-    #             },
-    #             "edgengram": {
-    #                 "type" : "text",
-    #                 "analyzer" : "edge_ngram_analyzer",
-    #                 "search_analyzer": "edge_ngram_search_analyzer"
-    #             },
-    #             "completion": {
-    #                 "type" : "completion"
-    #             }
-    #         },
-    #         "analyzer": "standard"
-    #     },
-    #     "year" : {
-    #       "type" : "long",
-    #     },
-    #     "authors" :{
-    #         "type" : "list",
-    #     },
-    #     "keywords" : {
-    #         "type" : "list",
-    #     },
-    #     "link" : {
-    #         "type" : "text"
-    #     },
-    #     "first_page" : {
-    #         "type" : "long"
-    #     }
-    #   }
-    # }
-
-    "mappings": {
-      "properties": {
+mappings = {
+    "properties": {
         "data": {
           "type": "text",  
         },
@@ -125,7 +41,6 @@ body = {
             "type" : "long"
         }
       }
-    }
 }
 
 date = []
@@ -148,10 +63,10 @@ for value in json_data.values():
     first_page.append(value["first_page"])
 
 es.indices.delete(index = 'mydatabase')
-es.indices.create(index ='mydatabase',body=body,ignore=400)
+es.indices.create(index ='mydatabase',body =mappings,ignore=400)
+# es.indices.create(index='mydatabase', body=mappings, ignore=400, headers={'Content-Type': 'application/json'}
 for i in range(100):
     mapping = {"date":date[i],"paper_id":paper_id[i],"title":title[i],"year":year[i],"authors":authors[i],"keywords":keywords[i],"link":link[i],"first_page":first_page[i]}
-    # mapping = {"title":title[i]}
     res = es.index(index="mydatabase",id=i,body=mapping)
 
 def search_title(str):
@@ -193,12 +108,12 @@ def search_year(time):
 def search_author(str):
     query = {
         "query":{
-            # "wildcard":{
-            #     "keywords": "*" + str + "*"
-            # }
-            "match":{
-                "authors": str
+            "wildcard":{
+                "keywords": "*" + str + "*"
             }
+            # "match":{
+            #     "authors": str
+            # }
         }
         ,"sort": [
             {
