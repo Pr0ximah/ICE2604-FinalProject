@@ -1,5 +1,5 @@
 :root {
-    --font-family: 'Verdana', Helvetica, '微软雅黑';
+    --font-family: Helvetica, Tahoma, '微软雅黑';
     font-family: var(--font-family);
     --el-font-family: var(--font-family);
     --custom-light: #92b5ed;
@@ -9,6 +9,7 @@
     --custom-light-4: #e9f2fe;
     --custom-light-4_5: #f0f7ff;
     --custom-light-5: #f6f9fd;
+    --custom-dark-m3: #5188e1;
     --custom-dark-m2: #2a6fdb;
     --custom-dark-m1: #2160c4;
     --custom-dark: #1636b6;
@@ -35,7 +36,7 @@ html,
 body {
     margin: 0px 0px 0px 0px;
     height: 100%;
-    min-width: 1060px;
+    min-width: 1330px;
 }
 
 div#app {
@@ -88,8 +89,9 @@ div.main {
 }
 
 .el-image.logo {
-    margin-top: 4%;
-    margin-bottom: 1%;
+    transform: scale(2);
+    margin-top: 10%;
+    margin-bottom: 4%;
 }
 
 .el-menu {
@@ -118,7 +120,7 @@ div.main {
 
 .el-image.left-menu-logo {
     height: var(--header-height);
-    width: calc(var(--header-height) + 10px);
+    width: calc(var(--header-height) + 60px);
     margin: 0px;
     transform: scale(0.8);
 }
@@ -205,9 +207,66 @@ div.title {
 }
 
 .el-image.logo:hover {
-    transform: translateY(-3%) scale(1.05, 1.05);
+    transform: translateY(-3%) scale(2.1, 2.1);
 }
 
 .el-footer.res {
     margin-top: 0px;
+}
+
+.el-card {
+    border-radius: 10px;
+}
+
+.el-card.preset1 {
+    box-shadow: 0px 0px 3px var(--custom-light);
+    transition: all 0.2s;
+}
+
+/* .el-card.filter:hover {
+    transform: translateY(-1%) scale(1.01, 1.01);
+} */
+
+div.chart {
+    height: 100%;
+    width: 100%;
+    margin: auto;
+    align-items: center;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: var(--custom-dark-m2);
+    border-color: var(--custom-dark-m2);
+}
+
+.el-checkbox__input.is-checked+.el-checkbox__label {
+    color: var(--custom-dark-m2);
+}
+
+.el-slider {
+    --el-slider-main-bg-color: var(--custom-dark-m2)
+}
+
+div.server_error {
+    text-align: center;
+    font-size: large;
+    font-weight: 550;
+    color: gray;
+    margin-top: 20px;
+}
+
+.el-image.icon {
+    width: 15px;
+    margin: 0px;
+    margin-right: 5px;
+}
+
+.el-button.icon {
+    background-color: var(--custom-light-5);
+    color: var(--custom-dark-3);
+}
+
+.el-button.icon:hover {
+    background-color: var(--custom-light-2);
+    color: var(--custom-dark-3);
 }

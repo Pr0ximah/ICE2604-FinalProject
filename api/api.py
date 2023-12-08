@@ -30,4 +30,4 @@ app.include_router(app_get, prefix='/api_port', tags=["一些get的请求接口"
 #     return {"data": data}
 
 if __name__ == "__main__":
-    uvicorn.run('api:app', host='127.0.0.1', port=9600, reload=True, workers=8)
+    uvicorn.run('api:app', host='127.0.0.1', port=8000, reload=True, workers=8)
