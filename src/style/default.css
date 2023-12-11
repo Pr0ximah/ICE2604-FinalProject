@@ -299,3 +299,8 @@ span.title:hover {
     background-color: var(--custom-light-5);
     border: 1px solid var(--custom-dark);
 }
+
+.el-skeleton {
+    --el-skeleton-color: rgb(225, 225, 225);
+    --el-skeleton-to-color: rgb(237, 237, 237);
+}

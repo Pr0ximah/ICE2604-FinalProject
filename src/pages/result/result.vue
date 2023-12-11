@@ -29,6 +29,7 @@ const filterYearRange = ref([0, 0])
 const filterYearRangeMax = ref(0)
 const filterYearRangeMin = ref(0)
 let filterYearRangeShow = ref(false)
+let showLoadingSkeleton = ref(false)
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
@@ -45,6 +46,7 @@ function get() {
     const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
     const content = encodeURIComponent(getQueryContent('content'))
     const type = encodeURIComponent(getQueryContent('type'))
+    showLoadingSkeleton.value = true;
     API({
         url: base + `/search/content=${content}&type=${type}`,
         method: 'get'
@@ -76,12 +78,14 @@ function get() {
             searchOptionVal.value = type
         }
         switchPage()
+        showLoadingSkeleton.value = false;
     }).catch(() => {
         server_error.value = true;
         const type = getQueryContent('type')
         if (searchOptionVal.value != type) {
             searchOptionVal.value = type
         }
+        showLoadingSkeleton.value = false;
     }).then(() => {
         chartYear.value.init()
     })
@@ -304,21 +308,23 @@ onMounted(() => {
                         </ElCol>
                     </ElRow>
                     <div v-if="!emptyResult"
-                        style="font-family:sans-serif; color: gray; margin-right: 10px; margin-bottom: 20px; margin-left: 20px;">
+                        style="font-family:sans-serif; color: gray; margin-right: 10px; margin-bottom: 20px; margin-left: 20px;"
+                        v-show="!showLoadingSkeleton">
                         Search done.
                         Found
                         {{ result_total_num
                         }} {{ (result_total_num === 1 ? "result" : "results") }}. </div>
-                    <div v-if="emptyResult && !server_error" class="nores" style="margin-top: 8%;">
+                    <div v-if="emptyResult && !server_error" class="nores" style="margin-top: 8%;"
+                        v-show="!showLoadingSkeleton">
                         <div>Sorry! Found no result</div>
                         <ElImage :src="no_res_logo" fit="contain" style="margin: 50px;" />
                     </div>
-                    <div v-if="server_error" class="server_error" style="margin-top: 5%;">
+                    <div v-if="server_error" class="server_error" style="margin-top: 5%;" v-show="!showLoadingSkeleton">
                         <div>Oops! Something went wrong with server, please try again later.</div>
                         <ElImage :src="server_error_logo" fit="contain" style="margin: 50px;" />
                     </div>
                     <ElCard shadow="hover" v-for="data in datalist"
-                        style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;">
+                        style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;" v-show="!showLoadingSkeleton">
                         <template #header>
                             <!-- <div style="margin: 0px 5px 20px 5px;" class="title"> -->
                             <div class="title">
@@ -341,23 +347,23 @@ onMounted(() => {
                         </div>
                         <div style="margin: 10px 5px 10px 5px; align-items: center;">
                             <ElTooltip effect="customized" content="Authors" placement="right" show-after="800">
-                            <span style="margin-left: 5px; margin-right: 5px; font-size: smaller;">
-                                <el-icon>
-                                    <User />
-                                </el-icon>
-                                {{ convertList(data['_source']['authors']) }}
-                            </span>
+                                <span style="margin-left: 5px; margin-right: 5px; font-size: smaller;">
+                                    <el-icon>
+                                        <User />
+                                    </el-icon>
+                                    {{ convertList(data['_source']['authors']) }}
+                                </span>
                             </ElTooltip>
                         </div>
                         <div v-if="data['_source']['keywords'].length !== 0"
                             style="margin: 10px 5px 10px 5px; align-items: center;">
                             <ElTooltip effect="customized" content="Keywords" placement="right" show-after="800">
-                            <span style="margin-left: 5px; margin-right: 5px; font-size: smaller;">
-                                <el-icon>
-                                    <Star />
-                                </el-icon>
-                                {{ convertList(data['_source']['keywords']) }}
-                            </span>
+                                <span style="margin-left: 5px; margin-right: 5px; font-size: smaller;">
+                                    <el-icon>
+                                        <Star />
+                                    </el-icon>
+                                    {{ convertList(data['_source']['keywords']) }}
+                                </span>
                             </ElTooltip>
                         </div>
                         <div style="margin: 20px 5px 10px 5px;" v-if="data['_source']['link'] && data['link'] !== ''">
@@ -368,7 +374,8 @@ onMounted(() => {
                         </div>
                     </ElCard>
                     <el-pagination layout="prev, pager, next" :total="result_total_num" hide-on-single-page="true"
-                        :page-size="size_per_page" v-model:current-page="currentPage" />
+                        :page-size="size_per_page" v-model:current-page="currentPage" v-show="!showLoadingSkeleton" />
+                    <el-skeleton :rows="10" animated v-show="showLoadingSkeleton" style="margin: auto; margin-top: 5%; width: 80%; justify-self: center;" throttle="500"/>
                 </ElCol>
                 <ElCol :span="5">
                     <ElCard style="margin-top: 20px;" class="preset1">
@@ -401,5 +408,4 @@ onMounted(() => {
                 </ElCol>
             </div>
         </ElFooter>
-    </ElContainer>
-</template>
+    </ElContainer></template>

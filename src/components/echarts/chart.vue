@@ -97,6 +97,10 @@ function Bar_authorSearch(dic) {
     // console.log("xdata")
     // console.log(lst_xdata)
     let lst_ydata = getydata(dic)
+    let y_max = lst_ydata[0]
+    for (let i = 1; i < lst_ydata.length; i++) {
+        if (y_max < lst_ydata[i]) { y_max = lst_ydata[i] }
+    }
     let option = {
         color: ['#2a6fdb'],
         tooltip: {
@@ -137,6 +141,7 @@ function Bar_authorSearch(dic) {
             {
                 type: 'value',
                 interval: 1,
+                max: y_max + 1,
                 axisLabel: {
                     formatter: '{value}'
                 }
