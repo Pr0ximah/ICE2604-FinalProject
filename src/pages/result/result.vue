@@ -2,7 +2,7 @@
 import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMenu, ElMenuItem, ElRow, ElCol, ElFooter, ElText, ElCheckboxGroup } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { onMounted, reactive, ref, watch, onBeforeMount, toRaw, nextTick } from 'vue'
-import { Search, Calendar, User, Star, Select, CloseBold } from '@element-plus/icons-vue'
+import { Search, Calendar, User, Star, Select, CloseBold, Filter, Document } from '@element-plus/icons-vue'
 import LOGO_S from "@/assets/LOGO_S_LONG.png"
 import LOGO_L from "@/assets/LOGO_DARK.png"
 import API from '../../components/axios_instance'
@@ -282,6 +282,9 @@ onMounted(() => {
                     <ElCard class="preset1" style="margin-top: 20px; width: 100%;">
                         <div style="text-align: center;">
                             <ElText style="font-size: 22px; letter-spacing: 0.03em;">filter</ElText>
+                            <el-icon style="margin-left: 2%;">
+                                <Filter />
+                            </el-icon>
                         </div>
                         <ElDivider border-style="dashed" style="margin-top: 15px; margin-bottom: 15px;"></ElDivider>
                         <div>
@@ -309,7 +312,7 @@ onMounted(() => {
                     </ElCard>
                 </ElCol>
                 <ElCol :span="16">
-                    <div v-if="emptyResult && !server_error" class="nores" style="margin-top: 20px;"
+                    <div v-if="emptyResult && !server_error" class="nores" style="margin-top: 5%;"
                         v-show="!showLoadingSkeleton">
                         <div>Sorry! Found no result</div>
                         <ElImage :src="no_res_logo" fit="contain" style="margin: 50px;" />
@@ -363,7 +366,9 @@ onMounted(() => {
                         </div>
                         <div style="margin: 20px 5px 10px 5px;" v-if="data['_source']['link'] && data['link'] !== ''">
                             <ElButton class="icon" @click="fetchPDF(data['_source']['link'])">
-                                <ElImage class="icon" :src="pdf_icon" fit="contain" />
+                                <el-icon>
+                                    <Document />
+                                </el-icon>
                                 <span>origin pdf</span>
                             </ElButton>
                         </div>

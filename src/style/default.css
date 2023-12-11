@@ -18,7 +18,8 @@
     --custom-dark-3: #0e2271;
     --menu-color: var(--custom-light-5);
     --menu-text-color: black;
-    --menu-hover-color: var(--custom-light-3);
+    /* --menu-hover-color: var(--custom-light-3); */
+    --menu-hover-color: var(--custom-light-5);
     --menu-hover-text-color: black;
     --el-menu-hover-text-color: black;
     --custom-border: 0.5px solid var(--custom-light);
@@ -105,6 +106,7 @@ div.main {
 
 .el-menu--horizontal.el-menu {
     border-bottom: var(--border-menu);
+    border-radius: 10px;
 }
 
 .el-menu-item {
@@ -339,4 +341,16 @@ span.title:hover {
 #chart > .el-card__body {
     padding: 14px;
     height: calc(100% - 30px);
+}
+
+.el-menu--horizontal>.el-menu-item {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    transition: all 0.3s;
+}
+
+.el-menu--horizontal>.el-menu-item:hover {
+    border-color: var(--custom-dark-m3);
+    box-shadow: inset 0px 0px 3px var(--custom-dark-m1);
+    filter: brightness(0.975);
 }
