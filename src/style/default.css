@@ -30,13 +30,14 @@
     --el-text-color-regular: black;
     --footer-height: 150px;
     --el-color-primary: var(--custom-dark);
+    --input-border-radius: 7px;
 }
 
 html,
 body {
     margin: 0px 0px 0px 0px;
     height: 100%;
-    min-width: 1330px;
+    min-width: 1000px;
 }
 
 div#app {
@@ -162,7 +163,20 @@ div.main {
 
 .el-pagination {
     --el-pagination-hover-color: var(--custom-dark);
-    margin: 40px 10px 60px 10px
+    margin: 40px 10px 40px 10px
+}
+
+.menuselect .el-input__inner {
+    height: 35px;
+}
+
+.el-select .el-input__wrapper {
+    border-radius: var(--input-border-radius);
+    border: 0.7px solid var(--custom-light);
+}
+
+div.searchres {
+    margin-bottom: 40px;
 }
 
 .bg-all {
@@ -182,12 +196,28 @@ div.main {
     background-color: var(--custom-dark-m2) !important;
     color: var(--el-color-white) !important;
     border: 0px;
-    padding-left: 30px;
-    padding-right: 30px;
+    border-radius: 0;
+    border-top-right-radius: var(--input-border-radius);
+    border-bottom-right-radius: var(--input-border-radius);
 }
 
 .el-button.el-button.search-btn-res:hover {
     background-color: var(--custom-dark-m1) !important;
+    border-radius: 0;
+    border-top-right-radius: var(--input-border-radius);
+    border-bottom-right-radius: var(--input-border-radius);
+}
+
+div.el-input-group__append {
+    border-radius: 0;
+    border-top-right-radius: var(--input-border-radius);
+    border-bottom-right-radius: var(--input-border-radius);
+}
+
+.el-input-group--append>.el-input__wrapper {
+    border-top-left-radius: var(--input-border-radius);
+    border-bottom-left-radius: var(--input-border-radius);
+    border: 0.7px solid var(--custom-light);
 }
 
 div.title {
@@ -196,10 +226,6 @@ div.title {
     font-weight: 500;
     line-height: 1.5em;
     letter-spacing: 0.012em;
-}
-
-#ei+.el-input__suffix {
-    max-width: 20%;
 }
 
 .el-image.logo {
@@ -216,6 +242,11 @@ div.title {
 
 .el-card {
     border-radius: 10px;
+    box-shadow: 0px 0px 3px var(--custom-light);
+}
+
+.el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
+    box-shadow: 0px 0px 7px var(--custom-dark-m1);
 }
 
 .el-card.preset1 {
@@ -303,4 +334,9 @@ span.title:hover {
 .el-skeleton {
     --el-skeleton-color: rgb(225, 225, 225);
     --el-skeleton-to-color: rgb(237, 237, 237);
+}
+
+#chart > .el-card__body {
+    padding: 14px;
+    height: calc(100% - 30px);
 }

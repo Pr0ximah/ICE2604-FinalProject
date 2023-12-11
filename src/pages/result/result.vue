@@ -131,6 +131,7 @@ function refreshFilterYear() {
     childData.value = datalistAllFiltered.value
     currentPage.value = 1
     switchPage()
+    nextTick()
 }
 
 function switchPage() {
@@ -144,10 +145,13 @@ function switchPage() {
 
 watch(filterYearChecked, () => {
     refreshFilterYear()
-    // window.scrollTo({
-    //     top: 0
-    // })
 })
+
+window.onresize = () => {
+    setTimeout(() => {
+        chartYear.value.resizeChart()
+    }, 200)
+}
 
 watch(currentPage, () => {
     switchPage()
@@ -242,36 +246,58 @@ onMounted(() => {
 <template>
     <ElContainer class="bg-all" style="height: 100%; height: 100%;">
         <ElHeader>
-            <ElContainer>
-                <ElMenu mode="horizontal" :ellipsis="false" style="width: 100%;" ref="menu">
-                    <ElMenuItem :index="0" @click="backToHome">
-                        <ElImage class="left-menu-logo" :src="LOGO_S" fit="contain" />
-                    </ElMenuItem>
-                </ElMenu>
-            </ElContainer>
+            <ElMenu mode="horizontal" :ellipsis="false" style="width: 100%;" ref="menu">
+                <ElMenuItem :index="0" @click="backToHome">
+                    <ElImage class="left-menu-logo" :src="LOGO_S" fit="contain" />
+                </ElMenuItem>
+                <ElRow :gutter="10"
+                    style="min-width: 700px; height: 96%; align-self: right; display: flex; justify-content: right; width: 50%; margin: auto; margin-right: 1%;">
+                    <ElCol :span="3">
+                        <ElSelect class="menuselect" style="width: 100%;" v-model="searchOptionVal">
+                            <ElOptionGroup v-if="enableAll">
+                                <ElOption label="All" value="All" />
+                            </ElOptionGroup>
+                            <ElOptionGroup>
+                                <ElOption v-for="item in SearchOption" :label="item.value" :value="item.value" />
+                            </ElOptionGroup>
+                        </ElSelect>
+                    </ElCol>
+                    <ElCol :span="13" style="height: 38px;">
+                        <ElInput id="ei" v-model="content" style="height: 100%; font-size: large;" @keydown.enter=search>
+                            <template #append>
+                                <ElButton class="search-btn-res" style="height: 100%;" @click="search">
+                                    <ElIcon style="height: 100%;">
+                                        <Search />
+                                    </ElIcon>
+                                </ElButton>
+                            </template>
+                        </ElInput>
+                    </ElCol>
+                </ElRow>
+            </ElMenu>
         </ElHeader>
         <ElMain class="result">
-            <ElRow style="width: 100%; margin: auto;" :gutter="30" justify="center">
+            <ElRow style="width: 100%; margin: auto;" :gutter="5" justify="center">
                 <ElCol :span="3" style="height: 100%">
-                    <ElCard class="preset1" style="margin-top: 10%; width: 100%;">
+                    <ElCard class="preset1" style="margin-top: 20px; width: 100%;">
                         <div style="text-align: center;">
-                            <ElText style="font-size: x-large; text-align: center; letter-spacing: 0.06em;">filter</ElText>
-                            <ElButton @click="switchFilterStatus" class="default" style="margin-left: 5%;" size="medium"
-                                circle="true" :disabled="emptyResult">
-                                <el-icon v-if="!filterButtonStatus"><Select /></el-icon>
-                                <el-icon v-if="filterButtonStatus">
-                                    <CloseBold />
-                                </el-icon>
-                            </ElButton>
+                            <ElText style="font-size: 22px; letter-spacing: 0.03em;">filter</ElText>
                         </div>
                         <ElDivider border-style="dashed" style="margin-top: 15px; margin-bottom: 15px;"></ElDivider>
-                        <div style="margin-left: 6%; margin-right: 6%;">
-                            <div style="margin-bottom: 10px;">
+                        <div>
+                            <div style="margin-bottom: 10px; text-align: center;">
                                 <ElText style="font-size: medium; color: gray">Year</ElText>
+                                <ElButton @click="switchFilterStatus" class="icon" style="margin-left: 5px;" size="small"
+                                    circle="true" :disabled="emptyResult">
+                                    <el-icon v-if="!filterButtonStatus"><Select /></el-icon>
+                                    <el-icon v-if="filterButtonStatus">
+                                        <CloseBold />
+                                    </el-icon>
+                                </ElButton>
                             </div>
-                            <ElCheckboxGroup v-model="filterYearChecked" style="justify-items: center;">
+                            <ElCheckboxGroup v-model="filterYearChecked" style="justify-items: center; text-align: center;">
                                 <ElCheckbox v-for="year in filterYearList" :label="year['year']"
-                                    style="margin:1px 10px 1px 10px">
+                                    style="margin:1px 6% 1px 6%;">
                                     <div style="font-size: small; margin: auto;">{{ year['year'] }} <span
                                             style="color: grey; font-size: small">({{ year["num"] }}) </span></div>
                                 </ElCheckbox>
@@ -283,38 +309,7 @@ onMounted(() => {
                     </ElCard>
                 </ElCol>
                 <ElCol :span="16">
-                    <ElRow justify="center" :gutter="20" style="margin: calc(min(4%, 45px)); height: calc(max(4vh, 45px));">
-                        <ElCol :span="18" style="height: 100%;">
-                            <ElInput id="ei" v-model="content" style="height: 100%; font-size: large;"
-                                @keydown.enter=search>
-                                <template #suffix style="width: 20px;">
-                                    <ElSelect style="width: 100%; margin-left: auto;" v-model="searchOptionVal">
-                                        <ElOptionGroup v-if="enableAll">
-                                            <ElOption label="All" value="All" />
-                                        </ElOptionGroup>
-                                        <ElOptionGroup>
-                                            <ElOption v-for="item in SearchOption" :label="item.value"
-                                                :value="item.value" />
-                                        </ElOptionGroup>
-                                    </ElSelect>
-                                </template>
-                            </ElInput>
-                        </ElCol>
-                        <ElCol :span="5" style="flex: auto; max-width:fit-content;">
-                            <ElButton class="search-btn-res" style="height: 100%;" @click="search"> 搜索 <ElIcon>
-                                    <Search />
-                                </ElIcon>
-                            </ElButton>
-                        </ElCol>
-                    </ElRow>
-                    <div v-if="!emptyResult"
-                        style="font-family:sans-serif; color: gray; margin-right: 10px; margin-bottom: 20px; margin-left: 20px;"
-                        v-show="!showLoadingSkeleton">
-                        Search done.
-                        Found
-                        {{ result_total_num
-                        }} {{ (result_total_num === 1 ? "result" : "results") }}. </div>
-                    <div v-if="emptyResult && !server_error" class="nores" style="margin-top: 8%;"
+                    <div v-if="emptyResult && !server_error" class="nores" style="margin-top: 20px;"
                         v-show="!showLoadingSkeleton">
                         <div>Sorry! Found no result</div>
                         <ElImage :src="no_res_logo" fit="contain" style="margin: 50px;" />
@@ -375,11 +370,16 @@ onMounted(() => {
                     </ElCard>
                     <el-pagination layout="prev, pager, next" :total="result_total_num" hide-on-single-page="true"
                         :page-size="size_per_page" v-model:current-page="currentPage" v-show="!showLoadingSkeleton" />
-                    <el-skeleton :rows="10" animated v-show="showLoadingSkeleton" style="margin: auto; margin-top: 5%; width: 80%; justify-self: center;" throttle="500"/>
+                    <div v-if="!emptyResult" style="font-family:sans-serif; color: gray;" v-show="!showLoadingSkeleton"
+                        class="searchres">
+                        Search done. Found {{ result_total_num }} {{ (result_total_num === 1 ? "result" : "results") }}.
+                    </div>
+                    <el-skeleton :rows="10" animated v-show="showLoadingSkeleton"
+                        style="margin: auto; margin-top: 5%; width: 80%; justify-self: center;" throttle="500" />
                 </ElCol>
                 <ElCol :span="5">
-                    <ElCard style="margin-top: 20px;" class="preset1">
-                        <div style="height: 200px;">
+                    <ElCard style="margin-top: 20px; height: 25vh;" class="preset1" id="chart">
+                        <div style="height: 100%;">
                             <chart ref="chartYear" :data="childData"></chart>
                         </div>
                     </ElCard>
@@ -408,4 +408,5 @@ onMounted(() => {
                 </ElCol>
             </div>
         </ElFooter>
-    </ElContainer></template>
+    </ElContainer>
+</template>
