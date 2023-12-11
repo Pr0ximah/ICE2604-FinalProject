@@ -165,7 +165,8 @@ div.main {
 
 .el-pagination {
     --el-pagination-hover-color: var(--custom-dark);
-    margin: 40px 10px 40px 10px
+    margin-top: 40px;
+    margin-left: 20px;
 }
 
 .menuselect .el-input__inner {
@@ -178,7 +179,10 @@ div.main {
 }
 
 div.searchres {
-    margin-bottom: 40px;
+    text-align: center;
+    margin-left: auto;
+    margin-top: 40px;
+    margin-bottom: 20px;
 }
 
 .bg-all {
@@ -353,4 +357,35 @@ span.title:hover {
     border-color: var(--custom-dark-m3);
     box-shadow: inset 0px 0px 3px var(--custom-dark-m1);
     filter: brightness(0.975);
+}
+
+.mainSelect .el-input__inner {
+    height: 46px;
+    font-size: 15px;
+    padding-left: 2%;
+}
+
+.mainInput > .el-input-group__append {
+    border-top-right-radius: calc(var(--input-border-radius) + 2px);
+    border-bottom-right-radius: calc(var(--input-border-radius) + 2px);
+}
+
+.mainSearchBtn {
+    background-color: var(--custom-dark-m2) !important;
+    color: var(--el-color-white) !important;
+    border: 0px;
+    border-radius: 0;
+    border-top-right-radius: var(--input-border-radius);
+    border-bottom-right-radius: var(--input-border-radius);
+}
+
+.mainSearchBtn:hover {
+    background-color: var(--custom-dark-m1) !important;
+    border-radius: 0;
+    border-top-right-radius: var(--input-border-radius);
+    border-bottom-right-radius: var(--input-border-radius);
+}
+
+.el-input__wrapper {
+    padding-left: 15px;
 }

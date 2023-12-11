@@ -61,25 +61,26 @@ function gotoResult() {
       </ElRow>
       <div class="main">
         <ElRow :gutter="20" justify="center">
-          <ElCol :span="10">
-            <ElInput style="height: 45px; font-size: large;" v-model="input" placeholder="" @keydown.enter=search>
-              <template #suffix>
-                <ElSelect style="width: 50%; margin-left: auto;" v-model="searchOptionVal">
-                  <ElOptionGroup v-if="enableAll">
-                    <ElOption label="All" value="All" />
-                  </ElOptionGroup>
-                  <ElOptionGroup>
-                    <ElOption v-for="item in SearchOption" :label="item.value" :value="item.value" />
-                  </ElOptionGroup>
-                </ElSelect>
+          <ElCol :span="3">
+            <ElSelect class="mainSelect" style="width: 100%;" v-model="searchOptionVal">
+              <ElOptionGroup v-if="enableAll">
+                <ElOption label="All" value="All" />
+              </ElOptionGroup>
+              <ElOptionGroup>
+                <ElOption v-for="item in SearchOption" :label="item.value" :value="item.value" />
+              </ElOptionGroup>
+            </ElSelect>
+          </ElCol>
+          <ElCol :span="12" style="height: 48px;">
+            <ElInput placeholder="请输入搜索内容" class="mainInput" v-model="input" style="height: 100%; font-size: large;" @keydown.enter=search>
+              <template #append>
+                <ElButton class="mainSearchBtn" style="height: 100%; width: 80px;" @click="search">
+                  <ElIcon style="height: 100%;">
+                    <Search />
+                  </ElIcon>
+                </ElButton>
               </template>
             </ElInput>
-          </ElCol>
-          <ElCol :span="1.2">
-            <ElButton class="search-btn" style="height: 45px;" @click="search"> 搜索 <ElIcon>
-                <Search />
-              </ElIcon>
-            </ElButton>
           </ElCol>
         </ElRow>
       </div>

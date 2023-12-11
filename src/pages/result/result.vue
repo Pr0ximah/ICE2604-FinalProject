@@ -252,7 +252,7 @@ onMounted(() => {
                 </ElMenuItem>
                 <ElRow :gutter="10"
                     style="min-width: 700px; height: 96%; align-self: right; display: flex; justify-content: right; width: 50%; margin: auto; margin-right: 1%;">
-                    <ElCol :span="3">
+                    <ElCol :span="4">
                         <ElSelect class="menuselect" style="width: 100%;" v-model="searchOptionVal">
                             <ElOptionGroup v-if="enableAll">
                                 <ElOption label="All" value="All" />
