@@ -207,16 +207,16 @@ const SearchOption = [
 ]
 
 function search() {
-    if (!content.value) {
-        ElMessage("输入为空")
-        return
-    } else {
-        if (searchOptionVal.value === "Year" && !/^[0-9]*$/.test(content.value)) {
-            ElMessage("年份必须为数字")
-            return
-        }
-        gotoResult()
+  if (!content.value) {
+    ElMessage("The input is empty.")
+    return
+  } else {
+    if (searchOptionVal.value === "Year" && !/^[0-9]*$/.test(content.value)) {
+      ElMessage("Year can only be an integer.")
+      return
     }
+    gotoResult()
+  }
 }
 
 function gotoResult() {

@@ -35,11 +35,11 @@ const SearchOption = [
 
 function search() {
   if (!input.value) {
-    ElMessage("输入为空")
+    ElMessage("The input is empty.")
     return
   } else {
     if (searchOptionVal.value === "Year" && !/^[0-9]*$/.test(input.value)) {
-      ElMessage("年份必须为数字")
+      ElMessage("Year can only be an integer.")
       return
     }
     gotoResult()
@@ -50,6 +50,14 @@ function gotoResult() {
   let inputVal = encodeURIComponent(input.value)
   let optionVal = encodeURIComponent(searchOptionVal.value)
   window.open(`./search.html?content=${inputVal}&type=${optionVal}`, "_self")
+}
+
+function signin() {
+  window.open("./login.html", "_self")
+}
+
+function signup() {
+  window.open("./signup.html", "_self")
 }
 </script>
 
@@ -72,7 +80,8 @@ function gotoResult() {
             </ElSelect>
           </ElCol>
           <ElCol :span="12" style="height: 48px;">
-            <ElInput placeholder="请输入搜索内容" class="mainInput" v-model="input" style="height: 100%; font-size: large;" @keydown.enter=search>
+            <ElInput placeholder="Enter your search term" class="mainInput" v-model="input"
+              style="height: 100%; font-size: large;" @keydown.enter=search>
               <template #append>
                 <ElButton class="mainSearchBtn" style="height: 100%; width: 80px;" @click="search">
                   <ElIcon style="height: 100%;">
@@ -88,6 +97,10 @@ function gotoResult() {
         style="position:absolute; bottom: 30px; text-align: center; margin: auto; width: 98%; color: #ffffff; text-shadow: 1px 1px 1px black;">
         <div style="margin: auto"> SJTU ICE2604 Final Project </div>
         <div style="margin: auto"> © Course Group 10 </div>
+      </div>
+      <div style="position: absolute; right: 20px; top: 20px;">
+        <ElButton @click="signup" class="mainpage-signin-btn hasborder">sign up</ElButton>
+        <ElButton @click="signin" class="mainpage-signin-btn">sign in</ElButton>
       </div>
     </ElMain>
   </ElContainer>

@@ -92,7 +92,7 @@ div.main {
 
 .el-image.logo {
     transform: scale(2);
-    margin-top: 10%;
+    margin-top: 15%;
     margin-bottom: 4%;
 }
 
@@ -350,12 +350,14 @@ span.title:hover {
 .el-menu--horizontal>.el-menu-item {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     transition: all 0.3s;
 }
 
 .el-menu--horizontal>.el-menu-item:hover {
     border-color: var(--custom-dark-m3);
-    box-shadow: inset 0px 0px 3px var(--custom-dark-m1);
+    /* box-shadow: inset 0px 0px 3px var(--custom-dark-m1); */
     filter: brightness(0.975);
 }
 
@@ -422,4 +424,22 @@ span.title:hover {
 
 #login {
     min-height: 800px;
+}
+
+.el-button.mainpage-signin-btn {
+    background: rgba(0, 0, 0, 0);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 550;
+    border-radius: 6px;
+    transition: all 0.2s;
+    border: 0px;
+}
+
+.el-button.mainpage-signin-btn:hover {
+    background: #f0f7ff4a;
+}
+
+.hasborder.el-button.mainpage-signin-btn {
+    border: 2px solid var(--custom-light-5)
 }

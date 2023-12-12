@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@alex_xu/react-slider-vertify": "^1.2.0",
     "axios": "^1.6.2",
     "echarts": "^5.4.3",
     "element-plus": "^2.4.2",
