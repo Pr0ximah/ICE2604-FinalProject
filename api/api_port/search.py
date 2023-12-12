@@ -91,6 +91,7 @@ def search_title(str):
             #     "title": str
             # }
         }
+        
         ,"sort": [
             {
                 "_score":{
@@ -100,7 +101,17 @@ def search_title(str):
         ]
         ,"size":1000
     }
-    result = es.search(index="mydatabase",body=query)
+    query2 = {
+        "query": {
+            "match": {
+                "title": {
+                    "query": str,
+                    "fuzziness": "2"
+                }
+            }
+        }
+    }
+    result = es.search(index="mydatabase",body=query2)
     hit = result["hits"]["hits"]
     return hit
 
