@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <div id="main" style="width: 1200px; height: 700px"></div>
+  <div id="main" style="width: 1600px; height: 800px"></div>
   <div id="ss"></div>
   <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
   <script type="text/javascript">
@@ -138,7 +138,7 @@
       newDic["category"] = 0
       newDic["name"] = "0"
       newDic["label"] = authorname
-      newDic["symbolSize"] = 60
+      newDic["symbolSize"] = 80
       newDic.ignore = false
       newDic.flag = true
       lst_nodes.push(newDic)
@@ -163,7 +163,7 @@
             newDicAuthor["category"] = 1
             newDicAuthor["name"] = String(i)
             newDicAuthor["label"] = dic[key]["author"]["name"][j]
-            newDicAuthor["symbolSize"] = 40
+            newDicAuthor["symbolSize"] = 60
             newDicAuthor.ignore = true
             newDicAuthor.flag = true
             lst_nodes.push(newDicAuthor)
@@ -174,7 +174,7 @@
             newDicTitle["category"] = 2
             newDicTitle["name"] = String(i)
             newDicTitle["label"] = dic[key]["title"]
-            newDicTitle["symbolSize"] = 40
+            newDicTitle["symbolSize"] = 60
             newDicTitle.ignore = true
             newDicTitle.flag = true
             lst_nodes.push(newDicTitle)
@@ -200,7 +200,7 @@
             newDicTitle["category"] = 2
             newDicTitle["name"] = String(i)
             newDicTitle["label"] = dic[key]["title"]
-            newDicTitle["symbolSize"] = 40
+            newDicTitle["symbolSize"] = 60
             newDicTitle.ignore = true
             newDicTitle.flag = true
             lst_nodes.push(newDicTitle)
