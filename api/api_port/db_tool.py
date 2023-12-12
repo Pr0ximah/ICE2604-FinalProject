@@ -33,25 +33,36 @@ class sql_tool:
         cmd = f"INSERT INTO {self.table_name} VALUES ({insert_content})"
         self.cursor.execute(cmd)
 
-    def insert_column(self, columns: list, target_columns: list = None):
+    def insert_column_by_username(self, column_name: str, column_value, target_username: str):
         """
-        插入一行数据，可以指定要插入的列
+        通过用户名插入指定列的数据
 
         Parameters:
-        - columns: 要插入的数据
-        - target_columns: 要插入的列名（可选），如果为 None，则插入所有列
+        - column_name: 要插入的列名
+        - column_value: 要插入的列值
+        - target_username: 目标用户名
         """
-        if not target_columns:
-            target_columns = self.columns  # 假设 self.columns 包含表中所有列名
+        if 'user_name' not in self.columns:
+            raise ValueError("user_name 列不存在于表中")
 
-        if len(columns) != len(target_columns):
-            raise ValueError("列数与数据个数不匹配")
+        # 检查列名是否存在于表中
+        if column_name not in self.columns:
+            raise ValueError(f"列名 {column_name} 不存在于表中")
 
-        insert_columns = ",".join(target_columns)
-        insert_values = ",".join([f"'{sql.converters.escape_string(value)}'" if type(value) is str else str(value) for value in columns])
+        # 查询数据库中是否存在指定的用户名
+        cmd_select = f"SELECT * FROM {self.table_name} WHERE user_name = %s"
+        self.cursor.execute(cmd_select, (target_username,))
+        existing_row = self.cursor.fetchone()
 
-        cmd = f"INSERT INTO {self.table_name} ({insert_columns}) VALUES ({insert_values})"
-        self.cursor.execute(cmd)
+        if existing_row:
+            # 如果用户名存在，更新该行的指定列数据
+            cmd_update = f"UPDATE {self.table_name} SET {column_name} = %s WHERE user_name = %s"
+            self.cursor.execute(cmd_update, (column_value, target_username))
+        else:
+            # 如果用户名不存在，插入一行新数据，只设置指定列的值，其他列使用默认值或 NULL
+            cmd_insert = f"INSERT INTO {self.table_name} (user_name, {column_name}) VALUES (%s, %s)"
+            self.cursor.execute(cmd_insert, (target_username, column_value))
+
 
 
     def fetch_specific(self, item_name: str, item_content: str) -> tuple:
