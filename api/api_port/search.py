@@ -23,7 +23,7 @@ mappings = {
             "type": "text",
         },
         "title": {
-          "type": "completion",
+          "type": "text",
         },
         "year" : {
           "type" : "long",
@@ -39,7 +39,16 @@ mappings = {
         },
         "first_page" : {
             "type" : "long"
-        }
+        },
+        "abstract" : {
+            "type" : "text"
+        },
+        "journal" : {
+            "type" : "text"
+        },
+        "doi" : {
+            "type" : "text"
+        },
       }
 }
 
@@ -61,19 +70,22 @@ for value in json_data.values():
     keywords.append(value["keywords"])
     link.append(value["link"])
     first_page.append(value["first_page"])
+    abstract = []
+    journal = []
+    doi = []
 
 es.indices.delete(index = 'mydatabase')
 es.indices.create(index ='mydatabase',body =mappings,ignore=400)
 # es.indices.create(index='mydatabase', body=mappings, ignore=400, headers={'Content-Type': 'application/json'}
 for i in range(100):
-    mapping = {"date":date[i],"paper_id":paper_id[i],"title":title[i],"year":year[i],"authors":authors[i],"keywords":keywords[i],"link":link[i],"first_page":first_page[i]}
+    mapping = {"date":date[i],"paper_id":paper_id[i],"title":title[i],"year":year[i],"authors":authors[i],"keywords":keywords[i],"link":link[i],"first_page":first_page[i],"abstract":abstract[i],"journal":journal[i],"doi":doi[i]}
     res = es.index(index="mydatabase",id=i,body=mapping)
 
 def search_title(str):
     query = {
         "query":{
             "wildcard":{
-                "title": "*" + str + "*"
+                "title": "*" + str.lower() + "*"
             }
             # "match":{
             #     "title": str
@@ -109,7 +121,7 @@ def search_author(str):
     query = {
         "query":{
             "wildcard":{
-                "keywords": "*" + str + "*"
+                "authors": "*" + str.lower() + "*"
             }
             # "match":{
             #     "authors": str
@@ -132,7 +144,7 @@ def search_keywords(str):
     query = {
         "query":{
             "wildcard":{
-                "keywords": "*" + str + "*"
+                "keywords": "*" + str.lower() + "*"
             }
             # "match":{
             #     "keywords": str
