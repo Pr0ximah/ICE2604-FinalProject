@@ -147,7 +147,17 @@ def search_author(str):
         ]
         ,"size":1000
     }
-    result = es.search(index="mydatabase",body=query)
+    query2 = {
+        "query": {
+            "match": {
+                "authors": {
+                    "query": str,
+                    "fuzziness": "2"
+                }
+            }
+        }
+    }
+    result = es.search(index="mydatabase",body=query2)
     hit = result["hits"]["hits"]
     return hit
 
@@ -170,7 +180,17 @@ def search_keywords(str):
         ]
         ,"size":1000
     }
-    result = es.search(index="mydatabase",body=query)
+    query2 = {
+        "query": {
+            "match": {
+                "keywords": {
+                    "query": str,
+                    "fuzziness": "2"
+                }
+            }
+        }
+    }
+    result = es.search(index="mydatabase",body=query2)
     hit = result["hits"]["hits"]
     return hit
 
