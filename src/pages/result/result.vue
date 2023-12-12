@@ -9,7 +9,6 @@ import API from '../../components/axios_instance'
 import chart from '../../components/echarts/chart.vue'
 import no_res_logo from '@/assets/no-result.png'
 import server_error_logo from '@/assets/server_error.png'
-import pdf_icon from '@/assets/link_icon.png'
 
 let chartYear = ref()
 let datalist = ref()
