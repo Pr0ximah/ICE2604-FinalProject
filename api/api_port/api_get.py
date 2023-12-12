@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Path, Query, Cookie, Header, status, Form, File, UploadFile, HTTPException
+from fastapi.responses import FileResponse
 from typing import Optional, List
 from pydantic import BaseModel, Field
 import json
 from api_port import search
+from api_port import db_tool
 
 app_get = APIRouter()
 
@@ -94,6 +96,12 @@ async def get_keywords(content: str):
     data = json.loads(search.get_json(search.search_keywords(content)))
     year_number = GetYear(data)
     return {"data" : data, "year_list": year_number}
+
+
+@app_get.get("/file/{paper_id}")
+async def getfile(paper_id :str):
+    return f"/file/{paper_id}.pdf"
+
 
 if __name__ == '__main__':
     print(get_keywords("Sm"))
