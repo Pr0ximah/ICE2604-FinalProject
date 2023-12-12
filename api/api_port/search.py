@@ -23,25 +23,38 @@ body = {
     "mappings": {
         "properties": {
             "data": {
-                "type": "text",
+            "type": "text",  
             },
-            "paper_id": {
+            "paper_id":{
                 "type": "text",
             },
             "title": {
-                "type": "completion",
+            "type": "text",
             },
-            "year": {
-                "type": "long",
+            "year" : {
+            "type" : "long",
             },
-            "authors": {
-                "type": "list",
+            "authors" :{
+                "type" : "list",
             },
-            "keywords": {
-                "type": "list",
+            "keywords" : {
+                "type" : "list",
             },
-            "link": {"type": "text"},
-            "first_page": {"type": "long"},
+            "link" : {
+                "type" : "text"
+            },
+            "first_page" : {
+                "type" : "long"
+            },
+            "abstract" : {
+                "type" : "text"
+            },
+            "journal" : {
+                "type" : "text"
+            },
+            "doi" : {
+                "type" : "text"
+            },
         }
     }
 }
@@ -64,36 +77,48 @@ for value in json_data.values():
     keywords.append(value["keywords"])
     link.append(value["link"])
     first_page.append(value["first_page"])
+    abstract = []
+    journal = []
+    doi = []
 
 # es.indices.delete(index="mydatabase")
 es.indices.create(index="mydatabase", body=body, ignore=400)
 # es.indices.create(index='mydatabase', body=mappings, ignore=400, headers={'Content-Type': 'application/json'}
 for i in range(100):
-    mapping = {
-        "date": date[i],
-        "paper_id": paper_id[i],
-        "title": title[i],
-        "year": year[i],
-        "authors": authors[i],
-        "keywords": keywords[i],
-        "link": link[i],
-        "first_page": first_page[i],
-    }
-    res = es.index(index="mydatabase", id=i, body=mapping)
-
+    mapping = {"date":date[i],"paper_id":paper_id[i],"title":title[i],"year":year[i],"authors":authors[i],"keywords":keywords[i],"link":link[i],"first_page":first_page[i],"abstract":abstract[i],"journal":journal[i],"doi":doi[i]}
+    res = es.index(index="mydatabase",id=i,body=mapping)
 
 def search_title(str):
     query = {
-        "query": {
-            "wildcard": {"title": "*" + str + "*"}
+        "query":{
+            "wildcard":{
+                "title": "*" + str.lower() + "*"
+            }
             # "match":{
             #     "title": str
             # }
-        },
-        "sort": [{"_score": {"order": "desc"}}],
-        "size": 1000,
+        }
+        
+        ,"sort": [
+            {
+                "_score":{
+                    "order": "desc"
+                }
+            }
+        ]
+        ,"size":1000
     }
-    result = es.search(index="mydatabase", body=query)
+    query2 = {
+        "query": {
+            "match": {
+                "title": {
+                    "query": str,
+                    "fuzziness": "2"
+                }
+            }
+        }
+    }
+    result = es.search(index="mydatabase",body=query2)
     hit = result["hits"]["hits"]
     return hit
 
@@ -107,8 +132,10 @@ def search_year(time):
 
 def search_author(str):
     query = {
-        "query": {
-            "wildcard": {"keywords": "*" + str + "*"}
+        "query":{
+            "wildcard":{
+                "authors": "*" + str.lower() + "*"
+            }
             # "match":{
             #     "authors": str
             # }
@@ -116,15 +143,27 @@ def search_author(str):
         "sort": [{"_score": {"order": "desc"}}],
         "size": 1000,
     }
-    result = es.search(index="mydatabase", body=query)
+    query2 = {
+        "query": {
+            "match": {
+                "authors": {
+                    "query": str,
+                    "fuzziness": "2"
+                }
+            }
+        }
+    }
+    result = es.search(index="mydatabase",body=query2)
     hit = result["hits"]["hits"]
     return hit
 
 
 def search_keywords(str):
     query = {
-        "query": {
-            "wildcard": {"keywords": "*" + str + "*"}
+        "query":{
+            "wildcard":{
+                "keywords": "*" + str.lower() + "*"
+            }
             # "match":{
             #     "keywords": str
             # }
@@ -132,7 +171,17 @@ def search_keywords(str):
         "sort": [{"_score": {"order": "desc"}}],
         "size": 1000,
     }
-    result = es.search(index="mydatabase", body=query)
+    query2 = {
+        "query": {
+            "match": {
+                "keywords": {
+                    "query": str,
+                    "fuzziness": "2"
+                }
+            }
+        }
+    }
+    result = es.search(index="mydatabase",body=query2)
     hit = result["hits"]["hits"]
     return hit
 
