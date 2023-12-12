@@ -443,3 +443,20 @@ span.title:hover {
 .hasborder.el-button.mainpage-signin-btn {
     border: 2px solid var(--custom-light-5)
 }
+
+.el-button.resultpage-signin-btn {
+    background: rgba(0, 0, 0, 0);
+    color: black;
+    font-size: 14px;
+    font-weight: 550;
+    border-radius: 7px;
+    transition: all 0.2s;
+    border: 0px;
+    height: 38px;
+    border: 2px solid var(--custom-light-5)
+}
+
+.el-button.resultpage-signin-btn:hover {
+    border: 2px solid var(--custom-light);
+    box-shadow: 0px 0px 2px var(--custom-dark-m3);
+}

@@ -67,6 +67,9 @@ authors = []
 keywords = []
 link = []
 first_page = []
+abstract = []
+journal = []
+doi = []
 
 for value in json_data.values():
     date.append(value["date"])
@@ -77,9 +80,9 @@ for value in json_data.values():
     keywords.append(value["keywords"])
     link.append(value["link"])
     first_page.append(value["first_page"])
-    abstract = []
-    journal = []
-    doi = []
+    abstract.append(value["abstract"])
+    journal.append(value["journal"])
+    doi.append(value["doi"])
 
 # es.indices.delete(index="mydatabase")
 es.indices.create(index="mydatabase", body=body, ignore=400)

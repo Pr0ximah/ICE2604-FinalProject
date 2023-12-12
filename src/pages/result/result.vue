@@ -3,6 +3,7 @@ import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMe
 import { ElMessage } from 'element-plus';
 import { onMounted, reactive, ref, watch, onBeforeMount, toRaw, nextTick } from 'vue'
 import { Search, Calendar, User, Star, Select, CloseBold, Filter, Document } from '@element-plus/icons-vue'
+import { useCookies } from 'vue3-cookies'
 import LOGO_S from "@/assets/LOGO_S_LONG.png"
 import LOGO_L from "@/assets/LOGO_DARK.png"
 import API from '../../components/axios_instance'
@@ -29,6 +30,12 @@ const filterYearRangeMax = ref(0)
 const filterYearRangeMin = ref(0)
 let filterYearRangeShow = ref(false)
 let showLoadingSkeleton = ref(false)
+const { cookies } = useCookies()
+const isSignIn = ref(true)
+
+function getCookie(content) {
+    return cookies.get(content)
+}
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
@@ -207,16 +214,16 @@ const SearchOption = [
 ]
 
 function search() {
-  if (!content.value) {
-    ElMessage("The input is empty.")
-    return
-  } else {
-    if (searchOptionVal.value === "Year" && !/^[0-9]*$/.test(content.value)) {
-      ElMessage("Year can only be an integer.")
-      return
+    if (!content.value) {
+        ElMessage("The input is empty.")
+        return
+    } else {
+        if (searchOptionVal.value === "Year" && !/^[0-9]*$/.test(content.value)) {
+            ElMessage("Year can only be an integer.")
+            return
+        }
+        gotoResult()
     }
-    gotoResult()
-  }
 }
 
 function gotoResult() {
@@ -240,6 +247,14 @@ onBeforeMount(() => {
 onMounted(() => {
     chartYear.value.init()
 })
+
+function signin() {
+  window.open("./login.html", "_self")
+}
+
+function signup() {
+  window.open("./signup.html", "_self")
+}
 </script>
 
 <template>
@@ -261,7 +276,7 @@ onMounted(() => {
                             </ElOptionGroup>
                         </ElSelect>
                     </ElCol>
-                    <ElCol :span="13" style="height: 38px;">
+                    <ElCol :span="16" style="height: 38px; display: flex;">
                         <ElInput id="ei" v-model="content" style="height: 100%; font-size: large;" @keydown.enter=search>
                             <template #append>
                                 <ElButton class="search-btn-res" style="height: 100%;" @click="search">
@@ -271,6 +286,14 @@ onMounted(() => {
                                 </ElButton>
                             </template>
                         </ElInput>
+                        <div v-if="!isSignIn" style="display: flex; margin:auto; margin-left: 20px;">
+                            <ElButton @click="signup" class="resultpage-signin-btn hasborder">sign up</ElButton>
+                            <ElButton @click="signin" class="resultpage-signin-btn">sign in</ElButton>
+                        </div>
+
+                        <div v-if="isSignIn" style="display: flex; margin:auto; margin-left: 20px;">
+                            <ElAvatar>{{ username }} </ElAvatar>
+                        </div>
                     </ElCol>
                 </ElRow>
             </ElMenu>

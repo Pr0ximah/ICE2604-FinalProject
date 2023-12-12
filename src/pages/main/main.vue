@@ -2,6 +2,7 @@
 import { ElButton, ElContainer, ElIcon, ElImage, ElInput, ElMain, ElRow, ElCol, ElMessage } from 'element-plus';
 import { Search } from '@element-plus/icons-vue'
 import { ref } from 'vue'
+import { useCookies } from 'vue3-cookies'
 import LOGO from '/src/assets/LOGO.png'
 // import API from './components/axios_instance'
 
@@ -9,7 +10,14 @@ const wallpapercnt = 16
 const enableAll = ref(false)
 const wallpaperurl = '/HOMEPAPERS/HOMEPAPER' + String(Math.floor(Math.random() * wallpapercnt)) + '.png'
 const url = wallpaperurl;
-let xb_avaliable = ref(false)
+const { cookies } = useCookies()
+const isSignIn = ref(true)
+const username = ref("")
+
+function getCookie(content) {
+    return cookies.get(content)
+}
+
 let searchOptionVal = ref("")
 if (enableAll.value) {
   searchOptionVal.value = "All"
@@ -98,9 +106,15 @@ function signup() {
         <div style="margin: auto"> SJTU ICE2604 Final Project </div>
         <div style="margin: auto"> © Course Group 10 </div>
       </div>
-      <div style="position: absolute; right: 20px; top: 20px;">
+
+      <div v-if="!isSignIn" style="position: absolute; right: 20px; top: 20px;">
         <ElButton @click="signup" class="mainpage-signin-btn hasborder">sign up</ElButton>
         <ElButton @click="signin" class="mainpage-signin-btn">sign in</ElButton>
+      </div>
+
+      <div v-if="isSignIn" style="position: absolute; right: 10px; top: 10px; display: flex;">
+        <!-- <ElText style="font-size: 20px; color: #ffffff; font-weight: 550; margin: auto; margin-right: 10px;"> Welcome, </ElText> -->
+        <ElAvatar>{{ username }} </ElAvatar>
       </div>
     </ElMain>
   </ElContainer>

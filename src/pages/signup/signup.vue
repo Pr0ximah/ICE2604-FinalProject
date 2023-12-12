@@ -2,6 +2,7 @@
 import { ElButton, ElCard, ElImage, ElInput, ElMessage, ElText } from 'element-plus'
 import { ref } from 'vue'
 import { User, Lock, Back } from '@element-plus/icons-vue'
+import { useCookies } from 'vue3-cookies'
 import LOGO from "@/assets/LOGO_DARK.png"
 import API from '../../components/axios_instance'
 
@@ -10,6 +11,11 @@ let bgBlur = ref(true)
 const username = ref("")
 const passwd = ref("")
 const repasswd = ref("")
+const { cookies } = useCookies()
+
+function getCookie(content) {
+    return cookies.get(content)
+}
 
 function signup() {
     if(username.value === '') {
@@ -26,7 +32,7 @@ function signup() {
     }
     const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
     const usrname = encodeURIComponent(username.value)
-    const pwd = encoderURIComponent(passwd.value)
+    const pwd = encodeURIComponent(passwd.value)
     API({
         url: base + `/signup/${usrname}&${pwd}`,
         method: 'post'
@@ -64,7 +70,7 @@ function backToHome() {
                 <div
                     style="width: 80%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center;">
                     <ElText tag="b" size="large" style="min-width: 110px; margin-right: 10px;">Username: </ElText>
-                    <ElInput class="login-input" size="large" v-model="username" placeholder="usrname"
+                    <ElInput @keydown.enter="signup" class="login-input" size="large" v-model="username" placeholder="usrname"
                         style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
@@ -76,7 +82,7 @@ function backToHome() {
                 <div
                     style="width: 80%; text-align: center; margin: auto; margin-top: 30px; display: flex; flex-direction: row; justify-content: center;">
                     <ElText tag="b" size="large" style="min-width: 110px; margin-right: 10px;">Password: </ElText>
-                    <ElInput show-password class="login-input" size="large" v-model="passwd" placeholder="password"
+                    <ElInput @keydown.enter="signup" show-password class="login-input" size="large" v-model="passwd" placeholder="password"
                         style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
@@ -88,7 +94,7 @@ function backToHome() {
                 <div
                     style="width: 80%; text-align: center; margin: auto; margin-top: 30px; display: flex; flex-direction: row; justify-content: center;">
                     <ElText tag="b" size="large" style="min-width: 110px; margin-right: 10px;">Re-enter pwd: </ElText>
-                    <ElInput show-password class="login-input" size="large" v-model="repasswd"
+                    <ElInput @keydown.enter="signup" show-password class="login-input" size="large" v-model="repasswd"
                         placeholder="confirm password" style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>

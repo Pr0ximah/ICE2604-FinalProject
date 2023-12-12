@@ -1,7 +1,8 @@
 <script setup>
-import { ElButton, ElCard, ElImage, ElInput, ElText } from 'element-plus'
+import { ElButton, ElCard, ElImage, ElInput, ElText, ElMessage } from 'element-plus'
 import { ref } from 'vue'
 import { User, Lock, Back } from '@element-plus/icons-vue'
+import { useCookies } from 'vue3-cookies'
 import LOGO from "@/assets/LOGO_DARK.png"
 import API from '../../components/axios_instance'
 
@@ -9,6 +10,11 @@ const bgUrl = '/HOMEPAPERS/HOMEPAPER12.png'
 let bgBlur = ref(true)
 const username = ref("")
 const passwd = ref("")
+const { cookies } = useCookies()
+
+function getCookie(content) {
+    return cookies.get(content)
+}
 
 function backToHome() {
     window.open("./", "_self")
@@ -25,7 +31,7 @@ function login() {
     }
     const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
     const usrname = encodeURIComponent(username.value)
-    const pwd = encoderURIComponent(passwd.value)
+    const pwd = encodeURIComponent(passwd.value)
     API({
         url: base + `/signup/${usrname}&${pwd}`,
         method: 'post'
@@ -57,7 +63,7 @@ function login() {
                 <div
                     style="width: 80%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center;">
                     <ElText tag="b" size="large" style="min-width: 100px; margin-right: 10px;">Username: </ElText>
-                    <ElInput class="login-input" size="large" v-model="username" placeholder="usrname"
+                    <ElInput @keydown.enter="login" class="login-input" size="large" v-model="username" placeholder="usrname"
                         style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
@@ -69,7 +75,7 @@ function login() {
                 <div
                     style="width: 80%; text-align: center; margin: auto; margin-top: 30px; display: flex; flex-direction: row; justify-content: center;">
                     <ElText tag="b" size="large" style="min-width: 100px; margin-right: 10px;">Password: </ElText>
-                    <ElInput show-password class="login-input" size="large" v-model="passwd" placeholder="password"
+                    <ElInput @keydown.enter="login" show-password class="login-input" size="large" v-model="passwd" placeholder="password"
                         style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
