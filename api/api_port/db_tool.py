@@ -33,6 +33,27 @@ class sql_tool:
         cmd = f"INSERT INTO {self.table_name} VALUES ({insert_content})"
         self.cursor.execute(cmd)
 
+    def insert_column(self, columns: list, target_columns: list = None):
+        """
+        插入一行数据，可以指定要插入的列
+
+        Parameters:
+        - columns: 要插入的数据
+        - target_columns: 要插入的列名（可选），如果为 None，则插入所有列
+        """
+        if not target_columns:
+            target_columns = self.columns  # 假设 self.columns 包含表中所有列名
+
+        if len(columns) != len(target_columns):
+            raise ValueError("列数与数据个数不匹配")
+
+        insert_columns = ",".join(target_columns)
+        insert_values = ",".join([f"'{sql.converters.escape_string(value)}'" if type(value) is str else str(value) for value in columns])
+
+        cmd = f"INSERT INTO {self.table_name} ({insert_columns}) VALUES ({insert_values})"
+        self.cursor.execute(cmd)
+
+
     def fetch_specific(self, item_name: str, item_content: str) -> tuple:
         """
         选中item_name字段下内容为item_content的记录
