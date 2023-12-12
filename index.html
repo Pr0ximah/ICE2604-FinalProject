@@ -52,11 +52,11 @@
         "ref_paper": [],
         "conference": "",
         "keywords": [
-          "zwz",
+          "jjs",
           "hac",
           "myb",
           "hbj",
-          "Arroyo del Soldado Group",
+          "zwz",
           "climate change"
         ],
         "year": 100,
@@ -109,7 +109,7 @@
             "zwz",
             "hac",
             "L.N. D\u00f8ssing",
-            "A.N. Sial"
+            "jjc"
           ]
         },
         "last_page": 125,
@@ -142,16 +142,21 @@
       newDic.ignore = false
       newDic.flag = true
       lst_nodes.push(newDic)
+      let f={}
+      f[authorname]=0
       for (var key in dic) {
         for (var j = 0; j < dic[key]["author"]["name"].length; j++) {
+          let au="I"
           let flag_1 = true
           for (var m = 0; m < store.length; m++) {
             if (dic[key]["author"]["name"][j] == store[m]) {
               flag_1 = false
+              au=store[m]
             }
           }
           if (flag_1) {
             store.push(dic[key]["author"]["name"][j])
+            f[dic[key]["author"]["name"][j]]=i
             let newDicAuthor = {}
             newDicAuthor["id"] = i
             i++
@@ -183,6 +188,28 @@
             newLink_2["target"] = newDicAuthor["id"]
             lst_links.push(newLink_1)
             lst_links.push(newLink_2)
+            continue
+          }
+          else{
+            if(au==authorname){
+              continue
+            }
+            let newDicTitle = {}
+            newDicTitle["id"] = i
+            i++
+            newDicTitle["category"] = 2
+            newDicTitle["name"] = String(i)
+            newDicTitle["label"] = dic[key]["title"]
+            newDicTitle["symbolSize"] = 40
+            newDicTitle.ignore = true
+            newDicTitle.flag = true
+            lst_nodes.push(newDicTitle)
+
+            let newLink_2 = {}
+            newLink_2["source"] = newDicTitle["id"]
+            newLink_2["target"] = f[au]
+            lst_links.push(newLink_2)
+            continue
           }
         }
       }
