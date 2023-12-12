@@ -26,6 +26,9 @@ class sql_tool:
         "插入一列数据, 要求个数匹配"
         insert_content = ""
         for i in columns:
+            if i is None:
+                insert_content += f"NULL,"
+                continue
             if type(i) is str:
                 i = sql.converters.escape_string(i)
             insert_content += f"'{i}',"
@@ -93,7 +96,7 @@ class sql_tool:
 if __name__ == "__main__":
     # for debug
     s = sql_tool("ADMINROOT", "testdb", "test_table")
-    print(s.fetch_specific("ID", "2"))
-    s.insert([4, "David", "D not D"])
-    s.save()
+    # print(s.fetch_specific("ID", "2"))
+    # s.insert([4, "David", "D not D"])
+    # s.save()
     print(s.fetch_all())

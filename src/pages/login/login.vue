@@ -12,10 +12,6 @@ const username = ref("")
 const passwd = ref("")
 const { cookies } = useCookies()
 
-function getCookie(content) {
-    return cookies.get(content)
-}
-
 function backToHome() {
     window.open("./", "_self")
 }
@@ -33,14 +29,26 @@ function login() {
     const usrname = encodeURIComponent(username.value)
     const pwd = encodeURIComponent(passwd.value)
     API({
-        url: base + `/signup/${usrname}&${pwd}`,
+        url: base + `/login/${usrname}&${pwd}`,
         method: 'post'
     }).then((e) => {
-        console.log(e)
+        if (e.data) {
+            console.log(sessionStorage.getItem('M_sc_is_logined'))
+            if (sessionStorage.getItem('M_sc_is_logined') === null) {
+                sessionStorage.setItem('M_sc_is_logined', true)
+            }
+            localStorage.setItem('M_sc_username', username.value)
+            cookies.set('M_sc_login_flag', true)
+            window.history.go(-1)
+        } else {
+            ElMessage("User does not exist or the password is wrong! Please try again.")
+        }
     }).catch(() => {
         ElMessage("Oops! Internal server error. Try again later.")
     })
 }
+
+
 </script>
 
 <template>
@@ -51,7 +59,7 @@ function login() {
             <ElCard
                 style="margin: auto; filter: opacity(0.87); width: 60%; height: 60%; display: flex; flex-direction: column; justify-content: center; min-width: 600px;"
                 @mouseenter="bgBlur = true" @mouseleave="bgBlur = false">
-                <ElButton @click="backToHome" class="login-btn" style="position: absolute; left: 10px; top: 10px;" size="large">
+                <ElButton @click="window.history.go(-1)" class="login-btn" style="position: absolute; left: 10px; top: 10px;" size="large">
                     <el-icon>
                         <Back />
                     </el-icon>
@@ -63,7 +71,7 @@ function login() {
                 <div
                     style="width: 80%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center;">
                     <ElText tag="b" size="large" style="min-width: 100px; margin-right: 10px;">Username: </ElText>
-                    <ElInput @keydown.enter="login" class="login-input" size="large" v-model="username" placeholder="usrname"
+                    <ElInput @keydown.enter="login" class="login-input" size="large" v-model="username" placeholder="username"
                         style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>

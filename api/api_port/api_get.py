@@ -100,7 +100,7 @@ async def get_keywords(content: str):
 
 @app_get.get("/file/{paper_id}")
 async def getfile(paper_id :str):
-    return f"/file/{paper_id}.pdf"
+    return f"/{paper_id}.pdf"
 
 
 if __name__ == '__main__':

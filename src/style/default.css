@@ -460,3 +460,9 @@ span.title:hover {
     border: 2px solid var(--custom-light);
     box-shadow: 0px 0px 2px var(--custom-dark-m3);
 }
+
+.el-avatar {
+    background-color: var(--custom-dark-m3);
+    font-weight: 550;
+    border: 2px solid var(--custom-dark-2);
+}

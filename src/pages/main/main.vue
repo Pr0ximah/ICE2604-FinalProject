@@ -1,22 +1,17 @@
 <script setup>
 import { ElButton, ElContainer, ElIcon, ElImage, ElInput, ElMain, ElRow, ElCol, ElMessage } from 'element-plus';
 import { Search } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useCookies } from 'vue3-cookies'
 import LOGO from '/src/assets/LOGO.png'
-// import API from './components/axios_instance'
 
 const wallpapercnt = 16
 const enableAll = ref(false)
 const wallpaperurl = '/HOMEPAPERS/HOMEPAPER' + String(Math.floor(Math.random() * wallpapercnt)) + '.png'
 const url = wallpaperurl;
 const { cookies } = useCookies()
-const isSignIn = ref(true)
+const isSignIn = ref(false)
 const username = ref("")
-
-function getCookie(content) {
-    return cookies.get(content)
-}
 
 let searchOptionVal = ref("")
 if (enableAll.value) {
@@ -67,6 +62,19 @@ function signin() {
 function signup() {
   window.open("./signup.html", "_self")
 }
+
+function checkLoginStatus() {
+  if (sessionStorage.getItem('M_sc_is_logined') !== null && cookies.get('M_sc_login_flag') !== null) {
+    console.log(localStorage.getItem("M_sc_username"))
+    username.value = localStorage.getItem("M_sc_username")
+    return true
+  } else {
+    return false
+  }
+}
+onMounted(() => {
+  isSignIn.value = checkLoginStatus()
+})
 </script>
 
 <template>
@@ -77,7 +85,7 @@ function signup() {
       </ElRow>
       <div class="main">
         <ElRow :gutter="20" justify="center">
-          <ElCol :span="3">
+          <ElCol :span="3" style="max-width: 150px;">
             <ElSelect class="mainSelect" style="width: 100%;" v-model="searchOptionVal">
               <ElOptionGroup v-if="enableAll">
                 <ElOption label="All" value="All" />
@@ -108,13 +116,13 @@ function signup() {
       </div>
 
       <div v-if="!isSignIn" style="position: absolute; right: 20px; top: 20px;">
-        <ElButton @click="signup" class="mainpage-signin-btn hasborder">sign up</ElButton>
-        <ElButton @click="signin" class="mainpage-signin-btn">sign in</ElButton>
+        <ElButton size="large" @click="signup" class="mainpage-signin-btn hasborder">sign up</ElButton>
+        <ElButton size="large" @click="signin" class="mainpage-signin-btn">sign in</ElButton>
       </div>
 
-      <div v-if="isSignIn" style="position: absolute; right: 10px; top: 10px; display: flex;">
+      <div v-if="isSignIn" style="position: absolute; right: 20px; top: 20px; display: flex;">
         <!-- <ElText style="font-size: 20px; color: #ffffff; font-weight: 550; margin: auto; margin-right: 10px;"> Welcome, </ElText> -->
-        <ElAvatar>{{ username }} </ElAvatar>
+        <ElAvatar size="large">{{ username }} </ElAvatar>
       </div>
     </ElMain>
   </ElContainer>

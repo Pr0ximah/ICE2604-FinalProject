@@ -157,6 +157,8 @@ function Bar_authorSearch(dic) {
                     }
                 },
                 data: lst_ydata,
+                animationDuration: 500,
+                animationEasing: "cubicInOut",
             }
         ],
         grid: [

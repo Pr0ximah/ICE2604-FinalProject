@@ -17,12 +17,12 @@ def generate_sha256_hash(input_string):
 
 @app_post.post("/signup/{user}&{key}")
 async def Signup(user :str, key :str):
-    datadepot = sql_tool("shan", "finalproject", "users")
+    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
     content = datadepot.fetch_specific("user_name", user)
     if content: return False
     successsignin = False
     key_db=generate_sha256_hash(key)
-    datadepot.insert([f"{user}", f"{key_db}"])
+    datadepot.insert([f"{user}", f"{key_db}", None])
     datadepot.save()
     content = datadepot.fetch_specific("user_name", user)
     if content: successsignin = True
@@ -30,7 +30,7 @@ async def Signup(user :str, key :str):
 
 @app_post.post("/login/{user}&{key}")
 async def Login(user :str, key :str):
-    datadepot = sql_tool("shan", "finalproject", "users")
+    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
     content = datadepot.fetch_specific("user_name", user)
     successlogin = False
     if not content: return False

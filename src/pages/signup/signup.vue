@@ -12,17 +12,14 @@ const username = ref("")
 const passwd = ref("")
 const repasswd = ref("")
 const { cookies } = useCookies()
-
-function getCookie(content) {
-    return cookies.get(content)
-}
+const showSignResult = ref(false)
 
 function signup() {
-    if(username.value === '') {
+    if (username.value === '') {
         ElMessage("Please input username.")
         return
     }
-    if(passwd.value === '') {
+    if (passwd.value === '') {
         ElMessage("Please input password.")
         return
     }
@@ -37,8 +34,14 @@ function signup() {
         url: base + `/signup/${usrname}&${pwd}`,
         method: 'post'
     }).then((e) => {
-        console.log(e)
-        // if (e['data'][])
+        if (e.data) {
+            showSignResult.value = true
+            setTimeout(() => {
+                window.history.go(-1)
+            }, 3000);
+        } else {
+            ElMessage("User already exist! Please change the username and try again.")
+        }
     }).catch(() => {
         ElMessage("Oops! Internal server error. Try again later.")
     })
@@ -63,15 +66,15 @@ function backToHome() {
                         <Back />
                     </el-icon>
                 </ElButton>
-                <div style="width: 100%; text-align: center;">
+                <div style="width: 100%; text-align: center;" v-if="!showSignResult">
                     <ElText class="login-title" tag="b" size="large" style="font-size: 40px;"> Sign up to M Scholar
                     </ElText>
                 </div>
-                <div
-                    style="width: 80%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center;">
+                <div style="width: 80%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center;"
+                    v-if="!showSignResult">
                     <ElText tag="b" size="large" style="min-width: 110px; margin-right: 10px;">Username: </ElText>
-                    <ElInput @keydown.enter="signup" class="login-input" size="large" v-model="username" placeholder="usrname"
-                        style="width: 40%; font-size:18px;">
+                    <ElInput @keydown.enter="signup" class="login-input" size="large" v-model="username"
+                        placeholder="username" style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
                                 <User />
@@ -79,11 +82,11 @@ function backToHome() {
                         </template>
                     </ElInput>
                 </div>
-                <div
-                    style="width: 80%; text-align: center; margin: auto; margin-top: 30px; display: flex; flex-direction: row; justify-content: center;">
+                <div style="width: 80%; text-align: center; margin: auto; margin-top: 30px; display: flex; flex-direction: row; justify-content: center;"
+                    v-if="!showSignResult">
                     <ElText tag="b" size="large" style="min-width: 110px; margin-right: 10px;">Password: </ElText>
-                    <ElInput @keydown.enter="signup" show-password class="login-input" size="large" v-model="passwd" placeholder="password"
-                        style="width: 40%; font-size:18px;">
+                    <ElInput @keydown.enter="signup" show-password class="login-input" size="large" v-model="passwd"
+                        placeholder="password" style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
                                 <Lock />
@@ -91,8 +94,8 @@ function backToHome() {
                         </template>
                     </ElInput>
                 </div>
-                <div
-                    style="width: 80%; text-align: center; margin: auto; margin-top: 30px; display: flex; flex-direction: row; justify-content: center;">
+                <div style="width: 80%; text-align: center; margin: auto; margin-top: 30px; display: flex; flex-direction: row; justify-content: center;"
+                    v-if="!showSignResult">
                     <ElText tag="b" size="large" style="min-width: 110px; margin-right: 10px;">Re-enter pwd: </ElText>
                     <ElInput @keydown.enter="signup" show-password class="login-input" size="large" v-model="repasswd"
                         placeholder="confirm password" style="width: 40%; font-size:18px;">
@@ -103,10 +106,15 @@ function backToHome() {
                         </template>
                     </ElInput>
                 </div>
-                <div
-                    style="width: 35%; height: 12%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center;">
+                <div style="width: 35%; height: 12%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center;"
+                    v-if="!showSignResult">
                     <ElButton class="login-btn" style="width: 100%; height: 100%;" @click="signup">Sign up</ElButton>
                 </div>
+
+                <div v-if="showSignResult" style="height: 70%; display: flex; align-items: center; justify-content: center;">
+                    <ElResult icon="success" title="Sign up sucessfully!" sub-title="Return to origin page in 3 seconds." style="transform: scale(1.1); font-weight: 550;"/>
+                </div>
+
                 <div style="width: 30%; text-align: center; margin: auto; margin-top: 50px;">
                     <ElImage style="width: 100%;" :src="LOGO" fit="contain" />
                 </div>

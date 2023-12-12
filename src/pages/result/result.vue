@@ -31,11 +31,8 @@ const filterYearRangeMin = ref(0)
 let filterYearRangeShow = ref(false)
 let showLoadingSkeleton = ref(false)
 const { cookies } = useCookies()
-const isSignIn = ref(true)
-
-function getCookie(content) {
-    return cookies.get(content)
-}
+const isSignIn = ref(false)
+const username = ref("")
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
@@ -179,8 +176,17 @@ function switchFilterStatus() {
     }
 }
 
-function fetchPDF(url) {
-    window.open(url, "_blank")
+function fetchPDF(paperid) {
+    const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
+    API({
+        url: base + `/file/${paperid}`,
+        method: 'get'
+    }).then((e) => {
+        const file_dir = process.env.NODE_ENV === "development" ? "/api/api_port/file" : "/paper_files"
+        window.open(file_dir +  e['data'], "_blank")
+    }).catch(() => {
+        ElMessage("Oops! Internal server error. Try again later.")
+    })
 }
 
 function convertList(lists) {
@@ -246,7 +252,18 @@ onBeforeMount(() => {
 
 onMounted(() => {
     chartYear.value.init()
+    isSignIn.value = checkLoginStatus()
 })
+
+function checkLoginStatus() {
+    if (sessionStorage.getItem('M_sc_is_logined') !== null && cookies.get('M_sc_login_flag') !== null) {
+        console.log(localStorage.getItem("M_sc_username"))
+        username.value = localStorage.getItem("M_sc_username")
+        return true
+    } else {
+        return false
+    }
+}
 
 function signin() {
   window.open("./login.html", "_self")
@@ -327,7 +344,7 @@ function signup() {
                                             style="color: grey; font-size: small">({{ year["num"] }}) </span></div>
                                 </ElCheckbox>
                             </ElCheckboxGroup>
-                            <ElSlider style="margin-top: 15px; margin-left: 5px; margin-right: 5px; width: auto;"
+                            <ElSlider style="margin-top: 15px; margin-left: 20px; margin-right: 20px; width: auto;"
                                 v-model="filterYearRange" range :max="filterYearRangeMax" :min="filterYearRangeMin"
                                 v-if="filterYearRangeShow" />
                         </div>
@@ -387,7 +404,7 @@ function signup() {
                             </ElTooltip>
                         </div>
                         <div style="margin: 20px 5px 10px 5px;" v-if="data['_source']['link'] && data['link'] !== ''">
-                            <ElButton class="icon" @click="fetchPDF(data['_source']['link'])">
+                            <ElButton class="icon" @click="fetchPDF(data['_source']['paper_id'])">
                                 <el-icon>
                                     <Document />
                                 </el-icon>
