@@ -63,9 +63,12 @@ function signup() {
   window.open("./signup.html", "_self")
 }
 
+function gotoProfile() {
+  window.open("./profile.html", "_self")
+}
+
 function checkLoginStatus() {
-  if (sessionStorage.getItem('M_sc_is_logined') !== null && cookies.get('M_sc_login_flag') !== null) {
-    console.log(localStorage.getItem("M_sc_username"))
+  if (cookies.get('M_sc_login_flag')) {
     username.value = localStorage.getItem("M_sc_username")
     return true
   } else {
@@ -122,7 +125,7 @@ onMounted(() => {
 
       <div v-if="isSignIn" style="position: absolute; right: 20px; top: 20px; display: flex;">
         <!-- <ElText style="font-size: 20px; color: #ffffff; font-weight: 550; margin: auto; margin-right: 10px;"> Welcome, </ElText> -->
-        <ElAvatar size="large">{{ username }} </ElAvatar>
+        <ElAvatar @click="gotoProfile" size="large">{{ username }} </ElAvatar>
       </div>
     </ElMain>
   </ElContainer>

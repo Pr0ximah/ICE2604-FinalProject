@@ -465,4 +465,34 @@ span.title:hover {
     background-color: var(--custom-dark-m3);
     font-weight: 550;
     border: 2px solid var(--custom-dark-2);
+    transition: all 0.2s;
+}
+
+.el-avatar:hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+
+.el-avatar.profile:hover {
+    cursor: default;
+    filter: brightness(1);
+}
+
+div.profile {
+    color: var(--custom-dark-m1)
+}
+
+.el-button.logout {
+    background: rgba(0, 0, 0, 0);
+    color: #ff4a3d;
+    font-size: 14px;
+    font-weight: 550;
+    border-radius: 6px;
+    transition: all 0.2s;
+    border: 2px solid var(--custom-light-3);
+}
+
+.el-button.logout:hover {
+    background: var(--custom-light-4_5);
+    border: 2px solid #ff4a3d;
 }

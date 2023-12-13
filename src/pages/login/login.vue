@@ -17,11 +17,11 @@ function backToHome() {
 }
 
 function login() {
-    if(username.value === '') {
+    if (username.value === '') {
         ElMessage("Please input username.")
         return
     }
-    if(passwd.value === '') {
+    if (passwd.value === '') {
         ElMessage("Please input password.")
         return
     }
@@ -33,10 +33,6 @@ function login() {
         method: 'post'
     }).then((e) => {
         if (e.data) {
-            console.log(sessionStorage.getItem('M_sc_is_logined'))
-            if (sessionStorage.getItem('M_sc_is_logined') === null) {
-                sessionStorage.setItem('M_sc_is_logined', true)
-            }
             localStorage.setItem('M_sc_username', username.value)
             cookies.set('M_sc_login_flag', true)
             window.history.go(-1)
@@ -48,7 +44,9 @@ function login() {
     })
 }
 
-
+function goBack() {
+    window.history.go(-1)
+}
 </script>
 
 <template>
@@ -57,22 +55,23 @@ function login() {
             :style="{ width: '100%', height: '100%', background: `url(${bgUrl})`, backgroundSize: 'cover', filter: bgBlur ? 'blur(6px)' : '', transition: 'all 0.8s' }" />
         <div style="position: absolute; width:100%; height: 100%; display: flex;">
             <ElCard
-                style="margin: auto; filter: opacity(0.87); width: 60%; height: 60%; display: flex; flex-direction: column; justify-content: center; min-width: 600px;"
+                style="margin: auto; filter: opacity(0.87); width: 60%; min-height: 60%; display: flex; flex-direction: column; justify-content: center; min-width: 600px;"
                 @mouseenter="bgBlur = true" @mouseleave="bgBlur = false">
-                <ElButton @click="window.history.go(-1)" class="login-btn" style="position: absolute; left: 10px; top: 10px;" size="large">
+                <ElButton @click="goBack" class="login-btn"
+                    style="position: absolute; left: 10px; top: 10px;" size="large">
                     <el-icon>
                         <Back />
                     </el-icon>
                 </ElButton>
-                <div style="width: 100%; text-align: center;">
+                <div style="width: 100%; text-align: center; margin-top: 50px;">
                     <ElText class="login-title" tag="b" size="large" style="font-size: 40px;"> Sign in to M Scholar
                     </ElText>
                 </div>
                 <div
                     style="width: 80%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center;">
                     <ElText tag="b" size="large" style="min-width: 100px; margin-right: 10px;">Username: </ElText>
-                    <ElInput @keydown.enter="login" class="login-input" size="large" v-model="username" placeholder="username"
-                        style="width: 40%; font-size:18px;">
+                    <ElInput @keydown.enter="login" class="login-input" size="large" v-model="username"
+                        placeholder="username" style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
                                 <User />
@@ -83,8 +82,8 @@ function login() {
                 <div
                     style="width: 80%; text-align: center; margin: auto; margin-top: 30px; display: flex; flex-direction: row; justify-content: center;">
                     <ElText tag="b" size="large" style="min-width: 100px; margin-right: 10px;">Password: </ElText>
-                    <ElInput @keydown.enter="login" show-password class="login-input" size="large" v-model="passwd" placeholder="password"
-                        style="width: 40%; font-size:18px;">
+                    <ElInput @keydown.enter="login" show-password class="login-input" size="large" v-model="passwd"
+                        placeholder="password" style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
                                 <Lock />
@@ -93,12 +92,13 @@ function login() {
                     </ElInput>
                 </div>
                 <div
-                    style="width: 35%; height: 12%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center;">
+                    style="width: 35%; height: 12%; text-align: center; margin: auto; margin-top: 50px; margin-bottom: 100px; display: flex; flex-direction: row; justify-content: center;">
                     <ElButton class="login-btn" style="width: 100%; height: 100%;" @click="login">Sign in</ElButton>
                 </div>
-                <div style="width: 30%; text-align: center; margin: auto; margin-top: 50px;">
-                <ElImage style="width: 100%;" :src="LOGO" fit="contain" />
-            </div>
-        </ElCard>
+                <div style="width: 100%; position: absolute; bottom: 10px; display: flex; justify-content: center;">
+                    <ElImage style="width: 30%; margin-top: 10px;" :src="LOGO" fit="contain" />
+                </div>
+            </ElCard>
+        </div>
     </div>
-</div></template>
+</template>

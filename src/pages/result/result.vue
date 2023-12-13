@@ -255,9 +255,12 @@ onMounted(() => {
     isSignIn.value = checkLoginStatus()
 })
 
+function gotoProfile() {
+  window.open("./profile.html", "_self")
+}
+
 function checkLoginStatus() {
-    if (sessionStorage.getItem('M_sc_is_logined') !== null && cookies.get('M_sc_login_flag') !== null) {
-        console.log(localStorage.getItem("M_sc_username"))
+    if (cookies.get('M_sc_login_flag') !== null) {
         username.value = localStorage.getItem("M_sc_username")
         return true
     } else {
@@ -303,13 +306,15 @@ function signup() {
                                 </ElButton>
                             </template>
                         </ElInput>
-                        <div v-if="!isSignIn" style="display: flex; margin:auto; margin-left: 20px;">
+
+                        <ElDivider direction="vertical" style="height: 95%; display: flex; margin-top: auto; margin-left: 20px; margin-right: 20px;" />
+
+                        <div v-if="!isSignIn" style="display: flex; margin:auto;;">
                             <ElButton @click="signup" class="resultpage-signin-btn hasborder">sign up</ElButton>
                             <ElButton @click="signin" class="resultpage-signin-btn">sign in</ElButton>
                         </div>
-
-                        <div v-if="isSignIn" style="display: flex; margin:auto; margin-left: 20px;">
-                            <ElAvatar>{{ username }} </ElAvatar>
+                        <div v-if="isSignIn" style="display: flex; margin:auto;">
+                            <ElAvatar @click="gotoProfile">{{ username }} </ElAvatar>
                         </div>
                     </ElCol>
                 </ElRow>
