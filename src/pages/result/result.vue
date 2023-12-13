@@ -2,7 +2,7 @@
 import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMenu, ElMenuItem, ElRow, ElCol, ElFooter, ElText, ElCheckboxGroup } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { onMounted, reactive, ref, watch, onBeforeMount, toRaw, nextTick } from 'vue'
-import { Search, Calendar, User, Star, Select, CloseBold, Filter, Document } from '@element-plus/icons-vue'
+import { Search, Calendar, User, Star, Select, CloseBold, Filter, Document, Reading } from '@element-plus/icons-vue'
 import { useCookies } from 'vue3-cookies'
 import LOGO_S from "@/assets/LOGO_S_LONG.png"
 import LOGO_L from "@/assets/LOGO_DARK.png"
@@ -33,6 +33,7 @@ let showLoadingSkeleton = ref(false)
 const { cookies } = useCookies()
 const isSignIn = ref(false)
 const username = ref("")
+const showDetail = ref(false)
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
@@ -44,6 +45,7 @@ function getQueryContent(name) {
 
 const content = ref(getQueryContent('content'))
 const enableAll = ref(false)
+let carddata = ref()
 
 function get() {
     const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
@@ -118,6 +120,18 @@ function gotoYear(year) {
     search()
 }
 
+function gotoAuthor(author) {
+    searchOptionVal.value = 'Author'
+    content.value = author
+    search()
+}
+
+function gotoKeyword(keyword) {
+    searchOptionVal.value = 'Keywords'
+    content.value = keyword
+    search()
+}
+
 function selectNoneYear() {
     filterYearChecked.value = []
     refreshFilterYear()
@@ -183,7 +197,7 @@ function fetchPDF(paperid) {
         method: 'get'
     }).then((e) => {
         const file_dir = process.env.NODE_ENV === "development" ? "/api/api_port/file" : "/paper_files"
-        window.open(file_dir +  e['data'], "_blank")
+        window.open(file_dir + e['data'], "_blank")
     }).catch(() => {
         ElMessage("Oops! Internal server error. Try again later.")
     })
@@ -256,7 +270,7 @@ onMounted(() => {
 })
 
 function gotoProfile() {
-  window.open("./profile.html", "_self")
+    window.open("./profile.html", "_self")
 }
 
 function checkLoginStatus() {
@@ -269,15 +283,128 @@ function checkLoginStatus() {
 }
 
 function signin() {
-  window.open("./login.html", "_self")
+    window.open("./login.html", "_self")
 }
 
 function signup() {
-  window.open("./signup.html", "_self")
+    window.open("./signup.html", "_self")
+}
+
+function openDetail(data) {
+    console.log(data)
+    carddata = data
+    showDetail.value = true
 }
 </script>
 
 <template>
+    <Transition>
+        <div v-if="showDetail"
+            style="z-index: 5;position: fixed; display: flex; width: 100vw; height: 100vh; justify-content: center; align-items: center;">
+            <div @click="showDetail = false" style="position: absolute; width: 100%; height: 100%; filter: opacity(0.7)"
+                class="detailbg">
+            </div>
+            <div style="display: flex; width: 85%; z-index: 2; align-items: center;">
+                <ElCard style="width: 100%; max-height: 90vh; overflow: auto;" class="detail">
+                    <template #header>
+                        <div class="title"
+                            style="margin-left: 20px; margin-top: 20px; margin-right: 20px; display: flex; flex-direction: row;">
+                            <ElButton size="large" class="close" @click="showDetail = false">
+                                <el-icon size="large">
+                                    <CloseBold />
+                                </el-icon>
+                            </ElButton>
+                            <div style="margin-left: 20px; font-size: 30px;">
+                                <span class="title" @click="gotoOrigin(carddata['_source']['link'])">{{
+                                    carddata['_source']["title"]
+                                }}
+                                </span>
+                            </div>
+                        </div>
+                    </template>
+
+                    <div style="margin-left: 20px; margin-top: 10px; align-items: center; display: flex;">
+                        <span style="margin-left: 5px; margin-right: 5px;">
+                            <span class="inflogo">
+                                Year
+                            </span>
+                            <span class="year links" style="margin-left: 6px; font-size: medium;"
+                                @click="gotoYear(carddata['_source']['year'])">
+                                {{ carddata['_source']["year"] }}
+                            </span>
+                        </span>
+                    </div>
+                    <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                        <span style="margin-left: 5px; margin-right: 5px;">
+                            <span class="inflogo">
+                                DOI
+                            </span>
+                            {{ carddata['_source']['doi'] }}
+                        </span>
+                    </div>
+                    <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                        <span style="margin-left: 5px; margin-right: 5px;">
+                            <span class="inflogo">
+                                Jurnal
+                            </span>
+                            {{ carddata['_source']['journal'] }}
+                        </span>
+                    </div>
+                    <div style="margin-left: 20px; margin-top: 20px; margin-right: 20px; align-items: center;">
+                        <span
+                            style="margin-left: 5px; margin-right: 5px; font-size: medium; display: flex; align-items: center;">
+                            <span class="inflogo">
+                                Authors
+                            </span>
+                            <span style="margin-left: 5px; margin-right: 5px; font-size: medium;">
+                                <span v-for="author in carddata['_source']['authors']"
+                                    style="margin-right: 12px;line-height: 1.3em;" class="links" @click="gotoAuthor(author)">
+                                    {{ author }}
+                                </span>
+                            </span>
+                        </span>
+                    </div>
+                    <div v-if="carddata['_source']['keywords'].length !== 0"
+                        style="margin-left: 20px; margin-top: 20px; margin-right: 20px; align-items: center;">
+                        <span
+                            style="margin-left: 5px; margin-right: 5px; font-size: medium; display: flex; align-items: center;">
+                            <span class="inflogo">
+                                Keywords
+                            </span>
+                            <span style="margin-left: 5px; margin-right: 5px; font-size: medium;">
+                                <span v-for="keyword in carddata['_source']['keywords']"
+                                    style="margin-right: 15px; line-height: 1.3em;" class="links"
+                                    @click="gotoKeyword(keyword)">
+                                    {{ keyword }}
+                                </span>
+                            </span>
+                        </span>
+                    </div>
+                    <div v-if="carddata['_source']['abstract'] !== 0"
+                        style="margin-left: 20px; margin-top: 20px; margin-right: 20px; align-items: center;">
+                        <span style="margin-left: 5px; margin-right: 5px; font-size: medium; display: flex;">
+                            <span class="inflogo">
+                                Abstract
+                            </span>
+                            <span
+                                style="margin-left: 5px; margin-right: 5px; font-size: 14px; line-height: 1.5em; padding-left: 5px; padding-right: 5px;">
+                                {{ carddata['_source']['abstract'] }}
+                            </span>
+                        </span>
+                    </div>
+                    <div style="margin: 40px 20px 10px 20px;" v-if="carddata['_source']['link'] && carddata['link'] !== ''">
+                        <ElButton class="icon" @click="fetchPDF(carddata['_source']['paper_id'])">
+                            <el-icon>
+                                <Document />
+                            </el-icon>
+                            <span>origin pdf</span>
+                        </ElButton>
+                    </div>
+                </ElCard>
+            </div>
+        </div>
+    </Transition>
+
     <ElContainer class="bg-all" style="height: 100%; height: 100%;">
         <ElHeader>
             <ElMenu mode="horizontal" :ellipsis="false" style="width: 100%;" ref="menu">
@@ -307,7 +434,8 @@ function signup() {
                             </template>
                         </ElInput>
 
-                        <ElDivider direction="vertical" style="height: 95%; display: flex; margin-top: auto; margin-left: 20px; margin-right: 20px;" />
+                        <ElDivider direction="vertical"
+                            style="height: 95%; display: flex; margin-top: auto; margin-left: 20px; margin-right: 20px;" />
 
                         <div v-if="!isSignIn" style="display: flex; margin:auto;;">
                             <ElButton @click="signup" class="resultpage-signin-btn hasborder">sign up</ElButton>
@@ -368,21 +496,36 @@ function signup() {
                     <ElCard shadow="hover" v-for="data in datalist"
                         style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;" v-show="!showLoadingSkeleton">
                         <template #header>
-                            <!-- <div style="margin: 0px 5px 20px 5px;" class="title"> -->
                             <div class="title">
-                                <span class="title" @click="gotoOrigin(data['_source']['link'])">{{ data['_source']["title"]
+                                <span class="title" @click="openDetail(data)">{{ data['_source']["title"]
                                 }}</span>
                             </div>
                         </template>
-                        <div style="margin: 10px 5px 10px 5px; align-items: center;">
+                        <div style="margin: 10px 5px 10px 5px; align-items: center; display: flex;">
                             <ElTooltip effect="customized" content="Year" placement="right" show-after="800">
                                 <span style="margin-left: 5px; margin-right: 5px;">
                                     <el-icon>
                                         <Calendar />
                                     </el-icon>
-                                    <!-- <span class="year" style="margin-left: 4px;" @click="gotoYear(data['_source']['year'])"> -->
-                                    <span class="year" style="margin-left: 6px;">
+                                    <span class="year links" style="margin-left: 8px;"
+                                        @click="gotoYear(data['_source']['year'])">
                                         {{ data['_source']["year"] }}
+                                    </span>
+                                </span>
+                            </ElTooltip>
+                            <span style="margin-left: 20px; margin-right: 5px; font-size: smaller;">
+                                <span class="inflogo">
+                                    DOI
+                                </span>
+                                {{ data['_source']['doi'] }}
+                            </span>
+                            <ElTooltip effect="customized" content="Journal" placement="right" show-after="800">
+                                <span style="margin-left: 20px; margin-right: 5px; font-size: smaller;">
+                                    <el-icon>
+                                        <Reading />
+                                    </el-icon>
+                                    <span style="margin-left: 8px;">
+                                        {{ data['_source']['journal'] }}
                                     </span>
                                 </span>
                             </ElTooltip>
@@ -393,7 +536,10 @@ function signup() {
                                     <el-icon>
                                         <User />
                                     </el-icon>
-                                    {{ convertList(data['_source']['authors']) }}
+                                    <span v-for="author in data['_source']['authors']" style="margin-left: 12px;"
+                                        class="links" @click="gotoAuthor(author)">
+                                        {{ author }}
+                                    </span>
                                 </span>
                             </ElTooltip>
                         </div>
@@ -404,7 +550,10 @@ function signup() {
                                     <el-icon>
                                         <Star />
                                     </el-icon>
-                                    {{ convertList(data['_source']['keywords']) }}
+                                    <span v-for="keyword in data['_source']['keywords']" style="margin-left: 12px;"
+                                        class="links" @click="gotoKeyword(keyword)">
+                                        {{ keyword }}
+                                    </span>
                                 </span>
                             </ElTooltip>
                         </div>

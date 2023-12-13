@@ -251,7 +251,8 @@ div.title {
     box-shadow: 0px 0px 3px var(--custom-light);
 }
 
-.el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
+.el-card.is-hover-shadow:focus,
+.el-card.is-hover-shadow:hover {
     box-shadow: 0px 0px 7px var(--custom-dark-m1);
 }
 
@@ -342,7 +343,7 @@ span.title:hover {
     --el-skeleton-to-color: rgb(237, 237, 237);
 }
 
-#chart > .el-card__body {
+#chart>.el-card__body {
     padding: 14px;
     height: calc(100% - 30px);
 }
@@ -367,7 +368,7 @@ span.title:hover {
     padding-left: 2%;
 }
 
-.mainInput > .el-input-group__append {
+.mainInput>.el-input-group__append {
     border-top-right-radius: calc(var(--input-border-radius) + 2px);
     border-bottom-right-radius: calc(var(--input-border-radius) + 2px);
 }
@@ -495,4 +496,43 @@ div.profile {
 .el-button.logout:hover {
     background: var(--custom-light-4_5);
     border: 2px solid #ff4a3d;
+}
+
+span.inflogo {
+    border-radius: 5px;
+    background-color: var(--custom-dark-m3);
+    color: white;
+    font-weight: 550;
+    margin-right: 10px;
+    padding: 3px;
+    padding-left: 5px;
+    height: 19px;
+}
+
+.el-icon {
+    margin: auto;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.3s;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+div.detailbg {
+    background-color: var(--custom-light-4_5);
+}
+
+.el-card.detail {
+    border: 3px solid var(--custom-dark-m2);
+}
+
+.links:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
 }
