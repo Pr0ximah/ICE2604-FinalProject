@@ -24,6 +24,7 @@ export default defineConfig({
         search: resolve(__dirname, '/search.html'),
         login: resolve(__dirname, '/login.html'),
         signup: resolve(__dirname, '/signup.html'),
+        profile: resolve(__dirname, '/profile.html'),
       }
     }
   },

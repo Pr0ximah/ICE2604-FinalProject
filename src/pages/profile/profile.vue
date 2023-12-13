@@ -9,7 +9,7 @@ import API from '../../components/axios_instance'
 const bgUrl = '/HOMEPAPERS/HOMEPAPER2.png'
 const { cookies } = useCookies()
 const username = ref("")
-const liked = ref()
+const liked = ref({})
 
 function checkLoginStatus() {
     if (cookies.get('M_sc_login_flag') !== null) {

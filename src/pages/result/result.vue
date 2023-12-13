@@ -287,7 +287,9 @@ onBeforeMount(() => {
 onMounted(() => {
     chartYear.value.init()
     isSignIn.value = checkLoginStatus()
-    likedPaperId.value = JSON.parse(localStorage.getItem("M_sc_liked"))
+    if (localStorage.getItem("M_sc_liked")) {
+        likedPaperId.value = JSON.parse(localStorage.getItem("M_sc_liked"))
+    }
 })
 
 function gotoProfile() {
@@ -312,7 +314,6 @@ function signup() {
 }
 
 function openDetail(data) {
-    console.log(data)
     carddata = data
     showDetail.value = true
 }
@@ -347,20 +348,20 @@ function openDetail(data) {
                     <div style="margin-left: 20px; margin-top: 10px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
+                                DOI
+                            </span>
+                            {{ carddata['_source']['doi'] }}
+                        </span>
+                    </div>
+                    <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                        <span style="margin-left: 5px; margin-right: 5px;">
+                            <span class="inflogo">
                                 Year
                             </span>
                             <span class="year links" style="margin-left: 6px; font-size: medium;"
                                 @click="gotoYear(carddata['_source']['year'])">
                                 {{ carddata['_source']["year"] }}
                             </span>
-                        </span>
-                    </div>
-                    <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
-                        <span style="margin-left: 5px; margin-right: 5px;">
-                            <span class="inflogo">
-                                DOI
-                            </span>
-                            {{ carddata['_source']['doi'] }}
                         </span>
                     </div>
                     <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
@@ -531,8 +532,14 @@ function openDetail(data) {
                             </div>
                         </template>
                         <div style="margin: 10px 5px 10px 5px; align-items: center; display: flex;">
+                            <span style="margin-left: 5px; margin-right: 5px; font-size: smaller;">
+                                <span class="inflogo">
+                                    DOI
+                                </span>
+                                {{ data['_source']['doi'] }}
+                            </span>
                             <ElTooltip effect="customized" content="Year" placement="right" show-after="800">
-                                <span style="margin-left: 5px; margin-right: 5px;">
+                                <span style="margin-left: 20px; margin-right: 5px;">
                                     <el-icon>
                                         <Calendar />
                                     </el-icon>
@@ -542,12 +549,6 @@ function openDetail(data) {
                                     </span>
                                 </span>
                             </ElTooltip>
-                            <span style="margin-left: 20px; margin-right: 5px; font-size: smaller;">
-                                <span class="inflogo">
-                                    DOI
-                                </span>
-                                {{ data['_source']['doi'] }}
-                            </span>
                             <ElTooltip effect="customized" content="Journal" placement="right" show-after="800">
                                 <span style="margin-left: 20px; margin-right: 5px; font-size: smaller;">
                                     <el-icon>
