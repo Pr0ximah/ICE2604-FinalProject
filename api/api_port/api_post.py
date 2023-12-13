@@ -6,6 +6,7 @@ import json
 from api_port import search
 from api_port.db_tool import sql_tool
 import hashlib
+from datetime import datetime
 
 app_post = APIRouter()
 
@@ -39,6 +40,19 @@ async def Login(user :str, key :str):
     if key_db == key_login: successlogin=True
     return successlogin
 
+@app_post.post("login_password/{user}&{time}")
+async def LoginPassword(user:str, time: datetime):
+    datadepot = sql_tool("shan", "finalproject", "users")
+    content = datadepot.fetch_specific("user_name", user)
+    successsigninpassword = False
+    time_str = time.strftime("%Y-%m-%d %H:%M:%S")
+    password=user+time_str
+    key_db=generate_sha256_hash(password)
+    datadepot.insert_column_by_username("login_time", key_db, user)
+    datadepot.save()
+    content = datadepot.fetch_specific("user_name", user)
+    if content: successsigninpassword = True
+    return successsigninpassword
 
 
 #没写完
