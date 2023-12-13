@@ -4,8 +4,8 @@ from elasticsearch import Elasticsearch, ConnectionError
 
 error_name = ""
 
-es = Elasticsearch()
-# es = Elasticsearch(["http://localhost:9200"])
+# es = Elasticsearch()
+es = Elasticsearch(["http://localhost:9200"])
 
 def get_json(string):
     return json.dumps(string, sort_keys=True, indent=4, separators=(",", ":"))

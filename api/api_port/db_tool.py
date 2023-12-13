@@ -45,26 +45,29 @@ class sql_tool:
         - column_value: 要插入的列值
         - target_username: 目标用户名
         """
-        if 'user_name' not in self.columns:
-            raise ValueError("user_name 列不存在于表中")
+        # if 'user_name' not in self.columns:
+        #     raise ValueError("user_name 列不存在于表中")
 
-        # 检查列名是否存在于表中
-        if column_name not in self.columns:
-            raise ValueError(f"列名 {column_name} 不存在于表中")
+        # # 检查列名是否存在于表中
+        # if column_name not in self.columns:
+        #     raise ValueError(f"列名 {column_name} 不存在于表中")
 
-        # 查询数据库中是否存在指定的用户名
-        cmd_select = f"SELECT * FROM {self.table_name} WHERE user_name = %s"
-        self.cursor.execute(cmd_select, (target_username,))
-        existing_row = self.cursor.fetchone()
+        # # 查询数据库中是否存在指定的用户名
+        # cmd_select = f"SELECT * FROM {self.table_name} WHERE user_name = %s"
+        # self.cursor.execute(cmd_select, (target_username,))
+        # existing_row = self.cursor.fetchone()
 
-        if existing_row:
-            # 如果用户名存在，更新该行的指定列数据
-            cmd_update = f"UPDATE {self.table_name} SET {column_name} = %s WHERE user_name = %s"
-            self.cursor.execute(cmd_update, (column_value, target_username))
-        else:
-            # 如果用户名不存在，插入一行新数据，只设置指定列的值，其他列使用默认值或 NULL
-            cmd_insert = f"INSERT INTO {self.table_name} (user_name, {column_name}) VALUES (%s, %s)"
-            self.cursor.execute(cmd_insert, (target_username, column_value))
+        # if existing_row:
+        #     # 如果用户名存在，更新该行的指定列数据
+        #     cmd_update = f"UPDATE {self.table_name} SET {column_name} = %s WHERE user_name = %s"
+        #     self.cursor.execute(cmd_update, (column_value, target_username))
+        # else:
+        #     # 如果用户名不存在，插入一行新数据，只设置指定列的值，其他列使用默认值或 NULL
+        #     cmd_insert = f"INSERT INTO {self.table_name} (user_name, {column_name}) VALUES (%s, %s)"
+        #     self.cursor.execute(cmd_insert, (target_username, column_value))
+
+        cmd = f"UPDATE {self.table_name} SET {column_name}='{column_value}' WHERE user_name='{target_username}'"
+        self.cursor.execute(cmd)
 
 
 
@@ -106,7 +109,10 @@ class sql_tool:
 
 if __name__ == "__main__":
     # for debug
-    s = sql_tool("ADMINROOT", "testdb", "test_table")
+    # s = sql_tool("ADMINROOT", "testdb", "test_table")
+    s = sql_tool("ADMINROOT", "ice2604_final_project", "users")
+    s.insert_column_by_username('love_paper', '{}', 'test')
+    s.save()
     # print(s.fetch_specific("ID", "2"))
     # s.insert([4, "David", "D not D"])
     # s.save()
