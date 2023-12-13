@@ -72,7 +72,7 @@ function refreshLikedList() {
                 <div
                     style="display: flex; margin-top: 30px; align-items: center; justify-content: center; flex-direction: column;">
                     <ElDivider border-style="dotted" style="width: 80%;"><span
-                            style="font-size: 20px; font-weight: 600; color: gray;">liked paper</span></ElDivider>
+                            style="font-size: 20px; font-weight: 600; color: gray;">liked papers</span></ElDivider>
 
                     <div v-for="paper in liked" style="margin: 10px;">
                         {{ paper }}
