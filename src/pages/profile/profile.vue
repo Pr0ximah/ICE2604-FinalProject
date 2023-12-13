@@ -9,6 +9,7 @@ import API from '../../components/axios_instance'
 const bgUrl = '/HOMEPAPERS/HOMEPAPER2.png'
 const { cookies } = useCookies()
 const username = ref("")
+const liked = ref()
 
 function checkLoginStatus() {
     if (cookies.get('M_sc_login_flag') !== null) {
@@ -22,6 +23,7 @@ function checkLoginStatus() {
 
 onMounted(() => {
     checkLoginStatus()
+    refreshLikedList()
 })
 
 function goBack() {
@@ -32,6 +34,11 @@ function logout() {
     localStorage.removeItem('M_sc_username')
     cookies.remove('M_sc_login_flag')
     goBack()
+}
+
+function refreshLikedList() {
+    let lsl = localStorage.getItem("M_sc_liked")
+    liked.value = Object.keys(JSON.parse(lsl))
 }
 </script>
 
@@ -66,6 +73,10 @@ function logout() {
                     style="display: flex; margin-top: 30px; align-items: center; justify-content: center; flex-direction: column;">
                     <ElDivider border-style="dotted" style="width: 80%;"><span
                             style="font-size: 20px; font-weight: 600; color: gray;">liked paper</span></ElDivider>
+
+                    <div v-for="paper in liked" style="margin: 10px;">
+                        {{ paper }}
+                    </div>
 
                     <ElDivider border-style="dotted" style="width: 80%;" />
                 </div>

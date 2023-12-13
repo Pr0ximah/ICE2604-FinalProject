@@ -536,3 +536,12 @@ div.detailbg {
     text-decoration: underline;
     text-underline-offset: 2px;
 }
+
+div.text-ref {
+    transition: color 0.1s;
+}
+
+div.text-ref:hover {
+    color: var(--custom-dark-m2) !important;
+    cursor: pointer;
+}

@@ -10,6 +10,8 @@ import API from '../../components/axios_instance'
 import chart from '../../components/echarts/chart.vue'
 import no_res_logo from '@/assets/no-result.png'
 import server_error_logo from '@/assets/server_error.png'
+import love_empty from '@/assets/love_empty.png'
+import love_fill from '@/assets/love_fill.png'
 
 let chartYear = ref()
 let datalist = ref()
@@ -34,6 +36,7 @@ const { cookies } = useCookies()
 const isSignIn = ref(false)
 const username = ref("")
 const showDetail = ref(false)
+const likedPaperId = ref({})
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
@@ -191,6 +194,10 @@ function switchFilterStatus() {
 }
 
 function fetchPDF(paperid) {
+    if (!isSignIn.value) {
+        signin()
+        return
+    }
     const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
     API({
         url: base + `/file/${paperid}`,
@@ -260,6 +267,19 @@ function gotoOrigin(url) {
     }
 }
 
+function addLikedList(id) {
+    if (!isSignIn.value) {
+        signin()
+        return
+    }
+    if (id in likedPaperId.value) {
+        delete likedPaperId.value[id]
+    } else {
+        likedPaperId.value[id] = true
+    }
+    localStorage.setItem("M_sc_liked", JSON.stringify(likedPaperId.value))
+}
+
 onBeforeMount(() => {
     get()
 })
@@ -267,6 +287,7 @@ onBeforeMount(() => {
 onMounted(() => {
     chartYear.value.init()
     isSignIn.value = checkLoginStatus()
+    likedPaperId.value = JSON.parse(localStorage.getItem("M_sc_liked"))
 })
 
 function gotoProfile() {
@@ -358,7 +379,8 @@ function openDetail(data) {
                             </span>
                             <span style="margin-left: 5px; margin-right: 5px; font-size: medium;">
                                 <span v-for="author in carddata['_source']['authors']"
-                                    style="margin-right: 12px;line-height: 1.3em;" class="links" @click="gotoAuthor(author)">
+                                    style="margin-right: 12px;line-height: 1.3em;" class="links"
+                                    @click="gotoAuthor(author)">
                                     {{ author }}
                                 </span>
                             </span>
@@ -398,6 +420,13 @@ function openDetail(data) {
                                 <Document />
                             </el-icon>
                             <span>origin pdf</span>
+                        </ElButton>
+                        <ElButton class="icon" @click="addLikedList(carddata['_source']['paper_id'])">
+                            <ElImage :src="love_empty" fit="contain" style="width: 18px; margin: 0;"
+                                v-if="!(carddata['_source']['paper_id'] in likedPaperId)" />
+                            <ElImage :src="love_fill" fit="contain" style="width: 18px; margin: 0;"
+                                v-if="carddata['_source']['paper_id'] in likedPaperId" />
+                            <span style="margin-left: 5px;">like</span>
                         </ElButton>
                     </div>
                 </ElCard>
@@ -557,12 +586,20 @@ function openDetail(data) {
                                 </span>
                             </ElTooltip>
                         </div>
-                        <div style="margin: 20px 5px 10px 5px;" v-if="data['_source']['link'] && data['link'] !== ''">
-                            <ElButton class="icon" @click="fetchPDF(data['_source']['paper_id'])">
+                        <div style="margin: 20px 5px 10px 5px;">
+                            <ElButton v-if="data['_source']['link'] && data['link'] !== ''" class="icon"
+                                @click="fetchPDF(data['_source']['paper_id'])">
                                 <el-icon>
                                     <Document />
                                 </el-icon>
                                 <span>origin pdf</span>
+                            </ElButton>
+                            <ElButton class="icon" @click="addLikedList(data['_source']['paper_id'])">
+                                <ElImage :src="love_empty" fit="contain" style="width: 18px; margin: 0;"
+                                    v-if="!(data['_source']['paper_id'] in likedPaperId)" />
+                                <ElImage :src="love_fill" fit="contain" style="width: 18px; margin: 0;"
+                                    v-if="data['_source']['paper_id'] in likedPaperId" />
+                                <span style="margin-left: 5px;">like</span>
                             </ElButton>
                         </div>
                     </ElCard>

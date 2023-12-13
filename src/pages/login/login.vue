@@ -1,6 +1,6 @@
 <script setup>
 import { ElButton, ElCard, ElImage, ElInput, ElText, ElMessage } from 'element-plus'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { User, Lock, Back } from '@element-plus/icons-vue'
 import { useCookies } from 'vue3-cookies'
 import LOGO from "@/assets/LOGO_DARK.png"
@@ -47,6 +47,16 @@ function login() {
 function goBack() {
     window.history.go(-1)
 }
+
+function signup() {
+    window.open("./signup.html", "_self")
+}
+
+onMounted(() => {
+    if (cookies.get('M_sc_login_flag') !== null) {
+        goBack()
+    }
+})
 </script>
 
 <template>
@@ -57,8 +67,7 @@ function goBack() {
             <ElCard
                 style="margin: auto; filter: opacity(0.87); width: 60%; min-height: 60%; display: flex; flex-direction: column; justify-content: center; min-width: 600px;"
                 @mouseenter="bgBlur = true" @mouseleave="bgBlur = false">
-                <ElButton @click="goBack" class="login-btn"
-                    style="position: absolute; left: 10px; top: 10px;" size="large">
+                <ElButton @click="goBack" class="login-btn" style="position: absolute; left: 10px; top: 10px;" size="large">
                     <el-icon>
                         <Back />
                     </el-icon>
@@ -90,6 +99,10 @@ function goBack() {
                             </el-icon>
                         </template>
                     </ElInput>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; margin-top: 20px; color: grey; text-decoration: underline;"
+                    @click="signup" class="text-ref">
+                    Do not have an account? click here to sign up
                 </div>
                 <div
                     style="width: 35%; height: 12%; text-align: center; margin: auto; margin-top: 50px; margin-bottom: 100px; display: flex; flex-direction: row; justify-content: center;">
