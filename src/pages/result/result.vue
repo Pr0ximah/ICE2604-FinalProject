@@ -8,7 +8,7 @@ import LOGO_S from "@/assets/LOGO_S_LONG.png"
 import LOGO_L from "@/assets/LOGO_DARK.png"
 import API from '../../components/axios_instance'
 import chartYearOri from '../../components/echarts/chartYearOri.vue'
-import chartAuthorOri from '../../components/echarts/charAuthorOri.vue'
+import chartAuthorOri from '../../components/echarts/chartAuthorOri.vue'
 import no_res_logo from '@/assets/no-result.png'
 import server_error_logo from '@/assets/server_error.png'
 import love_empty from '@/assets/love_empty.png'
