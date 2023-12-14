@@ -16,7 +16,7 @@ def generate_sha256_hash(input_string):
     hashed_value = sha256_hash.hexdigest()
     return hashed_value
 
-@app_post.post("/signup/{user}&{key}")
+@app_post.post("/signup")
 async def Signup(user :str, key :str):
     datadepot = sql_tool("shan", "finalproject", "users")
     content = datadepot.fetch_specific("user_name", user)
@@ -29,7 +29,7 @@ async def Signup(user :str, key :str):
     if content: successsignin = True
     return successsignin
 
-@app_post.post("/login/{user}&{key}")
+@app_post.post("/login")
 async def Login(user :str, key :str):
     datadepot = sql_tool("shan", "finalproject", "users")
     content = datadepot.fetch_specific("user_name", user)
@@ -40,7 +40,8 @@ async def Login(user :str, key :str):
     if key_db == key_login: successlogin=True
     return successlogin
 
-@app_post.post("login_password/{user}&{time}")
+# 登录的接口，返回password
+@app_post.post("/login_password")
 async def LoginPassword(user:str, time: datetime):
     datadepot = sql_tool("shan", "finalproject", "users")
     content = datadepot.fetch_specific("user_name", user)
@@ -52,11 +53,20 @@ async def LoginPassword(user:str, time: datetime):
     datadepot.save()
     content = datadepot.fetch_specific("user_name", user)
     if content: successsigninpassword = True
-    return successsigninpassword
+    return key_db
+    # return successsigninpassword
 
+# 验证的接口，返回True和False
+@app_post.post("/confirm_password")
+async def Confiem_Password(user : str, password : str):
+    datadepot = sql_tool("shan", "finalproject", "users")
+    content = datadepot.fetch_specific("user_name", user)
+    password_db = content[0][3]
+    if password == password_db: return True
+    else: return False
 
-#没写完
-@app_post.post("/collectpaper/{user}&{paper_id}")
+# 收集能力没写完
+@app_post.post("/collectpaper")
 async def Collect(user: str, paper_id :str):
     datadepot = sql_tool("shan", "finalproject", "users")
     datadepot_pdf = sql_tool("shan", "finalproject", "users")
