@@ -7,7 +7,8 @@ import { useCookies } from 'vue3-cookies'
 import LOGO_S from "@/assets/LOGO_S_LONG.png"
 import LOGO_L from "@/assets/LOGO_DARK.png"
 import API from '../../components/axios_instance'
-import chart from '../../components/echarts/chart.vue'
+import chartYearOri from '../../components/echarts/chartYearOri.vue'
+import chartAuthorOri from '../../components/echarts/charAuthorOri.vue'
 import no_res_logo from '@/assets/no-result.png'
 import server_error_logo from '@/assets/server_error.png'
 import love_empty from '@/assets/love_empty.png'
@@ -630,10 +631,13 @@ function openDetail(data) {
                 <div style="width: 20%; min-width: 210px; height: 25vh; min-height: 210px;">
                     <ElCard style="margin-top: 20px; height: 100%" class="preset1" id="chart">
                         <div style="height: 100%;">
-                            <chart ref="chartYear" :data="childData"></chart>
+                            <chart-year-ori ref="chartYear" :data="childData"></chart-year-ori>
                         </div>
                     </ElCard>
                 </div>
+            </div>
+            <div>
+                <chart-author-ori></chart-author-ori>
             </div>
         </ElMain>
         <ElFooter class="res">

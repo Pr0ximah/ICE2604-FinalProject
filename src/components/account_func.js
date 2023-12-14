@@ -92,3 +92,7 @@ function goBack() {
         backToHome()
     }
 }
+
+async function verifyLoginStatus() {
+    
+}

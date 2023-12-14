@@ -264,7 +264,7 @@ div.title {
     transform: translateY(-1%) scale(1.01, 1.01);
 } */
 
-div.chart {
+div.chartYearOri {
     height: 100%;
     width: 100%;
     margin: auto;

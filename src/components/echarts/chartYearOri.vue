@@ -226,5 +226,5 @@ function resizeChart() {
 </script>
 
 <template>
-    <div ref="chart" class="chart" id="1"></div>
+    <div ref="chart" class="chartYearOri" id="1"></div>
 </template>
