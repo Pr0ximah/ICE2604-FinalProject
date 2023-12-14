@@ -15,6 +15,7 @@ import love_empty from '@/assets/love_empty.png'
 import love_fill from '@/assets/love_fill.png'
 
 let chartYear = ref()
+let chartAuthor = ref()
 let datalist = ref()
 let datalistAllFiltered = ref()
 let datalistAll = ref()
@@ -287,6 +288,7 @@ onBeforeMount(() => {
 
 onMounted(() => {
     chartYear.value.init()
+    chartAuthor.value.init()
     isSignIn.value = checkLoginStatus()
     if (localStorage.getItem("M_sc_liked")) {
         likedPaperId.value = JSON.parse(localStorage.getItem("M_sc_liked"))
@@ -636,8 +638,8 @@ function openDetail(data) {
                     </ElCard>
                 </div>
             </div>
-            <div>
-                <chart-author-ori></chart-author-ori>
+            <div style="height: 800px; width: 1000px;">
+                <chart-author-ori ref="chartAuthor"></chart-author-ori>
             </div>
         </ElMain>
         <ElFooter class="res">

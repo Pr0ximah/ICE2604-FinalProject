@@ -9,13 +9,13 @@
 <body>
   <div id="main" style="width: 1600px; height: 800px"></div>
   <div id="ss"></div>
-  <script src="bdecharts.js"></script>
+  <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
   <script type="text/javascript">
-    // require.config({
-    //   paths: {
-    //     echarts: 'http://echarts.baidu.com/build/dist'
-    //   }
-    // });
+    require.config({
+      paths: {
+        echarts: 'http://echarts.baidu.com/build/dist'
+      }
+    });
     var diction = {
       "elsevier_05cbcb9ef5629bc25e84df43572f9d1eddb9a35f": {
         "date": "1981-12-01T00:00:00",
