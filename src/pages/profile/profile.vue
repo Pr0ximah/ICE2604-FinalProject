@@ -44,9 +44,9 @@ function refreshLikedList() {
     <div :style="{ height: '100vh', display: 'flex' }">
         <div
             :style="{ width: '100%', height: '100%', background: `url(${bgUrl})`, backgroundSize: 'cover', filter: 'blur(5px)' }" />
-        <div style="position: absolute; width:100%; height: 100%; display: flex;">
+        <div style="position: absolute; width:100%; height: 100%; display: flex; min-width: 600px; min-height: 550px;">
             <ElCard
-                style="margin: auto; filter: opacity(0.95); width: 80%; min-height: 80%; display: flex; flex-direction: column; justify-content: center; min-width: 600px;"
+                style="margin: auto; filter: opacity(0.95); width: 80%; max-height: 95%; min-height: 80%; display: flex; flex-direction: column; justify-content: center; max-width: 80%;"
                 @mouseenter="bgBlur = true" @mouseleave="bgBlur = false">
                 <div style="position: absolute; left: 10px; top: 10px; display: flex;">
                     <ElButton @click="goBack" class="login-btn" size="large">

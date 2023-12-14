@@ -361,7 +361,7 @@ function openDetail(data) {
                             <span class="inflogo">
                                 Year
                             </span>
-                            <span class="year links" style="margin-left: 6px; font-size: medium;"
+                            <span class="year links" style="margin-left: 6px;"
                                 @click.stop="gotoYear(carddata['_source']['year'])">
                                 {{ carddata['_source']["year"] }}
                             </span>
@@ -372,34 +372,33 @@ function openDetail(data) {
                             <span class="inflogo">
                                 Jurnal
                             </span>
-                            {{ carddata['_source']['journal'] }}
+                            <span style="line-height: 1.6em;">
+                                {{ carddata['_source']['journal'] }}
+                            </span>
                         </span>
                     </div>
-                    <div style="margin-left: 20px; margin-top: 20px; margin-right: 20px; align-items: center;">
-                        <span
-                            style="margin-left: 5px; margin-right: 5px; font-size: medium; display: flex; align-items: center;">
+                    <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                        <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 Authors
                             </span>
-                            <span style="margin-left: 5px; margin-right: 5px; font-size: medium;">
-                                <span v-for="author in carddata['_source']['authors']"
-                                    style="margin-right: 12px;line-height: 1.3em;" class="links"
-                                    @click.stop="gotoAuthor(author)">
+                            <span style="margin-left: 5px; margin-right: 5px; line-height: 1.6em;">
+                                <span v-for="author in carddata['_source']['authors']" style="margin-right: 12px;"
+                                    class="links" @click.stop="gotoAuthor(author)">
                                     {{ author }}
                                 </span>
                             </span>
                         </span>
                     </div>
                     <div v-if="carddata['_source']['keywords'].length !== 0"
-                        style="margin-left: 20px; margin-top: 20px; margin-right: 20px; align-items: center;">
-                        <span
-                            style="margin-left: 5px; margin-right: 5px; font-size: medium; display: flex; align-items: center;">
+                        style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                        <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 Keywords
                             </span>
-                            <span style="margin-left: 5px; margin-right: 5px; font-size: medium;">
+                            <span style="margin-left: 5px; margin-right: 5px; line-height: 1.6em;">
                                 <span v-for="keyword in carddata['_source']['keywords']"
-                                    style="margin-right: 15px; line-height: 1.3em;" class="links"
+                                    style="margin-right: 12px; word-break: break-word;" class="links"
                                     @click.stop="gotoKeyword(keyword)">
                                     {{ keyword }}
                                 </span>
@@ -408,7 +407,7 @@ function openDetail(data) {
                     </div>
                     <div v-if="carddata['_source']['abstract'] !== 0"
                         style="margin-left: 20px; margin-top: 20px; margin-right: 20px; align-items: center;">
-                        <span style="margin-left: 5px; margin-right: 5px; font-size: medium; display: flex;">
+                        <span style="margin-left: 5px; margin-right: 5px; display: flex;">
                             <span class="inflogo">
                                 Abstract
                             </span>
@@ -438,15 +437,15 @@ function openDetail(data) {
         </div>
     </Transition>
 
-    <ElContainer class="bg-all" style="height: 100%; height: 100%;">
+    <ElContainer class="bg-all" style="height: 100%;">
         <ElHeader>
-            <ElMenu mode="horizontal" :ellipsis="false" style="width: 100%;" ref="menu">
+            <ElMenu mode="horizontal" :ellipsis="false" style="width: 100%;">
                 <ElMenuItem :index="0" @click="backToHome">
                     <ElImage class="left-menu-logo" :src="LOGO_S" fit="contain" />
                 </ElMenuItem>
-                <ElRow :gutter="10"
-                    style="min-width: 700px; height: 96%; align-self: right; display: flex; justify-content: right; width: 50%; margin: auto; margin-right: 1%;">
-                    <ElCol :span="4">
+                <div
+                    style="height: 100%; align-self: center; display: flex; justify-content: right; width: 50%; margin: auto; margin-right: 1%; column-gap: 20px;">
+                    <div style="align-self: center; min-width: 120px;">
                         <ElSelect class="menuselect" style="width: 100%;" v-model="searchOptionVal">
                             <ElOptionGroup v-if="enableAll">
                                 <ElOption label="All" value="All" />
@@ -455,9 +454,10 @@ function openDetail(data) {
                                 <ElOption v-for="item in SearchOption" :label="item.value" :value="item.value" />
                             </ElOptionGroup>
                         </ElSelect>
-                    </ElCol>
-                    <ElCol :span="16" style="height: 38px; display: flex;">
-                        <ElInput id="ei" v-model="content" style="height: 100%; font-size: large;" @keydown.enter=search>
+                    </div>
+                    <div style="align-self: center; display: flex; flex-direction: row;">
+                        <ElInput id="ei" v-model="content" style="height: 100%; min-width: 120px; font-size: large;"
+                            @keydown.enter=search>
                             <template #append>
                                 <ElButton class="search-btn-res" style="height: 100%;" @click="search">
                                     <ElIcon style="height: 100%;">
@@ -468,23 +468,25 @@ function openDetail(data) {
                         </ElInput>
 
                         <ElDivider direction="vertical"
-                            style="height: 95%; display: flex; margin-top: auto; margin-left: 20px; margin-right: 20px;" />
+                            style="height: 34px; align-self: center; margin-left: 15px; margin-right: 13px;" />
 
-                        <div v-if="!isSignIn" style="display: flex; margin:auto;;">
+                        <div v-if="!isSignIn" style="display: flex; margin:auto;">
                             <ElButton @click="signup" class="resultpage-signin-btn hasborder">sign up</ElButton>
                             <ElButton @click="signin" class="resultpage-signin-btn">sign in</ElButton>
                         </div>
                         <div v-if="isSignIn" style="display: flex; margin:auto;">
                             <ElAvatar @click="gotoProfile">{{ username }} </ElAvatar>
                         </div>
-                    </ElCol>
-                </ElRow>
+                    </div>
+                </div>
             </ElMenu>
         </ElHeader>
         <ElMain class="result">
-            <ElRow style="width: 100%; margin: auto;" :gutter="5" justify="center">
-                <ElCol :span="3" style="height: 100%">
-                    <ElCard class="preset1" style="margin-top: 20px; width: 100%;">
+            <div
+                style="display: flex; margin: auto; justify-content: center; margin-left: 20px; margin-right: 20px; margin-top: 5px;">
+                <div>
+                    <ElCard class="preset1"
+                        style="margin-top: 20px; width: 100%; display: flex; align-items: center; justify-content: center;">
                         <div style="text-align: center;">
                             <ElText style="font-size: 22px; letter-spacing: 0.03em;">filter</ElText>
                             <el-icon style="margin-left: 2%;">
@@ -494,7 +496,7 @@ function openDetail(data) {
                         <ElDivider border-style="dashed" style="margin-top: 15px; margin-bottom: 15px;"></ElDivider>
                         <div>
                             <div style="margin-bottom: 10px; text-align: center;">
-                                <ElText style="font-size: medium; color: gray">Year</ElText>
+                                <ElText style="color: gray">Year</ElText>
                                 <ElButton @click="switchFilterStatus" class="icon" style="margin-left: 5px;" size="small"
                                     circle="true" :disabled="emptyResult">
                                     <el-icon v-if="!filterButtonStatus"><Select /></el-icon>
@@ -503,20 +505,19 @@ function openDetail(data) {
                                     </el-icon>
                                 </ElButton>
                             </div>
-                            <ElCheckboxGroup v-model="filterYearChecked" style="justify-items: center; text-align: center;">
-                                <ElCheckbox v-for="year in filterYearList" :label="year['year']"
-                                    style="margin:1px 6% 1px 6%;">
+                            <ElCheckboxGroup v-model="filterYearChecked"
+                                style="display: flex; flex-direction: column; justify-items: center; text-align: center; margin-left: 30px; margin-right: 30px;">
+                                <ElCheckbox v-for="year in filterYearList" :label="year['year']" style="margin: auto;">
                                     <div style="font-size: small; margin: auto;">{{ year['year'] }} <span
                                             style="color: grey; font-size: small">({{ year["num"] }}) </span></div>
                                 </ElCheckbox>
                             </ElCheckboxGroup>
-                            <ElSlider style="margin-top: 15px; margin-left: 20px; margin-right: 20px; width: auto;"
-                                v-model="filterYearRange" range :max="filterYearRangeMax" :min="filterYearRangeMin"
-                                v-if="filterYearRangeShow" />
+                            <ElSlider style="width: 85%; margin: auto; margin-top: 5px;" v-model="filterYearRange" range
+                                :max="filterYearRangeMax" :min="filterYearRangeMin" v-if="filterYearRangeShow" />
                         </div>
                     </ElCard>
-                </ElCol>
-                <ElCol :span="16">
+                </div>
+                <div style="width: 70%">
                     <div v-if="emptyResult && !server_error" class="nores" style="margin-top: 5%;"
                         v-show="!showLoadingSkeleton">
                         <div>Sorry! Found no result</div>
@@ -527,70 +528,77 @@ function openDetail(data) {
                         <ElImage :src="server_error_logo" fit="contain" style="margin: 50px;" />
                     </div>
                     <ElCard class="data" shadow="hover" v-for="data in datalist"
-                        style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;" @click="openDetail(data)" v-show="!showLoadingSkeleton">
+                        style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;" @click="openDetail(data)"
+                        v-show="!showLoadingSkeleton">
                         <template #header>
                             <div class="title">
-                                <span class="title" @click.stop="gotoOrigin(data['_source']['link'])">{{ data['_source']["title"]
+                                <span class="title" @click.stop="gotoOrigin(data['_source']['link'])">{{
+                                    data['_source']["title"]
                                 }}</span>
                             </div>
                         </template>
-                        <div style="margin: 10px 5px 10px 5px; align-items: center; display: flex;">
-                            <span style="margin-left: 5px; margin-right: 5px; font-size: smaller;">
+                        <div
+                            style="margin: 10px 5px 10px 5px; align-items: center; display: flex; flex-wrap: wrap; row-gap: 15px;">
+                            <span style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
                                 <span class="inflogo">
                                     DOI
                                 </span>
-                                {{ data['_source']['doi'] }}
+                                <span style="line-height: 1.6em; word-break: break-word;">
+                                    {{ data['_source']['doi'] }}
+                                </span>
                             </span>
                             <ElTooltip effect="customized" content="Year" placement="right" show-after="800">
-                                <span style="margin-left: 20px; margin-right: 5px;">
-                                    <el-icon>
+                                <span style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
+                                    <el-icon size="small">
                                         <Calendar />
                                     </el-icon>
-                                    <span class="year links" style="margin-left: 8px;"
+                                    <span class="links" style="margin-left: 5px;"
                                         @click.stop="gotoYear(data['_source']['year'])">
                                         {{ data['_source']["year"] }}
                                     </span>
                                 </span>
                             </ElTooltip>
                             <ElTooltip effect="customized" content="Journal" placement="right" show-after="800">
-                                <span style="margin-left: 20px; margin-right: 5px; font-size: smaller;">
+                                <span style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
                                     <el-icon>
                                         <Reading />
                                     </el-icon>
-                                    <span style="margin-left: 8px;">
+                                    <span style="margin-left: 8px; line-height: 1.6em;">
                                         {{ data['_source']['journal'] }}
                                     </span>
                                 </span>
                             </ElTooltip>
                         </div>
-                        <div style="margin: 10px 5px 10px 5px; align-items: center;">
+                        <div style="margin: 15px 5px 10px 5px; align-items: center;">
                             <ElTooltip effect="customized" content="Authors" placement="right" show-after="800">
-                                <span style="margin-left: 5px; margin-right: 5px; font-size: smaller;">
+                                <span style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
                                     <el-icon>
                                         <User />
                                     </el-icon>
-                                    <span v-for="author in data['_source']['authors']" style="margin-left: 12px;"
-                                        class="links" @click.stop="gotoAuthor(author)">
+                                    <span v-for="author in data['_source']['authors']"
+                                        style="margin-left: 12px; line-height: 1.6em;" class="links"
+                                        @click.stop="gotoAuthor(author)">
                                         {{ author }}
                                     </span>
                                 </span>
                             </ElTooltip>
                         </div>
                         <div v-if="data['_source']['keywords'].length !== 0"
-                            style="margin: 10px 5px 10px 5px; align-items: center;">
+                            style="margin: 15px 5px 10px 5px; align-items: center;">
                             <ElTooltip effect="customized" content="Keywords" placement="right" show-after="800">
                                 <span style="margin-left: 5px; margin-right: 5px; font-size: smaller;">
                                     <el-icon>
                                         <Star />
                                     </el-icon>
-                                    <span v-for="keyword in data['_source']['keywords']" style="margin-left: 12px;"
-                                        class="links" @click.stop="gotoKeyword(keyword)">
+                                    <span v-for="keyword in data['_source']['keywords']"
+                                        style="margin-left: 12px; line-height: 1.6em; word-break: break-word;" class="links"
+                                        @click.stop="gotoKeyword(keyword)">
                                         {{ keyword }}
                                     </span>
                                 </span>
                             </ElTooltip>
                         </div>
-                        <div style="margin: 20px 5px 10px 5px;">
+                        <div style="margin: 20px 5px 10px 5px; display: flex;">
                             <ElButton v-if="data['_source']['link'] && data['link'] !== ''" class="icon"
                                 @click.stop="fetchPDF(data['_source']['paper_id'])">
                                 <el-icon>
@@ -606,6 +614,9 @@ function openDetail(data) {
                                 <span style="margin-left: 5px;">like</span>
                             </ElButton>
                         </div>
+                        <div style="color: grey; font-size: 13px; margin-top: 20px; margin-left: 5px;">
+                            click the card to show the details
+                        </div>
                     </ElCard>
                     <el-pagination layout="prev, pager, next" :total="result_total_num" hide-on-single-page="true"
                         :page-size="size_per_page" v-model:current-page="currentPage" v-show="!showLoadingSkeleton" />
@@ -615,15 +626,15 @@ function openDetail(data) {
                     </div>
                     <el-skeleton :rows="10" animated v-show="showLoadingSkeleton"
                         style="margin: auto; margin-top: 5%; width: 80%; justify-self: center;" throttle="500" />
-                </ElCol>
-                <ElCol :span="5">
-                    <ElCard style="margin-top: 20px; height: 25vh;" class="preset1" id="chart">
+                </div>
+                <div style="width: 20%; min-width: 210px; height: 25vh; min-height: 210px;">
+                    <ElCard style="margin-top: 20px; height: 100%" class="preset1" id="chart">
                         <div style="height: 100%;">
                             <chart ref="chartYear" :data="childData"></chart>
                         </div>
                     </ElCard>
-                </ElCol>
-            </ElRow>
+                </div>
+            </div>
         </ElMain>
         <ElFooter class="res">
             <ElImage class="bottom-logo" :src="LOGO_L" fit="contain"

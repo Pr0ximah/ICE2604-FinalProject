@@ -24,7 +24,6 @@
     --el-menu-hover-text-color: black;
     --custom-border: 0.5px solid var(--custom-light);
     --el-menu-item-height: var(--el-header-height);
-    --el-menu-horizontal-height: var(--el-header-height);
     --el-color-primary: var(--custom-light);
     --header-height: 40px;
     --border-menu: 1.5px solid var(--custom-light-1);
@@ -38,7 +37,6 @@ html,
 body {
     margin: 0px 0px 0px 0px;
     height: 100%;
-    min-width: 1000px;
 }
 
 div#app {
@@ -321,13 +319,6 @@ span.title:hover {
     cursor: pointer;
 }
 
-/* span.year:hover {
-    text-decoration: underline;
-    text-decoration-thickness: 0.04em;
-    text-decoration-color: var(--custom-dark-3);
-    text-underline-offset: 2px;
-} */
-
 .el-popper.is-customized {
     background-color: var(--custom-light-5);
     border: 1px solid var(--custom-dark);
@@ -505,8 +496,9 @@ span.inflogo {
     color: white;
     font-weight: 550;
     margin-right: 10px;
-    padding: 3px;
+    padding: 1px;
     padding-left: 5px;
+    padding-right: 5px;
     height: 19px;
 }
 
