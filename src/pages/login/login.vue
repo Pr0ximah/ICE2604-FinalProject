@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue'
 import { User, Lock, Back } from '@element-plus/icons-vue'
 import { useCookies } from 'vue3-cookies'
 import LOGO from "@/assets/LOGO_DARK.png"
-import API from '../../components/axios_instance'
+import { login_inner, goBack, backToHome } from '../../components/account_func'
 
 const bgUrl = '/HOMEPAPERS/HOMEPAPER12.png'
 let bgBlur = ref(true)
@@ -12,43 +12,8 @@ const username = ref("")
 const passwd = ref("")
 const { cookies } = useCookies()
 
-function backToHome() {
-    window.open("./", "_self")
-}
-
-function login() {
-    if (username.value === '') {
-        ElMessage("Please input username.")
-        return
-    }
-    if (passwd.value === '') {
-        ElMessage("Please input password.")
-        return
-    }
-    const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
-    const usrname = encodeURIComponent(username.value)
-    const pwd = encodeURIComponent(passwd.value)
-    API({
-        url: base + `/login/${usrname}&${pwd}`,
-        method: 'post'
-    }).then((e) => {
-        if (e.data) {
-            localStorage.setItem('M_sc_username', username.value)
-            cookies.set('M_sc_login_flag', true)
-            window.history.go(-1)
-        } else {
-            ElMessage("User does not exist or the password is wrong! Please try again.")
-        }
-    }).catch(() => {
-        ElMessage("Oops! Internal server error. Try again later.")
-    })
-}
-
-function goBack() {
-    window.history.go(-1)
-}
-
-function signup() {
+function goSignup() {
+    localStorage.setItem("M_sc_lastpage", window.location.href)
     window.open("./signup.html", "_self")
 }
 
@@ -57,6 +22,16 @@ onMounted(() => {
         goBack()
     }
 })
+
+async function login() {
+    login_inner(username.value, passwd.value).then(e => {
+        if (e.data) {
+            setTimeout(() => {
+                goBack()
+            }, 3000);
+        }
+    })
+}
 </script>
 
 <template>
@@ -79,7 +54,7 @@ onMounted(() => {
                 <div
                     style="width: 80%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center;">
                     <ElText tag="b" size="large" style="min-width: 100px; margin-right: 10px;">Username: </ElText>
-                    <ElInput @keydown.enter="login" class="login-input" size="large" v-model="username"
+                    <ElInput @keydown.enter="login(username, passwd)" class="login-input" size="large" v-model="username"
                         placeholder="username" style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
@@ -91,8 +66,8 @@ onMounted(() => {
                 <div
                     style="width: 80%; text-align: center; margin: auto; margin-top: 30px; display: flex; flex-direction: row; justify-content: center;">
                     <ElText tag="b" size="large" style="min-width: 100px; margin-right: 10px;">Password: </ElText>
-                    <ElInput @keydown.enter="login" show-password class="login-input" size="large" v-model="passwd"
-                        placeholder="password" style="width: 40%; font-size:18px;">
+                    <ElInput @keydown.enter="login(username, passwd)" show-password class="login-input" size="large"
+                        v-model="passwd" placeholder="password" style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
                                 <Lock />
@@ -101,12 +76,13 @@ onMounted(() => {
                     </ElInput>
                 </div>
                 <div style="display: flex; align-items: center; justify-content: center; margin-top: 20px; color: grey; text-decoration: underline;"
-                    @click="signup" class="text-ref">
+                    @click="goSignup" class="text-ref">
                     Do not have an account? click here to sign up
                 </div>
                 <div
                     style="width: 35%; height: 12%; text-align: center; margin: auto; margin-top: 50px; margin-bottom: 100px; display: flex; flex-direction: row; justify-content: center;">
-                    <ElButton class="login-btn" style="width: 100%; height: 100%;" @click="login">Sign in</ElButton>
+                    <ElButton class="login-btn" style="width: 100%; height: 100%;" @click="login(username, passwd)">Sign in
+                    </ElButton>
                 </div>
                 <div style="width: 100%; position: absolute; bottom: 10px; display: flex; justify-content: center;">
                     <ElImage style="width: 30%; margin-top: 10px;" :src="LOGO" fit="contain" />

@@ -5,6 +5,7 @@ import { User, Lock, Back } from '@element-plus/icons-vue'
 import { useCookies } from 'vue3-cookies'
 import LOGO from "@/assets/LOGO_DARK.png"
 import API from '../../components/axios_instance'
+import { signup_inner, backToHome, goBack } from '../../components/account_func'
 
 const bgUrl = '/HOMEPAPERS/HOMEPAPER2.png'
 const { cookies } = useCookies()
@@ -16,6 +17,7 @@ function checkLoginStatus() {
         username.value = localStorage.getItem("M_sc_username")
         return true
     } else {
+        localStorage.setItem("M_sc_lastpage", window.location.href)
         window.open('./login.html', '_self')
         return false
     }
@@ -25,10 +27,6 @@ onMounted(() => {
     checkLoginStatus()
     refreshLikedList()
 })
-
-function goBack() {
-    window.history.go(-1)
-}
 
 function logout() {
     localStorage.removeItem('M_sc_username')

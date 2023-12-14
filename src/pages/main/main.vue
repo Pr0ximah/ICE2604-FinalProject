@@ -56,14 +56,17 @@ function gotoResult() {
 }
 
 function signin() {
+  localStorage.setItem("M_sc_lastpage", window.location.href)
   window.open("./login.html", "_self")
 }
 
 function signup() {
+  localStorage.setItem("M_sc_lastpage", window.location.href)
   window.open("./signup.html", "_self")
 }
 
 function gotoProfile() {
+  localStorage.setItem("M_sc_lastpage", window.location.href)
   window.open("./profile.html", "_self")
 }
 

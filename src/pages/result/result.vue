@@ -293,6 +293,7 @@ onMounted(() => {
 })
 
 function gotoProfile() {
+    localStorage.setItem("M_sc_lastpage", window.location.href)
     window.open("./profile.html", "_self")
 }
 
@@ -306,10 +307,12 @@ function checkLoginStatus() {
 }
 
 function signin() {
+    localStorage.setItem("M_sc_lastpage", window.location.href)
     window.open("./login.html", "_self")
 }
 
 function signup() {
+    localStorage.setItem("M_sc_lastpage", window.location.href)
     window.open("./signup.html", "_self")
 }
 
@@ -337,7 +340,7 @@ function openDetail(data) {
                                 </el-icon>
                             </ElButton>
                             <div style="margin-left: 20px; font-size: 30px;">
-                                <span class="title" @click="gotoOrigin(carddata['_source']['link'])">{{
+                                <span class="title" @click.stop="gotoOrigin(carddata['_source']['link'])">{{
                                     carddata['_source']["title"]
                                 }}
                                 </span>
@@ -359,7 +362,7 @@ function openDetail(data) {
                                 Year
                             </span>
                             <span class="year links" style="margin-left: 6px; font-size: medium;"
-                                @click="gotoYear(carddata['_source']['year'])">
+                                @click.stop="gotoYear(carddata['_source']['year'])">
                                 {{ carddata['_source']["year"] }}
                             </span>
                         </span>
@@ -381,7 +384,7 @@ function openDetail(data) {
                             <span style="margin-left: 5px; margin-right: 5px; font-size: medium;">
                                 <span v-for="author in carddata['_source']['authors']"
                                     style="margin-right: 12px;line-height: 1.3em;" class="links"
-                                    @click="gotoAuthor(author)">
+                                    @click.stop="gotoAuthor(author)">
                                     {{ author }}
                                 </span>
                             </span>
@@ -397,7 +400,7 @@ function openDetail(data) {
                             <span style="margin-left: 5px; margin-right: 5px; font-size: medium;">
                                 <span v-for="keyword in carddata['_source']['keywords']"
                                     style="margin-right: 15px; line-height: 1.3em;" class="links"
-                                    @click="gotoKeyword(keyword)">
+                                    @click.stop="gotoKeyword(keyword)">
                                     {{ keyword }}
                                 </span>
                             </span>
@@ -416,13 +419,13 @@ function openDetail(data) {
                         </span>
                     </div>
                     <div style="margin: 40px 20px 10px 20px;" v-if="carddata['_source']['link'] && carddata['link'] !== ''">
-                        <ElButton class="icon" @click="fetchPDF(carddata['_source']['paper_id'])">
+                        <ElButton class="icon" @click.stop="fetchPDF(carddata['_source']['paper_id'])">
                             <el-icon>
                                 <Document />
                             </el-icon>
                             <span>origin pdf</span>
                         </ElButton>
-                        <ElButton class="icon" @click="addLikedList(carddata['_source']['paper_id'])">
+                        <ElButton class="icon" @click.stop="addLikedList(carddata['_source']['paper_id'])">
                             <ElImage :src="love_empty" fit="contain" style="width: 18px; margin: 0;"
                                 v-if="!(carddata['_source']['paper_id'] in likedPaperId)" />
                             <ElImage :src="love_fill" fit="contain" style="width: 18px; margin: 0;"
@@ -523,11 +526,11 @@ function openDetail(data) {
                         <div>Oops! Something went wrong with server, please try again later.</div>
                         <ElImage :src="server_error_logo" fit="contain" style="margin: 50px;" />
                     </div>
-                    <ElCard shadow="hover" v-for="data in datalist"
-                        style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;" v-show="!showLoadingSkeleton">
+                    <ElCard class="data" shadow="hover" v-for="data in datalist"
+                        style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px;" @click="openDetail(data)" v-show="!showLoadingSkeleton">
                         <template #header>
                             <div class="title">
-                                <span class="title" @click="openDetail(data)">{{ data['_source']["title"]
+                                <span class="title" @click.stop="gotoOrigin(data['_source']['link'])">{{ data['_source']["title"]
                                 }}</span>
                             </div>
                         </template>
@@ -544,7 +547,7 @@ function openDetail(data) {
                                         <Calendar />
                                     </el-icon>
                                     <span class="year links" style="margin-left: 8px;"
-                                        @click="gotoYear(data['_source']['year'])">
+                                        @click.stop="gotoYear(data['_source']['year'])">
                                         {{ data['_source']["year"] }}
                                     </span>
                                 </span>
@@ -567,7 +570,7 @@ function openDetail(data) {
                                         <User />
                                     </el-icon>
                                     <span v-for="author in data['_source']['authors']" style="margin-left: 12px;"
-                                        class="links" @click="gotoAuthor(author)">
+                                        class="links" @click.stop="gotoAuthor(author)">
                                         {{ author }}
                                     </span>
                                 </span>
@@ -581,7 +584,7 @@ function openDetail(data) {
                                         <Star />
                                     </el-icon>
                                     <span v-for="keyword in data['_source']['keywords']" style="margin-left: 12px;"
-                                        class="links" @click="gotoKeyword(keyword)">
+                                        class="links" @click.stop="gotoKeyword(keyword)">
                                         {{ keyword }}
                                     </span>
                                 </span>
@@ -589,13 +592,13 @@ function openDetail(data) {
                         </div>
                         <div style="margin: 20px 5px 10px 5px;">
                             <ElButton v-if="data['_source']['link'] && data['link'] !== ''" class="icon"
-                                @click="fetchPDF(data['_source']['paper_id'])">
+                                @click.stop="fetchPDF(data['_source']['paper_id'])">
                                 <el-icon>
                                     <Document />
                                 </el-icon>
                                 <span>origin pdf</span>
                             </ElButton>
-                            <ElButton class="icon" @click="addLikedList(data['_source']['paper_id'])">
+                            <ElButton class="icon" @click.stop="addLikedList(data['_source']['paper_id'])">
                                 <ElImage :src="love_empty" fit="contain" style="width: 18px; margin: 0;"
                                     v-if="!(data['_source']['paper_id'] in likedPaperId)" />
                                 <ElImage :src="love_fill" fit="contain" style="width: 18px; margin: 0;"
