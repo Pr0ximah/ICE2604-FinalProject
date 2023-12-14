@@ -28,8 +28,12 @@ async function signup_inner(username, passwd, repasswd) {
     const usrname = encodeURIComponent(username)
     const pwd = encodeURIComponent(passwd)
     return API({
-        url: base + `/signup/${usrname}&${pwd}`,
-        method: 'post'
+        url: base + `/signup`,
+        method: 'post',
+        data: {
+            user: usrname,
+            key: pwd,
+        }
     }).then((e) => {
         console.log(e)
         if (e.data) {
@@ -57,8 +61,12 @@ async function login_inner(username, passwd) {
     const usrname = encodeURIComponent(username)
     const pwd = encodeURIComponent(passwd)
     return API({
-        url: base + `/login/${usrname}&${pwd}`,
-        method: 'post'
+        url: base + `/login`,
+        method: 'post',
+        data: {
+            user: usrname,
+            key: pwd,
+        }
     }).then((e) => {
         if (e.data) {
             localStorage.setItem('M_sc_username', username)

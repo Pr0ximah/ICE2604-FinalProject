@@ -8,6 +8,10 @@ from api_port.db_tool import sql_tool
 import hashlib
 from datetime import datetime
 
+class login_item(BaseModel):
+    user: str = ""
+    key: str = ""
+
 app_post = APIRouter()
 
 def generate_sha256_hash(input_string):
@@ -17,7 +21,9 @@ def generate_sha256_hash(input_string):
     return hashed_value
 
 @app_post.post("/signup")
-async def Signup(user :str, key :str):
+async def Signup(item: login_item):
+    user = item.user
+    key = item.key
     datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
     content = datadepot.fetch_specific("user_name", user)
     if content: return False
@@ -30,7 +36,9 @@ async def Signup(user :str, key :str):
     return successsignin
 
 @app_post.post("/login")
-async def Login(user :str, key :str):
+async def Login(item: login_item):
+    user = item.user
+    key = item.key
     datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
     content = datadepot.fetch_specific("user_name", user)
     successlogin = False

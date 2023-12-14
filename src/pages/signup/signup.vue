@@ -13,15 +13,19 @@ const passwd = ref("")
 const repasswd = ref("")
 const { cookies } = useCookies()
 const showSignResult = ref(false)
+const secToLeave = ref(3)
 
 async function signup() {
     signup_inner(username.value, passwd.value, repasswd.value).then(e => {
         if (e.data) {
-        showSignResult.value = true;
-        setTimeout(() => {
-            goBack()
-            // backToHome()
-        }, 3000);
+            showSignResult.value = true;
+            setInterval(() => {
+                if (secToLeave.value == 1) {
+                    clearInterval()
+                    goBack()
+                }
+                secToLeave.value -= 1
+            }, 1000)
         }
     })
 }
@@ -47,8 +51,8 @@ async function signup() {
                 <div style="width: 80%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center;"
                     v-if="!showSignResult">
                     <ElText tag="b" size="large" style="min-width: 110px; margin-right: 10px;">Username: </ElText>
-                    <ElInput @keydown.enter="signup" class="login-input" size="large"
-                        v-model="username" placeholder="username" style="width: 40%; font-size:18px;">
+                    <ElInput @keydown.enter="signup" class="login-input" size="large" v-model="username"
+                        placeholder="username" style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
                                 <User />
@@ -59,8 +63,8 @@ async function signup() {
                 <div style="width: 80%; text-align: center; margin: auto; margin-top: 30px; display: flex; flex-direction: row; justify-content: center;"
                     v-if="!showSignResult">
                     <ElText tag="b" size="large" style="min-width: 110px; margin-right: 10px;">Password: </ElText>
-                    <ElInput @keydown.enter="signup" show-password class="login-input"
-                        size="large" v-model="passwd" placeholder="password" style="width: 40%; font-size:18px;">
+                    <ElInput @keydown.enter="signup" show-password class="login-input" size="large" v-model="passwd"
+                        placeholder="password" style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
                                 <Lock />
@@ -71,8 +75,8 @@ async function signup() {
                 <div style="width: 80%; text-align: center; margin: auto; margin-top: 30px; display: flex; flex-direction: row; justify-content: center;"
                     v-if="!showSignResult">
                     <ElText tag="b" size="large" style="min-width: 110px; margin-right: 10px;">Re-enter pwd: </ElText>
-                    <ElInput @keydown.enter="signup" show-password class="login-input"
-                        size="large" v-model="repasswd" placeholder="confirm password" style="width: 40%; font-size:18px;">
+                    <ElInput @keydown.enter="signup" show-password class="login-input" size="large" v-model="repasswd"
+                        placeholder="confirm password" style="width: 40%; font-size:18px;">
                         <template #prefix>
                             <el-icon>
                                 <Lock />
@@ -82,13 +86,13 @@ async function signup() {
                 </div>
                 <div style="width: 35%; height: 12%; text-align: center; margin: auto; margin-top: 50px; display: flex; flex-direction: row; justify-content: center; margin-bottom: 100px;"
                     v-if="!showSignResult">
-                    <ElButton class="login-btn" style="width: 100%; height: 100%;"
-                        @click="signup">Sign up</ElButton>
+                    <ElButton class="login-btn" style="width: 100%; height: 100%;" @click="signup">Sign up</ElButton>
                 </div>
 
                 <div v-if="showSignResult"
                     style="height: 70%; margin-bottom: 100px; display: flex; align-items: center; justify-content: center;">
-                    <ElResult icon="success" title="Sign up sucessfully!" sub-title="Return to main page in 3 seconds."
+                    <ElResult icon="success" title="Sign up sucessfully!"
+                        :sub-title="`Return to main page in ${secToLeave} seconds.`"
                         style="transform: scale(1.1); font-weight: 550;" />
                 </div>
 

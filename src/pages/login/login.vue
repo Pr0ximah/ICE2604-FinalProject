@@ -1,7 +1,7 @@
 <script setup>
-import { ElButton, ElCard, ElImage, ElInput, ElText, ElMessage } from 'element-plus'
-import { onMounted, ref } from 'vue'
-import { User, Lock, Back } from '@element-plus/icons-vue'
+import { ElButton, ElCard, ElImage, ElInput, ElText, ElMessage, ElLoading } from 'element-plus'
+import { onMounted, ref, withDirectives } from 'vue'
+import { User, Lock, Back, Loading } from '@element-plus/icons-vue'
 import { useCookies } from 'vue3-cookies'
 import LOGO from "@/assets/LOGO_DARK.png"
 import { login_inner, goBack, backToHome } from '../../components/account_func'
@@ -10,6 +10,7 @@ const bgUrl = '/HOMEPAPERS/HOMEPAPER12.png'
 let bgBlur = ref(true)
 const username = ref("")
 const passwd = ref("")
+const showLoading = ref(true)
 const { cookies } = useCookies()
 
 function goSignup() {
@@ -24,11 +25,15 @@ onMounted(() => {
 })
 
 async function login() {
+    // const loading = ElLoading.service({
+    //     lock: true,
+    //     text: 'Loading',
+    //     background: 'rgba(0, 0, 0, 0.1)',
+    // })
     login_inner(username.value, passwd.value).then(e => {
+        // loading.close()
         if (e.data) {
-            setTimeout(() => {
-                goBack()
-            }, 3000);
+            goBack()
         }
     })
 }

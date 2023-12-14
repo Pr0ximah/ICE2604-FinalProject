@@ -550,3 +550,18 @@ div.text-ref:hover {
 .el-card.data:active:not(:has(.el-button:active), :has(span:active)) {
     transform: scale(0.99);
 }
+
+.el-loading-spinner .el-loading-text {
+    color: var(--custom-dark-1);
+    font-size: 20px;
+    margin-top: 5px;
+    font-weight: 550;
+}
+
+.el-loading-mask.is-fullscreen {
+    backdrop-filter: blur(5px);
+}
+
+.el-loading-mask.is-fullscreen .el-loading-spinner{
+    transform: scale(1.3);
+}
