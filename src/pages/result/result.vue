@@ -14,6 +14,7 @@ import server_error_logo from '@/assets/server_error.png'
 import love_empty from '@/assets/love_empty.png'
 import love_fill from '@/assets/love_fill.png'
 import author_graph_bg from '@/assets/author_graph_bg.png'
+import { verifyLoginStatus } from '../../components/account_func'
 
 let chartYear = ref()
 let chartAuthor = ref()
@@ -175,7 +176,9 @@ watch(filterYearChecked, () => {
 window.onresize = () => {
     setTimeout(() => {
         chartYear.value.resizeChart()
-        chartAuthor.value.resizeChart()
+        if (chartAuthor) {
+            chartAuthor.value.resizeChart()
+        }
     }, 200)
 }
 
@@ -292,7 +295,7 @@ onBeforeMount(() => {
 
 onMounted(() => {
     chartYear.value.init()
-    isSignIn.value = checkLoginStatus()
+    checkLoginStatus()
     if (localStorage.getItem("M_sc_liked")) {
         likedPaperId.value = JSON.parse(localStorage.getItem("M_sc_liked"))
     }
@@ -303,12 +306,26 @@ function gotoProfile() {
     window.open("./profile.html", "_self")
 }
 
-function checkLoginStatus() {
-    if (cookies.get('M_sc_login_flag') !== null) {
+async function checkLoginStatus() {
+    if (cookies.get('M_sc_login_flag')) {
         username.value = localStorage.getItem("M_sc_username")
-        return true
+        let key = cookies.get("M_sc_login_key")
+        verifyLoginStatus(username.value, key).then(e => {
+            if (!e.data) {
+                ElMessage("Your login status has been expired, please login again!")
+                isSignIn.value = false
+                setTimeout(() => {
+                    cookies.remove("M_sc_login_flag")
+                    localStorage.setItem("M_sc_lastpage", window.location.href)
+                    window.open('./login.html', '_self')
+                }, 2000);
+            } else {
+              isSignIn.value = true
+            }
+        })
     } else {
-        return false
+        localStorage.setItem("M_sc_lastpage", window.location.href)
+        window.open('./login.html', '_self')
     }
 }
 

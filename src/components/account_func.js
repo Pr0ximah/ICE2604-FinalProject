@@ -7,6 +7,7 @@ export {
     signup_inner,
     backToHome,
     goBack,
+    verifyLoginStatus,
 }
 
 const { cookies } = useCookies()
@@ -35,10 +36,10 @@ async function signup_inner(username, passwd, repasswd) {
             key: pwd,
         }
     }).then((e) => {
-        console.log(e)
-        if (e.data) {
+        if (e.data !== false) {
             localStorage.setItem('M_sc_username', username)
             cookies.set('M_sc_login_flag', true)
+            cookies.set('M_sc_login_key', e.data)
         } else {
             ElMessage("User already exist! Please change the username and try again.")
         }
@@ -68,9 +69,10 @@ async function login_inner(username, passwd) {
             key: pwd,
         }
     }).then((e) => {
-        if (e.data) {
+        if (e.data && e.data !== false) {
             localStorage.setItem('M_sc_username', username)
             cookies.set('M_sc_login_flag', true)
+            cookies.set('M_sc_login_key', e.data)
         } else {
             ElMessage("User does not exist or the password is wrong! Please try again.")
         }
@@ -86,13 +88,27 @@ function backToHome() {
 
 function goBack() {
     const url = localStorage.getItem("M_sc_lastpage")
-    if (url) {
+    if (url && !url.endsWith('login.html') && url !== window.location.href) {
         window.open(url, '_self');
     } else {
         backToHome()
     }
 }
 
-async function verifyLoginStatus() {
-    
+async function verifyLoginStatus(username, key) {
+    const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
+    const usrname = encodeURIComponent(username)
+    const pwd = encodeURIComponent(key)
+    return API({
+        url: base + `/confirm_password`,
+        method: 'post',
+        data: {
+            user: usrname,
+            password: pwd,
+        }
+    }).then((e) => {
+        return e
+    }).catch(() => {
+        ElMessage("Oops! Internal server error. Try again later.")
+    })
 }

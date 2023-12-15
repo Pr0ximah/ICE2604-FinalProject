@@ -4,6 +4,7 @@ import { Search } from '@element-plus/icons-vue'
 import { onMounted, ref } from 'vue'
 import { useCookies } from 'vue3-cookies'
 import LOGO from '/src/assets/LOGO.png'
+import { verifyLoginStatus } from '../../components/account_func'
 
 const wallpapercnt = 16
 const enableAll = ref(false)
@@ -70,16 +71,31 @@ function gotoProfile() {
   window.open("./profile.html", "_self")
 }
 
-function checkLoginStatus() {
-  if (cookies.get('M_sc_login_flag')) {
-    username.value = localStorage.getItem("M_sc_username")
-    return true
-  } else {
-    return false
-  }
+async function checkLoginStatus() {
+    if (cookies.get('M_sc_login_flag')) {
+        username.value = localStorage.getItem("M_sc_username")
+        let key = cookies.get("M_sc_login_key")
+        verifyLoginStatus(username.value, key).then(e => {
+            if (!e.data) {
+                ElMessage("Your login status has been expired, please login again!")
+                isSignIn.value = false
+                setTimeout(() => {
+                    cookies.remove("M_sc_login_flag")
+                    localStorage.setItem("M_sc_lastpage", window.location.href)
+                    window.open('./login.html', '_self')
+                }, 2000);
+            } else {
+              isSignIn.value = true
+            }
+        })
+    } else {
+        localStorage.setItem("M_sc_lastpage", window.location.href)
+        window.open('./login.html', '_self')
+    }
 }
+
 onMounted(() => {
-  isSignIn.value = checkLoginStatus()
+  checkLoginStatus()
 })
 </script>
 

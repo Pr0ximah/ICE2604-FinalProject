@@ -6,20 +6,30 @@ import { useCookies } from 'vue3-cookies'
 import LOGO from "@/assets/LOGO_DARK.png"
 import API from '../../components/axios_instance'
 import { signup_inner, backToHome, goBack } from '../../components/account_func'
+import { verifyLoginStatus } from '../../components/account_func'
 
 const bgUrl = '/HOMEPAPERS/HOMEPAPER2.png'
 const { cookies } = useCookies()
 const username = ref("")
 const liked = ref({})
 
-function checkLoginStatus() {
-    if (cookies.get('M_sc_login_flag') !== null) {
+async function checkLoginStatus() {
+    if (cookies.get('M_sc_login_flag')) {
         username.value = localStorage.getItem("M_sc_username")
-        return true
+        let key = cookies.get("M_sc_login_key")
+        verifyLoginStatus(username.value, key).then(e => {
+            if (!e.data) {
+                ElMessage("Your login status has been expired, please login again!")
+                setTimeout(() => {
+                    cookies.remove("M_sc_login_flag")
+                    localStorage.setItem("M_sc_lastpage", window.location.href)
+                    window.open('./login.html', '_self')
+                }, 2000);
+            }
+        })
     } else {
         localStorage.setItem("M_sc_lastpage", window.location.href)
         window.open('./login.html', '_self')
-        return false
     }
 }
 
@@ -36,7 +46,9 @@ function logout() {
 
 function refreshLikedList() {
     let lsl = localStorage.getItem("M_sc_liked")
-    liked.value = Object.keys(JSON.parse(lsl))
+    if (lsl) {
+        liked.value = Object.keys(JSON.parse(lsl))
+    }
 }
 </script>
 

@@ -229,8 +229,6 @@ function getNodesAndLinks(dic, authorname) {
         lst_links[i]["source"] = String(lst_links[i]["source"])
         lst_links[i]["target"] = String(lst_links[i]["target"])
     }
-    console.log(lst_nodes)
-    console.log(lst_links)
     big_lst.push(lst_nodes)
     big_lst.push(lst_links)
     return big_lst

@@ -17,7 +17,7 @@ const secToLeave = ref(3)
 
 async function signup() {
     signup_inner(username.value, passwd.value, repasswd.value).then(e => {
-        if (e.data) {
+        if (e.data && e.data !== false) {
             showSignResult.value = true;
             setInterval(() => {
                 if (secToLeave.value == 1) {
