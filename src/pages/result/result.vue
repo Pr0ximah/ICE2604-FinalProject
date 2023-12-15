@@ -56,7 +56,7 @@ const content = ref(getQueryContent('content'))
 const enableAll = ref(false)
 let carddata = ref()
 
-function get() {
+function getSearchDataList() {
     const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
     const content = encodeURIComponent(getQueryContent('content'))
     const type = encodeURIComponent(getQueryContent('type'))
@@ -86,7 +86,7 @@ function get() {
             filterYearRangeShow.value = false;
         }
         childData.value = datalistAll.value
-        emptyResult = (result_total_num == 0)
+        emptyResult.value = (result_total_num == 0)
         const type = getQueryContent('type')
         if (searchOptionVal.value != type) {
             searchOptionVal.value = type
@@ -175,7 +175,9 @@ watch(filterYearChecked, () => {
 
 window.onresize = () => {
     setTimeout(() => {
-        chartYear.value.resizeChart()
+        if (chartYear) {
+            chartYear.value.resizeChart()
+        }
         if (chartAuthor) {
             chartAuthor.value.resizeChart()
         }
@@ -282,24 +284,75 @@ function addLikedList(id) {
         return
     }
     if (id in likedPaperId.value) {
-        delete likedPaperId.value[id]
+        deleteLikedPaper2BE(username.value, id)
     } else {
-        likedPaperId.value[id] = true
+        addLikedPaper2BE(username.value, id)
     }
-    localStorage.setItem("M_sc_liked", JSON.stringify(likedPaperId.value))
+}
+
+function addLikedPaper2BE(username, id) {
+    const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
+    const usrname = encodeURIComponent(username)
+    const paper_id = encodeURIComponent(id)
+    likedPaperId.value[id] = true
+    API({
+        url: base + `/collectpaper`,
+        method: 'post',
+        data: {
+            user: usrname,
+            paper_id: paper_id,
+        }
+    }).catch(() => {
+        delete likedPaperId.value[id]
+        ElMessage("Oops! Internal server error. Try again later.")
+    })
+}
+
+function deleteLikedPaper2BE(username, id) {
+    const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
+    const usrname = encodeURIComponent(username)
+    const paper_id = encodeURIComponent(id)
+    delete likedPaperId.value[id]
+    API({
+        url: base + `/removepaper`,
+        method: 'post',
+        data: {
+            user: usrname,
+            paper_id: paper_id,
+        }
+    }).catch(() => {
+        likedPaperId.value[id] = true
+        ElMessage("Oops! Internal server error. Try again later.")
+    })
 }
 
 onBeforeMount(() => {
-    get()
+    getSearchDataList()
 })
 
 onMounted(() => {
     chartYear.value.init()
     checkLoginStatus()
-    if (localStorage.getItem("M_sc_liked")) {
-        likedPaperId.value = JSON.parse(localStorage.getItem("M_sc_liked"))
-    }
+    refreshLikedList()
 })
+
+function refreshLikedList() {
+    const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
+    const usrname = encodeURIComponent(username.value)
+    API({
+        url: base + `/get_collected_paper`,
+        method: 'post',
+        data: {
+            user: usrname,
+        }
+    }).then((e) => {
+        for (let i in e.data) {
+            likedPaperId.value[i] = true
+        }
+    }).catch((e) => {
+        ElMessage("Oops! Internal server error. Try again later.")
+    })
+}
 
 function gotoProfile() {
     localStorage.setItem("M_sc_lastpage", window.location.href)
@@ -316,16 +369,13 @@ async function checkLoginStatus() {
                 isSignIn.value = false
                 setTimeout(() => {
                     cookies.remove("M_sc_login_flag")
-                    localStorage.setItem("M_sc_lastpage", window.location.href)
-                    window.open('./login.html', '_self')
                 }, 2000);
             } else {
               isSignIn.value = true
             }
         })
     } else {
-        localStorage.setItem("M_sc_lastpage", window.location.href)
-        window.open('./login.html', '_self')
+        isSignIn.value = false
     }
 }
 
@@ -346,8 +396,20 @@ function openDetail(data) {
 
 function openAuthorGraph() {
     showAuthorGraph.value = true
+    let authorname = null
+    let temp = datalistAllFiltered.value[0]['_source']['authors']
+    for (let i in temp) {
+        if (temp[i].toLowerCase().includes(content.value.toLowerCase())) {
+            authorname = temp[i]
+            break
+        }
+    }
+    if (!authorname) {
+        ElMessage("Author name is not correct, no data.")
+        return
+    }
     setTimeout(() => {
-        chartAuthor.value.init(datalistAllFiltered.value, content.value)
+        chartAuthor.value.init(datalistAllFiltered.value, authorname)
     }, 200)
 }
 </script>
@@ -369,6 +431,9 @@ function openAuthorGraph() {
                                     <CloseBold />
                                 </el-icon>
                             </ElButton>
+                            <div style="margin-left: 20px; font-size: xx-large; font-family: 'Helvetica'; font-weight: 550;">
+                                Author Force Graph
+                            </div>
                         </div>
                     </template>
                     <chart-author-ori style="" ref="chartAuthor"></chart-author-ori>
@@ -424,7 +489,7 @@ function openAuthorGraph() {
                     <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
-                                Jurnal
+                                Journal
                             </span>
                             <span style="line-height: 1.6em;">
                                 {{ carddata['_source']['journal'] }}
@@ -444,7 +509,7 @@ function openAuthorGraph() {
                             </span>
                         </span>
                     </div>
-                    <div v-if="carddata['_source']['keywords'].length !== 0"
+                    <div v-if="carddata['_source']['keywords'] && carddata['_source']['keywords'].length !== 0"
                         style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
@@ -459,7 +524,7 @@ function openAuthorGraph() {
                             </span>
                         </span>
                     </div>
-                    <div v-if="carddata['_source']['abstract'] !== 0"
+                    <div v-if="carddata['_source']['abstract'] && carddata['_source']['abstract'] !== 0"
                         style="margin-left: 20px; margin-top: 20px; margin-right: 20px; align-items: center;">
                         <span style="margin-left: 5px; margin-right: 5px; display: flex;">
                             <span class="inflogo">
@@ -471,7 +536,7 @@ function openAuthorGraph() {
                             </span>
                         </span>
                     </div>
-                    <div style="margin: 40px 20px 10px 20px;" v-if="carddata['_source']['link'] && carddata['link'] !== ''">
+                    <div style="margin: 40px 20px 10px 20px;" v-if="carddata['_source']['paper_id'] && carddata['paper_id'] !== ''">
                         <ElButton class="icon" @click.stop="fetchPDF(carddata['_source']['paper_id'])">
                             <el-icon>
                                 <Document />
@@ -637,7 +702,7 @@ function openAuthorGraph() {
                                 </span>
                             </ElTooltip>
                         </div>
-                        <div v-if="data['_source']['keywords'].length !== 0"
+                        <div v-if="data['_source']['keywords'] && data['_source']['keywords'].length !== 0"
                             style="margin: 15px 5px 10px 5px; align-items: center;">
                             <ElTooltip effect="customized" content="Keywords" placement="right" show-after="800">
                                 <span style="margin-left: 5px; margin-right: 5px; font-size: smaller;">
@@ -653,7 +718,7 @@ function openAuthorGraph() {
                             </ElTooltip>
                         </div>
                         <div style="margin: 20px 5px 10px 5px; display: flex;">
-                            <ElButton v-if="data['_source']['link'] && data['link'] !== ''" class="icon"
+                            <ElButton v-if="data['_source']['paper_id'] && data['paper_id'] !== ''" class="icon"
                                 @click.stop="fetchPDF(data['_source']['paper_id'])">
                                 <el-icon>
                                     <Document />
@@ -693,7 +758,7 @@ function openAuthorGraph() {
                         <div style="height: 0; padding-bottom: 100%; position: relative;">
                             <ElCard
                                 style="position: absolute; top:0; left:0; right:0; bottom:0; display: flex; flex-direction: column;"
-                                class="preset1" id="chart" v-if="searchOptionVal === 'Author'">
+                                class="preset1" id="chart" v-if="searchOptionVal === 'Author' && !emptyResult">
                                 <div
                                     style="height: 5%; font-weight: 600; font-family: 'Helvetica'; font-size: 20px; margin-left: 5px;">
                                     Author Force Graph

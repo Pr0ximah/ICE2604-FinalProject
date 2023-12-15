@@ -120,6 +120,17 @@ var diction = {
     }
 }
 
+function itemInDict(item, dict) {
+    let flag = false
+    for (let key in dict) {
+        if (item === dict[key]) {
+            flag = true
+            break
+        }
+    }
+    return flag
+}
+
 function getNodesAndLinks(dic, authorname) {
     let big_lst = []
     let lst_nodes = []
@@ -138,21 +149,13 @@ function getNodesAndLinks(dic, authorname) {
     let f = {}
     f[authorname] = 0
     let leavesStyle = {
-        normal: {
-            // label: {
-            //     show: true,
-            //     textStyle: {
-            //         fontSize: 12,
-            //         position: 'inside',
-            //         fontWeight: 500,
-            //         color: 'black',
-            //     },
-            // },
-            borderWidth: 2,
-            color: '#c1f1ef',
-        }
+        borderWidth: 2,
+        color: '#c1f1ef',
     }
     for (var key in dic) {
+        if (!(itemInDict(authorname, dic[key]['_source']["authors"]))) {
+            continue
+        }
         for (var j = 0; j < dic[key]['_source']["authors"].length; j++) {
             let au = "I"
             let flag_1 = true
@@ -182,7 +185,7 @@ function getNodesAndLinks(dic, authorname) {
                 newDicTitle["name"] = dic[key]['_source']["title"]
                 newDicTitle["symbolSize"] = 60
                 newDicTitle["itemStyle"] = leavesStyle
-                newDicTitle["emphasis"] = { disabled: 'true' }
+                newDicTitle["emphasis"] = { scale: 'false', itemStyle: { color: '#c1f1ef' } }
                 newDicTitle.ignore = true
                 newDicTitle.flag = true
                 lst_nodes.push(newDicTitle)
@@ -209,7 +212,7 @@ function getNodesAndLinks(dic, authorname) {
                 newDicTitle["name"] = dic[key]['_source']["title"]
                 newDicTitle["symbolSize"] = 60
                 newDicTitle["itemStyle"] = leavesStyle
-                newDicTitle["emphasis"] = { disabled: 'true' }
+                newDicTitle["emphasis"] = { scale: 'false', itemStyle: { color: '#c1f1ef' } }
                 newDicTitle.ignore = true
                 newDicTitle.flag = true
                 lst_nodes.push(newDicTitle)
@@ -306,13 +309,13 @@ function init(data, author) {
         },
         animation: true,
         animationDuration: 500,
-        title: {
-            text: "Authors Force Graph",
-            textStyle: {
-                color: '#2160c4',
-                fontSize: '25',
-            }
-        },
+        // title: {
+        //     text: "Authors Force Graph",
+        //     textStyle: {
+        //         color: '#2160c4',
+        //         fontSize: '25',
+        //     }
+        // },
         series: [{
             focusNodeAdjacency: true,
             type: 'graph',

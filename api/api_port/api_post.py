@@ -128,6 +128,8 @@ async def Collect(item : name_paperid):
         paper_list = oldpaper_dict["user"]
         for i in paper_list:
             # print(i)
+            if not i:
+                paper_list.remove(i)
             if (i == paper_id):
                 return {"error":"This article has been collected!"}
         paper_list.append(paper_id)
@@ -139,8 +141,8 @@ async def Collect(item : name_paperid):
     content = json.loads(content[0][2])
     return True
     
-@app_post.post("/removePaper")
-async def RemovePaper(item : name_paperid):
+@app_post.post("/removepaper")
+async def Removepaper(item : name_paperid):
     user = item.user
     paper_id = item.paper_id
     datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
@@ -161,19 +163,24 @@ async def RemovePaper(item : name_paperid):
     return True
 
 @app_post.post("/get_collected_paper")
-async def RemoveCollectPaper(item : user_name):
+async def GetCollectedPaper(item : user_name):
     user = item.user
+    if not user:
+        return ""
     datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
-    datadepot_pdf = sql_tool("shan", "finalproject", "100_pdf_metadata")
+    datadepot_pdf = sql_tool("ADMINROOT", "ice2604_final_project", "100_pdf_metadata")
     content_paper = datadepot.fetch_specific("user_name", user)
     content_paper_list_json = content_paper[0][2]
     if not content_paper_list_json:
-        return {"error":"This user hasn't collect article!"}
+        # return {"error":"This user hasn't collect article!"}
+        return ""
     paper_dict = json.loads(content_paper_list_json)
     paper_list = paper_dict["user"]
     if not paper_list:
-        return {"error":"This user hasn't collect article!"}
+        # return {"error":"This user hasn't collect article!"}
+        return ""
     return_dict = {}
+    print(paper_list)
     for paper_id in paper_list:
         content_pdf = datadepot_pdf.fetch_specific("paper_id", paper_id)  #在储存pdf的数据库中读取
         # return(content_pdf)
@@ -181,9 +188,14 @@ async def RemoveCollectPaper(item : user_name):
         return_list={}
         return_list["DOI"] = content_list[18]
         return_list["Year"] = content_list[4]
-        return_list["Jurnal"] = content_list[14]
-        return_list["Authors"] = content_list[6]
-        return_list["Keywords"] = content_list[3]
+        return_list["Journal"] = content_list[14]
+        if(content_list[6]):
+            return_list["Authors"] = content_list[6].split(",")
+        if (content_list[3]):
+            return_list["Keywords"] = content_list[3].split(",")
         return_list["Abstract"] = content_list[9]
+        return_list["Title"] = content_list[10]
+        return_list["Link"] = content_list[8]
+        return_list["ID"] = content_list[11]
         return_dict[f"{paper_id}"] = return_list
     return return_dict

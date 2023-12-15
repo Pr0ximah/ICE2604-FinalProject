@@ -72,26 +72,23 @@ function gotoProfile() {
 }
 
 async function checkLoginStatus() {
-    if (cookies.get('M_sc_login_flag')) {
-        username.value = localStorage.getItem("M_sc_username")
-        let key = cookies.get("M_sc_login_key")
-        verifyLoginStatus(username.value, key).then(e => {
-            if (!e.data) {
-                ElMessage("Your login status has been expired, please login again!")
-                isSignIn.value = false
-                setTimeout(() => {
-                    cookies.remove("M_sc_login_flag")
-                    localStorage.setItem("M_sc_lastpage", window.location.href)
-                    window.open('./login.html', '_self')
-                }, 2000);
-            } else {
-              isSignIn.value = true
-            }
-        })
-    } else {
-        localStorage.setItem("M_sc_lastpage", window.location.href)
-        window.open('./login.html', '_self')
-    }
+  if (cookies.get('M_sc_login_flag')) {
+    username.value = localStorage.getItem("M_sc_username")
+    let key = cookies.get("M_sc_login_key")
+    verifyLoginStatus(username.value, key).then(e => {
+      if (!e.data) {
+        ElMessage("Your login status has been expired, please login again!")
+        isSignIn.value = false
+        setTimeout(() => {
+          cookies.remove("M_sc_login_flag")
+        }, 2000);
+      } else {
+        isSignIn.value = true
+      }
+    })
+  } else {
+    isSignIn.value = false
+  }
 }
 
 onMounted(() => {
