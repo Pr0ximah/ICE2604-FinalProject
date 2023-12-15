@@ -307,7 +307,7 @@ function fetchPDF(paperid) {
                     </div>
 
                     <div style="text-align: center; margin:auto; margin-top: 20px;">
-                        <ElAvatar style="height: 80px; width: 80px; font-size: 18px;" class="profile">{{ username }}
+                        <ElAvatar style="height: 80px; width: 80px; font-size: 18px; font-size: 30px;" class="profile">{{ username[0] }}
                         </ElAvatar>
                     </div>
                     <div style="text-align: center; margin: auto; font-size: 40px; font-weight: 600; margin-top: 40px;"

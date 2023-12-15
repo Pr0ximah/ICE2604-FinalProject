@@ -594,7 +594,7 @@ function openAuthorGraph() {
                             <ElButton @click="signin" class="resultpage-signin-btn">sign in</ElButton>
                         </div>
                         <div v-if="isSignIn" style="display: flex; margin:auto;">
-                            <ElAvatar @click="gotoProfile">{{ username }} </ElAvatar>
+                            <ElAvatar @click="gotoProfile" style="font-size: large;">{{ username[0] }} </ElAvatar>
                         </div>
                     </div>
                 </div>
