@@ -3,15 +3,18 @@ import { ref, toRaw, watch } from 'vue'
 import * as echarts from 'echarts'
 
 const chart = ref()
+let myChart = null;
 
 const props = defineProps({
     data: Object
 })
 
 watch(props, () => {
-    refreshChart()
+    setTimeout(() => {
+        refreshChart()
+    }, 200);
 })
-defineExpose({ init, refreshChart })
+defineExpose({ init, refreshChart, resizeChart })
 
 // authorSearch
 function getData_authorSearch(dic) {
@@ -94,9 +97,11 @@ function getydata(dic) {
 }
 function Bar_authorSearch(dic) {
     let lst_xdata = getData_authorSearch(dic)
-    // console.log("xdata")
-    // console.log(lst_xdata)
     let lst_ydata = getydata(dic)
+    let y_max = lst_ydata[0]
+    for (let i = 1; i < lst_ydata.length; i++) {
+        if (y_max < lst_ydata[i]) { y_max = lst_ydata[i] }
+    }
     let option = {
         color: ['#2a6fdb'],
         tooltip: {
@@ -137,6 +142,7 @@ function Bar_authorSearch(dic) {
             {
                 type: 'value',
                 interval: 1,
+                max: y_max + 1,
                 axisLabel: {
                     formatter: '{value}'
                 }
@@ -151,6 +157,8 @@ function Bar_authorSearch(dic) {
                     }
                 },
                 data: lst_ydata,
+                animationDuration: 500,
+                animationEasing: "cubicInOut",
             }
         ],
         grid: [
@@ -192,14 +200,9 @@ function init() {
         searchResult.push(searchResultRaw[i]['_source'])
     }
 
-    let myChart = echarts.init(chart.value);
-
+    myChart = echarts.init(chart.value);
     let option = Bar_authorSearch(searchResult)
     myChart.setOption(option);
-
-    window.addEventListener('resize', function () {
-        myChart.resize();
-    });
 }
 
 function refreshChart() {
@@ -209,14 +212,19 @@ function refreshChart() {
         searchResult.push(searchResultRaw[i]['_source'])
     }
 
-    // console.log(searchResult)
     let option = Bar_authorSearch(searchResult)
-    chart.value.setAttribute('_echarts_instance_', '')
-    let myChart = echarts.init(chart.value);
+    // chart.value.setAttribute('_echarts_instance_', '')
+    // myChart = echarts.init(chart.value);
     myChart.setOption(option, true, true);
+}
+
+function resizeChart() {
+    if (myChart) {
+        myChart.resize()
+    }
 }
 </script>
 
 <template>
-    <div ref="chart" class="chart" id="1"></div>
+    <div ref="chart" class="chartYearOri" id="1"></div>
 </template>
