@@ -246,7 +246,7 @@ try:
                 "match": {
                     "authors": {
                         "query": str,
-                        "fuzziness": "2"
+                        "fuzziness": "0"
                     }
                 }
             },

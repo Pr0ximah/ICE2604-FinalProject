@@ -1,7 +1,8 @@
 <script setup>
 import { ref, toRaw, watch } from 'vue'
 import * as echarts from 'echarts'
-import { theme } from './roma'
+import { theme as roma_theme } from './roma'
+import { theme as macarons_theme } from './macarons'
 
 const chart = ref()
 let myChart = null;
@@ -136,25 +137,40 @@ function getNodesAndLinks(dic, authorname) {
     lst_nodes.push(newDic)
     let f = {}
     f[authorname] = 0
+    let leavesStyle = {
+        normal: {
+            // label: {
+            //     show: true,
+            //     textStyle: {
+            //         fontSize: 12,
+            //         position: 'inside',
+            //         fontWeight: 500,
+            //         color: 'black',
+            //     },
+            // },
+            borderWidth: 2,
+            color: '#c1f1ef',
+        }
+    }
     for (var key in dic) {
-        for (var j = 0; j < dic[key]["author"]["name"].length; j++) {
+        for (var j = 0; j < dic[key]['_source']["authors"].length; j++) {
             let au = "I"
             let flag_1 = true
             for (var m = 0; m < store.length; m++) {
-                if (dic[key]["author"]["name"][j] == store[m]) {
+                if (dic[key]['_source']["authors"][j] == store[m]) {
                     flag_1 = false
                     au = store[m]
                 }
             }
             if (flag_1) {
-                store.push(dic[key]["author"]["name"][j])
-                f[dic[key]["author"]["name"][j]] = i
+                store.push(dic[key]['_source']["authors"][j])
+                f[dic[key]['_source']["authors"][j]] = i
                 let newDicAuthor = {}
                 newDicAuthor["id"] = i
                 i++
                 newDicAuthor["category"] = 1
-                newDicAuthor["name"] = dic[key]["author"]["name"][j]
-                newDicAuthor["symbolSize"] = 60
+                newDicAuthor["name"] = dic[key]['_source']["authors"][j]
+                newDicAuthor["symbolSize"] = 80
                 newDicAuthor.ignore = true
                 newDicAuthor.flag = true
                 lst_nodes.push(newDicAuthor)
@@ -163,8 +179,10 @@ function getNodesAndLinks(dic, authorname) {
                 newDicTitle["id"] = i
                 i++
                 newDicTitle["category"] = 2
-                newDicTitle["name"] = dic[key]["title"]
+                newDicTitle["name"] = dic[key]['_source']["title"]
                 newDicTitle["symbolSize"] = 60
+                newDicTitle["itemStyle"] = leavesStyle
+                newDicTitle["emphasis"] = { disabled: 'true' }
                 newDicTitle.ignore = true
                 newDicTitle.flag = true
                 lst_nodes.push(newDicTitle)
@@ -188,10 +206,10 @@ function getNodesAndLinks(dic, authorname) {
                 newDicTitle["id"] = i
                 i++
                 newDicTitle["category"] = 2
-                // newDicTitle["name"] = String(i)
-                // newDicTitle["label"] = dic[key]["title"]
-                newDicTitle["name"] = dic[key]["title"]
+                newDicTitle["name"] = dic[key]['_source']["title"]
                 newDicTitle["symbolSize"] = 60
+                newDicTitle["itemStyle"] = leavesStyle
+                newDicTitle["emphasis"] = { disabled: 'true' }
                 newDicTitle.ignore = true
                 newDicTitle.flag = true
                 lst_nodes.push(newDicTitle)
@@ -211,6 +229,8 @@ function getNodesAndLinks(dic, authorname) {
         lst_links[i]["source"] = String(lst_links[i]["source"])
         lst_links[i]["target"] = String(lst_links[i]["target"])
     }
+    console.log(lst_nodes)
+    console.log(lst_links)
     big_lst.push(lst_nodes)
     big_lst.push(lst_links)
     return big_lst
@@ -275,11 +295,11 @@ watch(props, () => {
     }, 200);
 })
 // defineExpose({ init, refreshChart, resizeChart })
-defineExpose({ init })
+defineExpose({ init, resizeChart })
 
-function init() {
-    echarts.registerTheme('roma', theme)
-    var big_lst = getNodesAndLinks(diction, "zwz")
+function init(data, author) {
+    echarts.registerTheme('roma', macarons_theme)
+    var big_lst = getNodesAndLinks(data, author)
     let nodes_filtered = refreshOption(big_lst[0])
     var option = {
         nodes_ori: big_lst[0],
@@ -287,27 +307,73 @@ function init() {
             show: false
         },
         animation: true,
-        animationDuration: 2000,
+        animationDuration: 500,
+        title: {
+            text: "Authors Force Graph",
+            textStyle: {
+                color: '#2160c4',
+                fontSize: '25',
+            }
+        },
         series: [{
+            focusNodeAdjacency: true,
             type: 'graph',
+            zoom: 0.8,
             layout: 'force',
             roam: true,
+            labelLayout: {
+                // hideOverlap: 'true',
+            },
+            emphasis: {
+                scale: 1.05,
+                itemStyle: {
+                    label: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 16,
+                            position: 'inside',
+                            fontWeight: 600,
+                            color: '#1636b6',
+                        },
+                        ellipsis: '...',
+                        width: '50px',
+                        overflow: 'break',
+                    },
+                    borderWidth: '3',
+                    borderColor: '#bdd2f4',
+                    borderType: 'solid',
+                    color: '#e1ebf9',
+                }
+            },
+            animationEasing: 'cubicInOut',
             itemStyle: {
                 normal: {
                     label: {
                         show: true,
                         textStyle: {
                             fontSize: 16,
-                            color: 'black'
+                            position: 'inside',
+                            fontWeight: 600,
+                            color: '#1636b6',
                         },
+                        ellipsis: '...',
                     },
-                    nodeStyle: {
-                        brushType: 'both',
-                        borderColor: 'rgba(0,215,0,0.4)',
-                        borderWidth: 6
-                    }
+                    borderWidth: '3',
+                    borderColor: '#e1ebf9',
+                    borderType: 'solid',
+                    color: '#f0f7ff',
+                },
+            },
+            lineStyle: {
+                normal: {
+                    color: '#142f9f',
+                    width: 4,
+                    type: 'solid',
+                    curveness: 0,
                 }
             },
+            // symbol: 'roundRect',
+            symbol: 'circle',
             categories: [{
                 name: 'main_author'
             }, {
@@ -320,13 +386,11 @@ function init() {
             links: big_lst[1],
             force: {
                 initLayout: 'circular',
-                edgeLength: 80,
-                repulsion: 500,
-                // gravity: 0.1,
+                edgeLength: 120,
+                repulsion: 800,
                 friction: 0.6,
             },
-            // slient: false,
-        }]
+        }],
     };
     myChart = echarts.init(chart.value, 'roma');
     myChart.setOption(option);
@@ -339,7 +403,7 @@ function refreshOption(nodes) {
         if (nodes[i].ignore == false) {
             filterList.push(nodes[i])
         }
-    } 
+    }
     return filterList
 }
 
@@ -356,14 +420,13 @@ function refreshOption(nodes) {
 //     myChart.setOption(option, true, true);
 // }
 
-// function resizeChart() {
-//     if (myChart) {
-//         myChart.resize()
-//     }
-// }
+function resizeChart() {
+    if (myChart) {
+        myChart.resize()
+    }
+}
 </script>
 
 <template>
     <div ref="chart" class="chartYearOri" id="1"></div>
-    <div>test</div>
 </template>

@@ -557,3 +557,20 @@ div.text-ref:hover {
 .el-loading-mask.is-fullscreen .el-loading-spinner{
     transform: scale(1.3);
 }
+
+div.author_graph {
+    transition: all 0.3s;
+}
+
+div.author_graph:hover {
+    transform: scale(1.1);
+    filter:brightness(0.996);
+}
+
+.el-card.author_graph_card {
+    border: 3px solid var(--custom-dark-m2);
+}
+
+.author_graph_card > .el-card__body {
+    height: 80%
+}

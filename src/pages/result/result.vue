@@ -1,6 +1,6 @@
 <script setup>
 import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMenu, ElMenuItem, ElRow, ElCol, ElFooter, ElText, ElCheckboxGroup } from 'element-plus';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElLoading } from 'element-plus';
 import { onMounted, reactive, ref, watch, onBeforeMount, toRaw, nextTick } from 'vue'
 import { Search, Calendar, User, Star, Select, CloseBold, Filter, Document, Reading } from '@element-plus/icons-vue'
 import { useCookies } from 'vue3-cookies'
@@ -13,6 +13,7 @@ import no_res_logo from '@/assets/no-result.png'
 import server_error_logo from '@/assets/server_error.png'
 import love_empty from '@/assets/love_empty.png'
 import love_fill from '@/assets/love_fill.png'
+import author_graph_bg from '@/assets/author_graph_bg.png'
 
 let chartYear = ref()
 let chartAuthor = ref()
@@ -39,6 +40,8 @@ const isSignIn = ref(false)
 const username = ref("")
 const showDetail = ref(false)
 const likedPaperId = ref({})
+let show_author_name_on_graph = ref(false)
+const showAuthorGraph = ref(false)
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
@@ -172,6 +175,7 @@ watch(filterYearChecked, () => {
 window.onresize = () => {
     setTimeout(() => {
         chartYear.value.resizeChart()
+        chartAuthor.value.resizeChart()
     }, 200)
 }
 
@@ -288,7 +292,6 @@ onBeforeMount(() => {
 
 onMounted(() => {
     chartYear.value.init()
-    chartAuthor.value.init()
     isSignIn.value = checkLoginStatus()
     if (localStorage.getItem("M_sc_liked")) {
         likedPaperId.value = JSON.parse(localStorage.getItem("M_sc_liked"))
@@ -323,9 +326,40 @@ function openDetail(data) {
     carddata = data
     showDetail.value = true
 }
+
+function openAuthorGraph() {
+    showAuthorGraph.value = true
+    setTimeout(() => {
+        chartAuthor.value.init(datalistAllFiltered.value, content.value)
+    }, 200)
+}
 </script>
 
 <template>
+    <Transition>
+        <div v-if="showAuthorGraph"
+            style="z-index: 5;position: fixed; display: flex; width: 100vw; height: 100vh; justify-content: center; align-items: center;">
+            <div @click="showAuthorGraph = false"
+                style="position: absolute; width: 100%; height: 100%; filter: opacity(0.7)" class="detailbg">
+            </div>
+            <div style="display: flex; width: 85%; height: 80%; z-index: 2; align-items: center;">
+                <ElCard style="width: 100%; height: 100%; overflow: auto;" class="author_graph_card">
+                    <template #header>
+                        <div class="title"
+                            style="margin-left: 20px; margin-top: 10px; margin-right: 20px; display: flex; flex-direction: row;">
+                            <ElButton size="large" class="close" @click="showAuthorGraph = false">
+                                <el-icon size="large">
+                                    <CloseBold />
+                                </el-icon>
+                            </ElButton>
+                        </div>
+                    </template>
+                    <chart-author-ori style="" ref="chartAuthor"></chart-author-ori>
+                </ElCard>
+            </div>
+        </div>
+    </Transition>
+
     <Transition>
         <div v-if="showDetail"
             style="z-index: 5;position: fixed; display: flex; width: 100vw; height: 100vh; justify-content: center; align-items: center;">
@@ -448,7 +482,7 @@ function openDetail(data) {
                 </ElMenuItem>
                 <div
                     style="height: 100%; align-self: center; display: flex; justify-content: right; width: 50%; margin: auto; margin-right: 1%; column-gap: 20px;">
-                    <div style="align-self: center; min-width: 120px;">
+                    <div style="align-self: center; max-width: 120px; min-width: 120px;">
                         <ElSelect class="menuselect" style="width: 100%;" v-model="searchOptionVal">
                             <ElOptionGroup v-if="enableAll">
                                 <ElOption label="All" value="All" />
@@ -630,16 +664,44 @@ function openDetail(data) {
                     <el-skeleton :rows="10" animated v-show="showLoadingSkeleton"
                         style="margin: auto; margin-top: 5%; width: 80%; justify-self: center;" throttle="500" />
                 </div>
-                <div style="width: 20%; min-width: 210px; height: 25vh; min-height: 210px;">
-                    <ElCard style="margin-top: 20px; height: 100%" class="preset1" id="chart">
-                        <div style="height: 100%;">
-                            <chart-year-ori ref="chartYear" :data="childData"></chart-year-ori>
+                <div style="display: flex; flex-direction: column; row-gap: 40px; width: 20%">
+                    <div style="width: 100%; min-width: 210px; height: 25vh; min-height: 210px;">
+                        <ElCard style="margin-top: 20px; height: 100%" class="preset1" id="chart">
+                            <div style="height: 100%;">
+                                <chart-year-ori ref="chartYear" :data="childData"></chart-year-ori>
+                            </div>
+                        </ElCard>
+                    </div>
+                    <div style="width: 100%; min-width: 210px; min-height: 210px;">
+                        <div style="height: 0; padding-bottom: 100%; position: relative;">
+                            <ElCard
+                                style="position: absolute; top:0; left:0; right:0; bottom:0; display: flex; flex-direction: column;"
+                                class="preset1" id="chart" v-if="searchOptionVal === 'Author'">
+                                <div
+                                    style="height: 5%; font-weight: 600; font-family: 'Helvetica'; font-size: 20px; margin-left: 5px;">
+                                    Author Force Graph
+                                </div>
+                                <div style="position: relative; width: 100%; height: 95%;"
+                                    @mouseenter="show_author_name_on_graph = true"
+                                    @mouseleave="show_author_name_on_graph = false" class="author_graph"
+                                    @click="openAuthorGraph">
+                                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
+                                        <ElImage style="margin: 50px; width: calc(100% - 100px)" :src="author_graph_bg"
+                                            fit="contain" />
+                                    </div>
+                                    <Transition>
+                                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; align-items: center;"
+                                            v-show="show_author_name_on_graph">
+                                            <span style="font-weight: 550;">
+                                                {{ content }}
+                                            </span>
+                                        </div>
+                                    </Transition>
+                                </div>
+                            </ElCard>
                         </div>
-                    </ElCard>
+                    </div>
                 </div>
-            </div>
-            <div style="height: 800px; width: 1000px;">
-                <chart-author-ori ref="chartAuthor"></chart-author-ori>
             </div>
         </ElMain>
         <ElFooter class="res">
