@@ -100,6 +100,8 @@ async function checkLoginStatus() {
 onMounted(() => {
     checkLoginStatus()
     refreshLikedList()
+    // document.title = username.value + " - M Scholar"
+    document.title = username.value + " - Profile M_Scholar"
 })
 
 function logout() {

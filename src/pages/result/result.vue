@@ -334,6 +334,7 @@ onMounted(() => {
     chartYear.value.init()
     checkLoginStatus()
     refreshLikedList()
+    document.title = content.value + " - Search M_Scholar"
 })
 
 function refreshLikedList() {
