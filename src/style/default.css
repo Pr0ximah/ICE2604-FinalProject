@@ -585,7 +585,7 @@ div.clicked {
 
 div.clicked:hover {
     cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    /* text-decoration: underline; */
+    /* text-underline-offset: 4px; */
     box-shadow: 0px 0px 5px var(--custom-dark-m3);
 }
