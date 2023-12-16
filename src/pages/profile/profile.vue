@@ -20,29 +20,33 @@ const likedPaperId = ref({})
 const switchLikeStat = ref(true)
 
 function addLikedList(id) {
-    // if (liked.value && id in liked.value) {
     if (switchLikeStat.value) {
         switchLikeStat.value = false
-        deleteLikedPaper2BE(username.value, id)
+        deleteLikedPaper2BE(username.value, id).then(() => {
+            refreshLikedList()
+        })
     } else {
         switchLikeStat.value = true
-        addLikedPaper2BE(username.value, id)
+        addLikedPaper2BE(username.value, id).then(() => {
+            refreshLikedList()
+        })
     }
-    refreshLikedList()
 }
 
-function addLikedPaper2BE(username, id) {
+async function addLikedPaper2BE(username, id) {
     const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
     const usrname = encodeURIComponent(username)
     const paper_id = encodeURIComponent(id)
     likedPaperId.value[id] = true
-    API({
+    return API({
         url: base + `/collectpaper`,
         method: 'post',
         data: {
             user: usrname,
             paper_id: paper_id,
         }
+    }).then((e) => {
+        return e
     }).catch(() => {
         delete likedPaperId.value[id]
         ElMessage("Oops! Internal server error. Try again later.")
@@ -53,18 +57,20 @@ watch(showDetail, () => {
     refreshLikedList()
 })
 
-function deleteLikedPaper2BE(username, id) {
+async function deleteLikedPaper2BE(username, id) {
     const base = process.env.NODE_ENV === "development" ? "/data_proxy" : "/api"
     const usrname = encodeURIComponent(username)
     const paper_id = encodeURIComponent(id)
     delete likedPaperId.value[id]
-    API({
+    return API({
         url: base + `/removepaper`,
         method: 'post',
         data: {
             user: usrname,
             paper_id: paper_id,
         }
+    }).then((e) => {
+        return e
     }).catch(() => {
         likedPaperId.value[id] = true
         ElMessage("Oops! Internal server error. Try again later.")
@@ -278,8 +284,7 @@ function fetchPDF(paperid) {
                         <ElButton class="icon" @click.stop="addLikedList(carddata['_source']['paper_id'])">
                             <ElImage :src="love_empty" fit="contain" style="width: 18px; margin: 0;"
                                 v-if="!switchLikeStat" />
-                            <ElImage :src="love_fill" fit="contain" style="width: 18px; margin: 0;"
-                                v-if="switchLikeStat" />
+                            <ElImage :src="love_fill" fit="contain" style="width: 18px; margin: 0;" v-if="switchLikeStat" />
                             <span style="margin-left: 5px;">like</span>
                         </ElButton>
                     </div>
@@ -292,7 +297,8 @@ function fetchPDF(paperid) {
         <div
             :style="{ width: '100%', height: '100%', background: `url(${bgUrl})`, backgroundSize: 'cover', filter: 'blur(5px)' }" />
         <div style="position: absolute; width:100%; height: 100%; display: flex; min-width: 600px; min-height: 550px;">
-            <ElCard style="filter: opacity(0.95); margin: auto; width: 80%; max-height: 95%; min-height: 80%; overflow-y: scroll;">
+            <ElCard
+                style="filter: opacity(0.95); margin: auto; width: 80%; max-height: 95%; min-height: 80%; overflow-y: scroll;">
                 <div style="display: flex; flex-direction: column; justify-content: center; width: 100%; margin-top: 40px;"
                     @mouseenter="bgBlur = true" @mouseleave="bgBlur = false">
                     <div style="position: absolute; left: 10px; top: 10px; display: flex;">
@@ -307,7 +313,8 @@ function fetchPDF(paperid) {
                     </div>
 
                     <div style="text-align: center; margin:auto; margin-top: 20px;">
-                        <ElAvatar style="height: 80px; width: 80px; font-size: 18px;" class="profile">{{ username }}
+                        <ElAvatar style="height: 80px; width: 80px; font-size: 18px; font-size: 30px;" class="profile">{{
+                            username[0] }}
                         </ElAvatar>
                     </div>
                     <div style="text-align: center; margin: auto; font-size: 40px; font-weight: 600; margin-top: 40px;"
@@ -320,7 +327,9 @@ function fetchPDF(paperid) {
                         <ElDivider border-style="dotted" style="width: 80%;"><span
                                 style="font-size: 20px; font-weight: 600; color: gray;">liked papers</span></ElDivider>
 
-                        <div class="clicked" v-for="paperid in liked" style="width: 75%; border-radius: 10px; padding-left: 40px; padding-right: 40px; padding-top: 20px; padding-bottom: 20px;" @click="showDetailFunc(paperid['ID'])">
+                        <div class="clicked" v-for="paperid in liked"
+                            style="width: 75%; border-radius: 10px; padding-left: 40px; padding-right: 40px; padding-top: 20px; padding-bottom: 20px;"
+                            @click="showDetailFunc(paperid['ID'])">
                             <div class="title" style="font-size: larger; line-height: 1.6em;">
                                 {{ paperid['Title'] }}
                             </div>
@@ -335,5 +344,5 @@ function fetchPDF(paperid) {
                     </div>
                 </div>
             </ElCard>
-        </div>
+    </div>
 </div></template>

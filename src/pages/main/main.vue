@@ -141,7 +141,7 @@ onMounted(() => {
 
       <div v-if="isSignIn" style="position: absolute; right: 20px; top: 20px; display: flex;">
         <!-- <ElText style="font-size: 20px; color: #ffffff; font-weight: 550; margin: auto; margin-right: 10px;"> Welcome, </ElText> -->
-        <ElAvatar @click="gotoProfile" size="large">{{ username }} </ElAvatar>
+        <ElAvatar @click="gotoProfile" size="large" style="font-size: large;">{{ username[0] }} </ElAvatar>
       </div>
     </ElMain>
   </ElContainer>
