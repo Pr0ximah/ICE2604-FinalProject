@@ -626,7 +626,6 @@ div.scroll::-webkit-scrollbar-thumb {
 }
 
 div.scroll::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
     margin-left: 2px;
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
     background: #ededed;
