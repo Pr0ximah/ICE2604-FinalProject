@@ -1,7 +1,7 @@
 <script setup>
 import { ElButton, ElCard, ElImage, ElInput, ElText, ElMessage } from 'element-plus'
 import { ref, onMounted, watch } from 'vue'
-import { Document, Back, CloseBold } from '@element-plus/icons-vue'
+import { Document, Back, CloseBold, ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 import { useCookies } from 'vue3-cookies'
 import LOGO from "@/assets/LOGO_DARK.png"
 import API from '../../components/axios_instance'
@@ -20,6 +20,7 @@ const showDetail = ref(false)
 const carddata = ref({ '_source': {} })
 const likedPaperId = ref({})
 const switchLikeStat = ref(true)
+const showArrowDown = ref(true)
 
 function addLikedList(id) {
     if (switchLikeStat.value) {
@@ -129,6 +130,7 @@ function refreshLikedList() {
 }
 
 function showDetailFunc(id) {
+    showArrowDown.value = true
     switchLikeStat.value = true
     carddata.value['_source']['link'] = liked.value[id]['Link']
     carddata.value['_source']['doi'] = liked.value[id]['DOI']
@@ -265,15 +267,25 @@ function fetchPDF(paperid) {
                             </span>
                         </span>
                     </div>
-                    <div v-if="carddata['_source']['abstract'] && carddata['_source']['abstract'].length !== 0"
+                    <div v-if="carddata['_source']['abstract'] && carddata['_source']['abstract'] !== 0"
                         style="margin-left: 20px; margin-top: 20px; margin-right: 20px; align-items: center;">
-                        <span style="margin-left: 5px; margin-right: 5px; display: flex;">
+                        <span style="margin-left: 5px; margin-right: 5px; display: flex; position: relative;">
                             <span class="inflogo">
                                 Abstract
                             </span>
-                            <span
-                                style="margin-left: 5px; margin-right: 5px; font-size: smaller; line-height: 1.5em; padding-left: 5px; padding-right: 5px;">
+                            <span :style="{ maxHeight: (showArrowDown ? '7.5em' : '') }"
+                                style="margin-left: 5px; margin-right: 50px; font-size: smaller; line-height: 1.5em; padding-left: 5px; padding-right: 5px; text-overflow: ellipsis; overflow-y: hidden;">
                                 {{ carddata['_source']['abstract'] }}
+                            </span>
+                            <span style="position: absolute; bottom: 0; right: 0;">
+                                <ElButton @click="showArrowDown = !showArrowDown" class="abstract">
+                                    <el-icon v-if="showArrowDown">
+                                        <ArrowDown />
+                                    </el-icon>
+                                    <el-icon v-if="!showArrowDown">
+                                        <ArrowUp />
+                                    </el-icon>
+                                </ElButton>
                             </span>
                         </span>
                     </div>
@@ -303,7 +315,7 @@ function fetchPDF(paperid) {
             :style="{ width: '100%', height: '100%', background: `url(${bgUrl})`, backgroundSize: 'cover', filter: 'blur(5px)' }" />
         <div style="position: absolute; width:100%; height: 100%; display: flex; min-width: 600px; min-height: 550px;">
             <ElCard
-                style="filter: opacity(0.95); margin: auto; width: 80%; max-height: 95%; min-height: 80%; overflow-y: scroll;">
+                style="filter: opacity(0.95); margin: auto; width: 80%; max-height: 95%; min-height: 80%; overflow-y: auto;" class="scroll-norm">
                 <div style="display: flex; flex-direction: column; justify-content: center; width: 100%; margin-top: 40px;"
                     @mouseenter="bgBlur = true" @mouseleave="bgBlur = false">
                     <div style="position: absolute; left: 10px; top: 10px; display: flex;">

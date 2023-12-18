@@ -212,9 +212,12 @@ async def get_img(item : get_img_model):
     tar_loc = os.path.join(base, paper_id)
     print(os.path.exists(tar_loc))
     if (os.path.exists(tar_loc)):
+        print(tar_loc)
         filenames = os.listdir(tar_loc)
-        # return filenames
-        return [f"{os.path.join('/IMG_pdf', paper_id, i)}" for i in filenames]
+        if (filenames):
+            return [f"{os.path.join('/IMG_pdf', paper_id, i)}" for i in filenames]
+        else:
+            return False
     else:
         return False
     

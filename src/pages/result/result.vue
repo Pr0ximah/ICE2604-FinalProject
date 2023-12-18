@@ -2,7 +2,7 @@
 import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMenu, ElMenuItem, ElRow, ElCol, ElFooter, ElText, ElCheckboxGroup } from 'element-plus';
 import { ElMessage, ElLoading } from 'element-plus';
 import { onMounted, reactive, ref, watch, onBeforeMount, toRaw, nextTick } from 'vue'
-import { Search, Calendar, User, Star, Select, CloseBold, Filter, Document, Reading } from '@element-plus/icons-vue'
+import { Search, Calendar, User, Star, Select, CloseBold, Filter, Document, Reading, ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 import { useCookies } from 'vue3-cookies'
 import LOGO_S from "@/assets/LOGO_S_LONG.png"
 import LOGO_L from "@/assets/LOGO_DARK.png"
@@ -45,6 +45,7 @@ const showDetail = ref(false)
 const likedPaperId = ref({})
 let show_author_name_on_graph = ref(false)
 const showAuthorGraph = ref(false)
+const showArrowDown = ref(true)
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
@@ -394,6 +395,7 @@ function signup() {
 
 function openDetail(data) {
     carddata = data
+    showArrowDown.value = true
     showDetail.value = true
 }
 
@@ -530,13 +532,23 @@ function openAuthorGraph() {
                     </div>
                     <div v-if="carddata['_source']['abstract'] && carddata['_source']['abstract'] !== 0"
                         style="margin-left: 20px; margin-top: 20px; margin-right: 20px; align-items: center;">
-                        <span style="margin-left: 5px; margin-right: 5px; display: flex;">
+                        <span style="margin-left: 5px; margin-right: 5px; display: flex; position: relative;">
                             <span class="inflogo">
                                 Abstract
                             </span>
-                            <span
-                                style="margin-left: 5px; margin-right: 5px; font-size: smaller; line-height: 1.5em; padding-left: 5px; padding-right: 5px;">
+                            <span :style="{ maxHeight: (showArrowDown ? '7.5em' : '') }"
+                                style="margin-left: 5px; margin-right: 50px; font-size: smaller; line-height: 1.5em; padding-left: 5px; padding-right: 5px; text-overflow: ellipsis; overflow-y: hidden;">
                                 {{ carddata['_source']['abstract'] }}
+                            </span>
+                            <span style="position: absolute; bottom: 0; right: 0;">
+                                <ElButton @click="showArrowDown = !showArrowDown" class="abstract">
+                                    <el-icon v-if="showArrowDown">
+                                        <ArrowDown />
+                                    </el-icon>
+                                    <el-icon v-if="!showArrowDown">
+                                        <ArrowUp />
+                                    </el-icon>
+                                </ElButton>
                             </span>
                         </span>
                     </div>
