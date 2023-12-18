@@ -2,7 +2,7 @@
 import { ElButton, ElContainer, ElHeader, ElIcon, ElImage, ElInput, ElMain, ElMenu, ElMenuItem, ElRow, ElCol, ElFooter, ElText, ElCheckboxGroup } from 'element-plus';
 import { ElMessage, ElLoading } from 'element-plus';
 import { onMounted, reactive, ref, watch, onBeforeMount, toRaw, nextTick } from 'vue'
-import { Search, Calendar, User, Star, Select, CloseBold, Filter, Document, Reading } from '@element-plus/icons-vue'
+import { Search, Calendar, User, Star, Select, CloseBold, Filter, Document, Reading, ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 import { useCookies } from 'vue3-cookies'
 import LOGO_S from "@/assets/LOGO_S_LONG.png"
 import LOGO_L from "@/assets/LOGO_DARK.png"
@@ -15,7 +15,9 @@ import love_empty from '@/assets/love_empty.png'
 import love_fill from '@/assets/love_fill.png'
 import author_graph_bg from '@/assets/author_graph_bg.png'
 import { verifyLoginStatus } from '../../components/account_func'
+import img_pdf from '../../components/img_pdf.vue'
 
+let img_comp = ref()
 let chartYear = ref()
 let chartAuthor = ref()
 let datalist = ref()
@@ -43,6 +45,7 @@ const showDetail = ref(false)
 const likedPaperId = ref({})
 let show_author_name_on_graph = ref(false)
 const showAuthorGraph = ref(false)
+const showArrowDown = ref(true)
 
 function getQueryContent(name) {
     let reg = new RegExp(name + '=([^&]*)')
@@ -334,6 +337,7 @@ onMounted(() => {
     chartYear.value.init()
     checkLoginStatus()
     refreshLikedList()
+    document.title = content.value + " - Search M_Scholar"
 })
 
 function refreshLikedList() {
@@ -371,7 +375,7 @@ async function checkLoginStatus() {
                     cookies.remove("M_sc_login_flag")
                 }, 2000);
             } else {
-              isSignIn.value = true
+                isSignIn.value = true
             }
         })
     } else {
@@ -391,6 +395,7 @@ function signup() {
 
 function openDetail(data) {
     carddata = data
+    showArrowDown.value = true
     showDetail.value = true
 }
 
@@ -431,7 +436,8 @@ function openAuthorGraph() {
                                     <CloseBold />
                                 </el-icon>
                             </ElButton>
-                            <div style="margin-left: 20px; font-size: xx-large; font-family: 'Helvetica'; font-weight: 550;">
+                            <div
+                                style="margin-left: 20px; font-size: xx-large; font-family: 'Helvetica'; font-weight: 550;">
                                 Author Force Graph
                             </div>
                         </div>
@@ -526,17 +532,29 @@ function openAuthorGraph() {
                     </div>
                     <div v-if="carddata['_source']['abstract'] && carddata['_source']['abstract'] !== 0"
                         style="margin-left: 20px; margin-top: 20px; margin-right: 20px; align-items: center;">
-                        <span style="margin-left: 5px; margin-right: 5px; display: flex;">
+                        <span style="margin-left: 5px; margin-right: 5px; display: flex; position: relative;">
                             <span class="inflogo">
                                 Abstract
                             </span>
-                            <span
-                                style="margin-left: 5px; margin-right: 5px; font-size: 14px; line-height: 1.5em; padding-left: 5px; padding-right: 5px;">
+                            <span :style="{ maxHeight: (showArrowDown ? '7.5em' : '') }"
+                                style="margin-left: 5px; margin-right: 50px; font-size: smaller; line-height: 1.5em; padding-left: 5px; padding-right: 5px; text-overflow: ellipsis; overflow-y: hidden;">
                                 {{ carddata['_source']['abstract'] }}
+                            </span>
+                            <span style="position: absolute; bottom: 0; right: 0;">
+                                <ElButton @click="showArrowDown = !showArrowDown" class="abstract">
+                                    <el-icon v-if="showArrowDown">
+                                        <ArrowDown />
+                                    </el-icon>
+                                    <el-icon v-if="!showArrowDown">
+                                        <ArrowUp />
+                                    </el-icon>
+                                </ElButton>
                             </span>
                         </span>
                     </div>
-                    <div style="margin: 40px 20px 10px 20px;" v-if="carddata['_source']['paper_id'] && carddata['paper_id'] !== ''">
+                    <img_pdf ref="img_comp" :paperid="carddata['_source']['paper_id']" />
+                    <div style="margin: 40px 20px 10px 20px;"
+                        v-if="carddata['_source']['paper_id'] && carddata['paper_id'] !== ''">
                         <ElButton class="icon" @click.stop="fetchPDF(carddata['_source']['paper_id'])">
                             <el-icon>
                                 <Document />
