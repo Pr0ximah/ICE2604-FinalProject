@@ -31,7 +31,6 @@ async function login() {
     //     background: 'rgba(0, 0, 0, 0.1)',
     // })
     login_inner(username.value, passwd.value).then(e => {
-        // loading.close()
         if (e.data) {
             goBack()
         }
