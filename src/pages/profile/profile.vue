@@ -9,7 +9,9 @@ import { signup_inner, backToHome, goBack } from '../../components/account_func'
 import { verifyLoginStatus } from '../../components/account_func'
 import love_empty from '@/assets/love_empty.png'
 import love_fill from '@/assets/love_fill.png'
+import img_pdf from '../../components/img_pdf.vue'
 
+let img_comp = ref()
 const bgUrl = '/HOMEPAPERS/HOMEPAPER2.png'
 const { cookies } = useCookies()
 const username = ref("")
@@ -270,11 +272,12 @@ function fetchPDF(paperid) {
                                 Abstract
                             </span>
                             <span
-                                style="margin-left: 5px; margin-right: 5px; font-size: 14px; line-height: 1.5em; padding-left: 5px; padding-right: 5px;">
+                                style="margin-left: 5px; margin-right: 5px; font-size: smaller; line-height: 1.5em; padding-left: 5px; padding-right: 5px;">
                                 {{ carddata['_source']['abstract'] }}
                             </span>
                         </span>
                     </div>
+                    <img_pdf ref="img_comp" :paperid="carddata['_source']['paper_id']" />
                     <div style="margin: 40px 20px 10px 20px;"
                         v-if="carddata['_source']['paper_id'] && carddata['paper_id'] !== ''">
                         <ElButton class="icon" @click.stop="fetchPDF(carddata['_source']['paper_id'])">
@@ -346,5 +349,6 @@ function fetchPDF(paperid) {
                     </div>
                 </div>
             </ElCard>
+        </div>
     </div>
-</div></template>
+</template>

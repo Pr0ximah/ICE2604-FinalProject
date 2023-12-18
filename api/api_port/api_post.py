@@ -6,6 +6,7 @@ import json
 from api_port import search
 from api_port.db_tool import sql_tool
 import hashlib
+import os
 from datetime import datetime
 
 class login_item(BaseModel):
@@ -25,6 +26,9 @@ class name_paperid(BaseModel):
 
 class user_name(BaseModel):
     user : str =""
+
+class get_img_model(BaseModel):
+    id : str = ""
 
 app_post = APIRouter()
 
@@ -199,3 +203,18 @@ async def GetCollectedPaper(item : user_name):
         return_list["ID"] = content_list[11]
         return_dict[f"{paper_id}"] = return_list
     return return_dict
+
+@app_post.post("/get_img")
+async def get_img(item : get_img_model):
+    paper_id = item.id
+    print(paper_id)
+    base = './api/api_port/IMG_pdf/'
+    tar_loc = os.path.join(base, paper_id)
+    print(os.path.exists(tar_loc))
+    if (os.path.exists(tar_loc)):
+        filenames = os.listdir(tar_loc)
+        # return filenames
+        return [f"{os.path.join('/IMG_pdf', paper_id, i)}" for i in filenames]
+    else:
+        return False
+    

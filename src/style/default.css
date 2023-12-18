@@ -589,3 +589,10 @@ div.clicked:hover {
     /* text-underline-offset: 4px; */
     box-shadow: 0px 0px 5px var(--custom-dark-m3);
 }
+
+.el-image.card-pdf-img {
+    padding: 8px;
+    border-radius: 6px;
+    border: 2px solid var(--custom-dark-m3);
+    transition: all 0.2s;
+}

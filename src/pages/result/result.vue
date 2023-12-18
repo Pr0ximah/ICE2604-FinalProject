@@ -15,7 +15,9 @@ import love_empty from '@/assets/love_empty.png'
 import love_fill from '@/assets/love_fill.png'
 import author_graph_bg from '@/assets/author_graph_bg.png'
 import { verifyLoginStatus } from '../../components/account_func'
+import img_pdf from '../../components/img_pdf.vue'
 
+let img_comp = ref()
 let chartYear = ref()
 let chartAuthor = ref()
 let datalist = ref()
@@ -372,7 +374,7 @@ async function checkLoginStatus() {
                     cookies.remove("M_sc_login_flag")
                 }, 2000);
             } else {
-              isSignIn.value = true
+                isSignIn.value = true
             }
         })
     } else {
@@ -432,7 +434,8 @@ function openAuthorGraph() {
                                     <CloseBold />
                                 </el-icon>
                             </ElButton>
-                            <div style="margin-left: 20px; font-size: xx-large; font-family: 'Helvetica'; font-weight: 550;">
+                            <div
+                                style="margin-left: 20px; font-size: xx-large; font-family: 'Helvetica'; font-weight: 550;">
                                 Author Force Graph
                             </div>
                         </div>
@@ -532,12 +535,14 @@ function openAuthorGraph() {
                                 Abstract
                             </span>
                             <span
-                                style="margin-left: 5px; margin-right: 5px; font-size: 14px; line-height: 1.5em; padding-left: 5px; padding-right: 5px;">
+                                style="margin-left: 5px; margin-right: 5px; font-size: smaller; line-height: 1.5em; padding-left: 5px; padding-right: 5px;">
                                 {{ carddata['_source']['abstract'] }}
                             </span>
                         </span>
                     </div>
-                    <div style="margin: 40px 20px 10px 20px;" v-if="carddata['_source']['paper_id'] && carddata['paper_id'] !== ''">
+                    <img_pdf ref="img_comp" :paperid="carddata['_source']['paper_id']" />
+                    <div style="margin: 40px 20px 10px 20px;"
+                        v-if="carddata['_source']['paper_id'] && carddata['paper_id'] !== ''">
                         <ElButton class="icon" @click.stop="fetchPDF(carddata['_source']['paper_id'])">
                             <el-icon>
                                 <Document />
