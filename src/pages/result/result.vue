@@ -16,7 +16,9 @@ import love_fill from '@/assets/love_fill.png'
 import author_graph_bg from '@/assets/author_graph_bg.png'
 import { verifyLoginStatus } from '../../components/account_func'
 import img_pdf from '../../components/img_pdf.vue'
+import table_pdf from '../../components/table_pdf.vue'
 
+let table_comp = ref()
 let img_comp = ref()
 let chartYear = ref()
 let chartAuthor = ref()
@@ -553,6 +555,7 @@ function openAuthorGraph() {
                         </span>
                     </div>
                     <img_pdf ref="img_comp" :paperid="carddata['_source']['paper_id']" />
+                    <table_pdf ref="table_comp" :paperid="carddata['_source']['paper_id']"/>
                     <div style="margin: 40px 20px 10px 20px;"
                         v-if="carddata['_source']['paper_id'] && carddata['paper_id'] !== ''">
                         <ElButton class="icon" @click.stop="fetchPDF(carddata['_source']['paper_id'])">
