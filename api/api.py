@@ -4,6 +4,46 @@ import json
 import uvicorn
 from api_port import app_get
 from api_port import app_post
+from api_port.db_tool import sql_tool
+
+dict_all = {}
+
+def get_json_data():
+    datadepot = sql_tool("shan", "finalproject", "100_pdf_metadata")
+    s = datadepot.fetch_all()
+    for i in s:
+        dict_elem = {}
+        dict_elem["date"]=i[0]
+        if i[1]:
+            dict_elem["ref_paper"]=i[1].split(",")
+        else:
+            dict_elem["ref_paper"]=[]
+        if i[2]:
+            dict_elem["conference"]=i[2]
+        else:
+            dict_elem["conference"]=""
+        if i[3]:
+            dict_elem["keywords"]=i[3].split(",")
+        else:
+            dict_elem["keywords"]=[]
+        dict_elem["year"]=int(i[4])
+        dict_elem["author"]={"affiliation":i[5].split(","), "name":i[6].split(",")}
+        dict_elem["last_page"]=i[7]
+        dict_elem["link"]=i[8]
+        dict_elem["abstract"]=i[9]
+        dict_elem["title"]=i[10]
+        dict_elem["paper_id"]=i[11]
+        dict_elem["volume"]=int(i[12])
+        dict_elem["update_time"]=i[13]
+        dict_elem["journal"]=i[14]
+        dict_elem["issn"]=i[15]
+        dict_elem["first_page"]=i[16]
+        dict_elem["publisher"]=i[17]
+        dict_elem["doi"]=i[18]
+        dict_all[i[11]]=dict_elem
+
+get_json_data()
+
 
 app = FastAPI()
 
