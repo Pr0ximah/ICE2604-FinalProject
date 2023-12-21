@@ -10,8 +10,10 @@ import { verifyLoginStatus } from '../../components/account_func'
 import love_empty from '@/assets/love_empty.png'
 import love_fill from '@/assets/love_fill.png'
 import img_pdf from '../../components/img_pdf.vue'
+import table_pdf from '../../components/table_pdf.vue'
 
 let img_comp = ref()
+let table_comp = ref()
 const bgUrl = '/HOMEPAPERS/HOMEPAPER2.png'
 const { cookies } = useCookies()
 const username = ref("")
@@ -290,6 +292,7 @@ function fetchPDF(paperid) {
                         </span>
                     </div>
                     <img_pdf ref="img_comp" :paperid="carddata['_source']['paper_id']" />
+                    <table_pdf ref="table_comp" :paperid="carddata['_source']['paper_id']"/>
                     <div style="margin: 40px 20px 10px 20px;"
                         v-if="carddata['_source']['paper_id'] && carddata['paper_id'] !== ''">
                         <ElButton class="icon" @click.stop="fetchPDF(carddata['_source']['paper_id'])">

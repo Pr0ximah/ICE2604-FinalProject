@@ -32,10 +32,6 @@ onMounted(() => {
         }
     })
 })
-
-function openImg(file) {
-    window.open(file, "_blank")
-}
 </script>
 
 <template>
