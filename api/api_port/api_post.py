@@ -18,6 +18,7 @@ from api_port import search
 from api_port.db_tool import sql_tool
 import hashlib
 import os
+import csv
 from datetime import datetime
 
 
@@ -255,45 +256,59 @@ async def get_img(item: get_id_model):
         return False
 
 
-testdata = [
-    {
-        "data": [
-            {
-                "date": "2016-05-03",
-                "name": "Tom",
-                "address": "No. 189, Grove St, Los Angeles",
-            },
-            {
-                "date": "2016-05-02",
-                "name": "Tom",
-                "address": "No. 189, Grove St, Los Angeles",
-            },
-            {
-                "date": "2018-05-02",
-                "name": "Jack",
-                "address": "No. 190, Grove St, Los Angeles",
-            },
-        ],
-        "head": [
-            "date",
-            "name",
-            "address",
-        ],
-    },
-]
+# tableDataExample = [
+#     {
+#         "data": [
+#             {
+#                 "date": "2016-05-03",
+#                 "name": "Tom",
+#                 "address": "No. 189, Grove St, Los Angeles",
+#             },
+#             {
+#                 "date": "2016-05-02",
+#                 "name": "Tom",
+#                 "address": "No. 189, Grove St, Los Angeles",
+#             },
+#             {
+#                 "date": "2018-05-02",
+#                 "name": "Jack",
+#                 "address": "No. 190, Grove St, Los Angeles",
+#             },
+#         ],
+#         "head": [
+#             "date",
+#             "name",
+#             "address",
+#         ],
+#     },
+# ]
 
+def read_csv(file):
+    csv_reader = csv.reader(open(file))
+    data = []
+    for row in csv_reader:
+        data.append(row)
+    # print(data)
+    head = data[0]
+    content = []
+    for row in data[1:]:
+        content_inner = {}
+        for i in range(len(head)):
+            content_inner[head[i]] = row[i]
+        content.append(content_inner.copy())
+    return {"data": content, "head": head}
 
 @app_post.post("/get_table")
 async def get_table(item: get_id_model):
     paper_id = item.id
-    return testdata
-    # base = './api/api_port/IMG_pdf/'
-    # tar_loc = os.path.join(base, paper_id)
-    # if (os.path.exists(tar_loc)):
-    #     filenames = os.listdir(tar_loc)
-    #     if (filenames):
-    #         return [f"{os.path.join('/IMG_pdf', paper_id, i)}" for i in filenames]
-    #     else:
-    #         return False
-    # else:
-    #     return False
+    res = []
+    base = './api/api_port/Table_pdf/'
+    tar_loc = os.path.join(base, paper_id)
+    if (os.path.exists(tar_loc)):
+        filenames = os.listdir(tar_loc)
+        for filename in filenames:
+            data = read_csv(os.path.join("./api/api_port/Table_pdf", paper_id, filename))
+            res.append(data.copy())
+        return res
+    else:
+        return False
