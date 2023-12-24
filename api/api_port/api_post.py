@@ -49,6 +49,9 @@ class get_id_model(BaseModel):
     id: str = ""
 
 
+class get_img_model(BaseModel):
+    id : str = ""
+
 app_post = APIRouter()
 
 
@@ -63,7 +66,8 @@ def generate_sha256_hash(input_string):
 async def Signup(item: login_item):
     user = item.user
     key = item.key
-    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
+    # datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
+    datadepot = sql_tool("shan", "finalproject", "users")
     content = datadepot.fetch_specific("user_name", user)
     if content:
         return False
@@ -83,12 +87,12 @@ async def Signup(item: login_item):
     content = datadepot.fetch_specific("user_name", user)
     return key_db
 
-
 @app_post.post("/login")
 async def Login(item: login_item):
     user = item.user
     key = item.key
-    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
+    # datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
+    datadepot = sql_tool("shan", "finalproject", "users")
     content = datadepot.fetch_specific("user_name", user)
     successlogin = False
     if not content:
@@ -312,3 +316,10 @@ async def get_table(item: get_id_model):
         return res
     else:
         return False
+    
+
+@app_post.post("/uploadFile")
+async def uploadfile(item : get_img_model):
+    paper_od = item.id
+    name = "api/api_port/IMG_pdf/elsevier_05cbcb9ef5629bc25e84df43572f9d1eddb9a35f/cambridge_7ed35e46861725b02ec23a2ae2b87a7bc7fa7c63_2-641.jpeg"
+    return FileResponse(name, filename="cambridge_7ed35e46861725b02ec23a2ae2b87a7bc7fa7c63_2-641.jpeg")
