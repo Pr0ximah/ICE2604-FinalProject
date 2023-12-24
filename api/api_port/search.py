@@ -42,8 +42,8 @@ def get_json_data():
 
 get_json_data()
 
-es = Elasticsearch()
-# es = Elasticsearch(["http://localhost:9200"])
+# es = Elasticsearch()
+es = Elasticsearch(["http://localhost:9200"])
 
 def get_json(string):
     return json.dumps(string, sort_keys=True, indent=4, separators=(",", ":"))
