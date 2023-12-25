@@ -91,8 +91,8 @@ async def Signup(item: login_item):
 async def Login(item: login_item):
     user = item.user
     key = item.key
-    # datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
-    datadepot = sql_tool("shan", "finalproject", "users")
+    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
+    # datadepot = sql_tool("shan", "finalproject", "users")
     content = datadepot.fetch_specific("user_name", user)
     successlogin = False
     if not content:
@@ -292,15 +292,21 @@ def read_csv(file):
     data = []
     for row in csv_reader:
         data.append(row)
-    # print(data)
-    head = data[0]
+    head = []
+    blank_cnt = 0
+    for i in range(len(data[0])):
+        if data[0][i] == "":
+            head.append(f"empty{blank_cnt}")
+        else:
+            head.append(data[0][i])
     content = []
     for row in data[1:]:
         content_inner = {}
         for i in range(len(head)):
             content_inner[head[i]] = row[i]
         content.append(content_inner.copy())
-    return {"data": content, "head": head}
+    pagenum = os.path.basename(file).split('-')[2]
+    return {"data": content, "head": head, "page_num": pagenum}
 
 @app_post.post("/get_table")
 async def get_table(item: get_id_model):
@@ -310,6 +316,7 @@ async def get_table(item: get_id_model):
     tar_loc = os.path.join(base, paper_id)
     if (os.path.exists(tar_loc)):
         filenames = os.listdir(tar_loc)
+        filenames.sort(key=lambda filename: int(filename.split("-")[2]))
         for filename in filenames:
             data = read_csv(os.path.join("./api/api_port/Table_pdf", paper_id, filename))
             res.append(data.copy())

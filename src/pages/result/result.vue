@@ -57,8 +57,8 @@ function getQueryContent(name) {
     }
 }
 
-const content = ref(getQueryContent('content'))
-const enableAll = ref(false)
+const content = ref("")
+const enableAll = ref(true)
 let carddata = ref()
 
 function getSearchDataList() {
@@ -339,6 +339,7 @@ onMounted(() => {
     chartYear.value.init()
     checkLoginStatus()
     refreshLikedList()
+    content.value = getQueryContent("content")
     document.title = content.value + " - Search M_Scholar"
 })
 
@@ -457,7 +458,7 @@ function openAuthorGraph() {
                 class="detailbg">
             </div>
             <div style="display: flex; width: 85%; z-index: 2; align-items: center;">
-                <ElCard style="width: 100%; max-height: 90vh; overflow: auto;" class="detail">
+                <ElCard style="width: 100%; max-height: 90vh; overflow-y: auto;" class="detail">
                     <template #header>
                         <div class="title"
                             style="margin-left: 20px; margin-top: 20px; margin-right: 20px; display: flex; flex-direction: row;">
@@ -483,7 +484,7 @@ function openAuthorGraph() {
                             {{ carddata['_source']['doi'] }}
                         </span>
                     </div>
-                    <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['year'] && carddata['_source']['year'].length !== 0" style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 Year
@@ -504,7 +505,7 @@ function openAuthorGraph() {
                             </span>
                         </span>
                     </div>
-                    <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['authors'] && carddata['_source']['authors'].length !== 0" style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 Authors
@@ -555,7 +556,7 @@ function openAuthorGraph() {
                         </span>
                     </div>
                     <img_pdf ref="img_comp" :paperid="carddata['_source']['paper_id']" />
-                    <table_pdf ref="table_comp" :paperid="carddata['_source']['paper_id']"/>
+                    <table_pdf ref="table_comp" :paperid="carddata['_source']['paper_id']" />
                     <div style="margin: 40px 20px 10px 20px;"
                         v-if="carddata['_source']['paper_id'] && carddata['paper_id'] !== ''">
                         <ElButton class="icon" @click.stop="fetchPDF(carddata['_source']['paper_id'])">
@@ -597,7 +598,7 @@ function openAuthorGraph() {
                     </div>
                     <div style="align-self: center; display: flex; flex-direction: row;">
                         <ElInput id="ei" v-model="content" style="height: 100%; min-width: 120px; font-size: large;"
-                            @keydown.enter=search>
+                            @keydown.enter=search @keydown.space="content += ' '">
                             <template #append>
                                 <ElButton class="search-btn-res" style="height: 100%;" @click="search">
                                     <ElIcon style="height: 100%;">
@@ -688,7 +689,7 @@ function openAuthorGraph() {
                                 </span>
                             </span>
                             <ElTooltip effect="customized" content="Year" placement="right" show-after="800">
-                                <span style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
+                                <span v-if="data['_source']['year'] && data['_source']['year'].length !== 0" style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
                                     <el-icon size="small">
                                         <Calendar />
                                     </el-icon>
@@ -711,7 +712,7 @@ function openAuthorGraph() {
                         </div>
                         <div style="margin: 15px 5px 10px 5px; align-items: center;">
                             <ElTooltip effect="customized" content="Authors" placement="right" show-after="800">
-                                <span style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
+                                <span v-if="data['_source']['authors'] && data['_source']['authors'].length !== 0" style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
                                     <el-icon>
                                         <User />
                                     </el-icon>
@@ -824,7 +825,7 @@ function openAuthorGraph() {
                         <ElText> Final Project </ElText>
                     </ElRow>
                     <ElRow class="bottom-des-row">
-                        <ElText> © Course Group 10 </ElText>
+                        <ElText> © 2023 Course Group 10 </ElText>
                     </ElRow>
                 </ElCol>
             </div>
