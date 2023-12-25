@@ -110,9 +110,9 @@ class sql_tool:
 if __name__ == "__main__":
     # for debug
     # s = sql_tool("ADMINROOT", "testdb", "test_table")
-    s = sql_tool("ADMINROOT", "ice2604_final_project", "users")
-    s.insert_column_by_username('love_paper', '{}', 'test')
-    s.save()
+    s = sql_tool("shan", "finalproject", "100_pdf_metadata")
+    # s.insert_column_by_username('love_paper', '{}', 'test')
+    # s.save()
     # print(s.fetch_specific("ID", "2"))
     # s.insert([4, "David", "D not D"])
     # s.save()

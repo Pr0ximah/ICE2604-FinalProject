@@ -219,7 +219,7 @@ function fetchPDF(paperid) {
         url: base + `/file/${paperid}`,
         method: 'get'
     }).then((e) => {
-        const file_dir = process.env.NODE_ENV === "development" ? "/api/api_port/file" : "/paper_files"
+        const file_dir = process.env.NODE_ENV === "development" ? "/api/api_port" : "/paper_files"
         window.open(file_dir + e['data'], "_blank")
     }).catch(() => {
         ElMessage("Oops! Internal server error. Try again later.")
@@ -475,7 +475,7 @@ function openAuthorGraph() {
                         </div>
                     </template>
 
-                    <div style="margin-left: 20px; margin-top: 10px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['doi'] && carddata['_source']['doi'].length !== 0" style="margin-left: 20px; margin-top: 10px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 DOI
@@ -494,7 +494,7 @@ function openAuthorGraph() {
                             </span>
                         </span>
                     </div>
-                    <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['journal'] && carddata['_source']['journal'].length !== 0" style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 Journal
@@ -679,7 +679,7 @@ function openAuthorGraph() {
                         </template>
                         <div
                             style="margin: 10px 5px 10px 5px; align-items: center; display: flex; flex-wrap: wrap; row-gap: 15px;">
-                            <span style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
+                            <span v-if="data['_source']['doi'] && data['_source']['doi'].length !== 0" style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
                                 <span class="inflogo">
                                     DOI
                                 </span>
@@ -699,7 +699,7 @@ function openAuthorGraph() {
                                 </span>
                             </ElTooltip>
                             <ElTooltip effect="customized" content="Journal" placement="right" show-after="800">
-                                <span style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
+                                <span v-if="data['_source']['journal'] && data['_source']['journal'].length !== 0" style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
                                     <el-icon>
                                         <Reading />
                                     </el-icon>
