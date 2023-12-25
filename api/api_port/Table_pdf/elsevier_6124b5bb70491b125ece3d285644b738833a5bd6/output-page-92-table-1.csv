@@ -1,74 +1,47 @@
 "","","","Granite","","","","","","","",""
-"Tangbula,","","","porphyry,","Cretaceous 
-biotite","Mo: 100;","Mo: 0.1;","","PT","Mb,  Cp,  Py,","","Xia et al. (2010);"
-"","P","Mo-Cu","","","","","","Sw, Diss","","Qz, Ser, Kf, Chl",""
+"Tangbula,","","","porphyry,","Cretaceousbiotite","Mo:100;","Mo:01;","","PT","Mb,Cp,Py,","","Xiaetal(2010);"
+"","P","Mo-Cu","","","","","","Sw,Diss","","Qz,Ser,Kf,Chl",""
 "","","","","","","","","","","",""
 "","","","","","","","","","","",""
-"Tibet","","","monzogranite","monzogranite, biotite granite","Cu: 10","Cu: 0.21","I","","Mt","","Wang et al. (2010)"
-"","","","porphyry, etc.","","","","","","","",""
+"Tibet","","","monzogranite","monzogranite,biotitegranite","Cu:10","Cu:021","I","","Mt","","Wangetal(2010)"
+"","","","porphyry,etc","","","","","","","",""
 "","","","","","","","R","","","",""
-"Tinggong,","","","Granite","Eocene 
-volcanic 
-tuff,","","Mo: 0.04-0.08","","","Py,  Cp,  Mb,","","Chen et al. (2014);"
-"","P","Cu-Mo","","","","","","Diss, Sw","","Qz, Kf, Ser, Chl",""
-"Tibet","","","porphyry","tuffaceous sandstone","","Cu: 0.55-1.47 
-USC","","","Bo","","Yang et al. (2005)"
-"","","","","Palaeogene tuff, tuff breccia;","","","","","","",""
-"Bangpu,","","","Porphyritic","","","","","Diss,  Sw,","Mb,  Cp,  Py,","Qz, 
-Kf, 
-Ser,","Wang et al. (2012b);"
-"","P","Mo-Cu","","Permian 
-volcanic","","","","","","",""
-"Tibet","","","monzogranite","","","Cu: 0.33","","Br","Bo, Ga, Sph","Chl, Fl","Zhao et al. (2015b)"
-"","","","","tuff, sandstone, limestone","","","","","","",""
-"","","","","Jurassic  andesite,","","","","","","",""
-"Lakange,","","","Granodiorite","","","","","","","Qz,  Kf,  Bi,  Ser,",""
-"","P","Cu-Mo","","breccia,  quartz  schist,","","","","Diss, Sw","Mb, Cp, Py","","Leng et al. (2015)"
-"Tibet","","","porphyry","","","","","","","Chl, Kao",""
-"","","","","limestone, marble","","","","","","",""
-"","","","","Early 
-Cretaceous  marble,","CEPTED MAN","Cu: 0.71","","","","","Chen et al. (2015);"
-"Nuri,","","","Granite","","","","","","Cp,  Mb,  Sch,","Qz,  Gr,  Di,  Ep,",""
-"","S","Cu-W-Mo","","argillceous","","WO3: 0.22","","Diss, Sw","","","Wu et al. (2015);"
-"Tibet","","","porphyry","","","","","","Py","Act, Chl, Cc",""
-"","","","","siltstone, hornfels, tuff","","Mo: 0.067","","","","","Wang et al. (2014b)"
+"Tinggong,","","","Granite","Eocenevolcanictuff,","","Mo:004-008","","","Py,Cp,Mb,","","Chenetal(2014);"
+"","P","Cu-Mo","","","","","","Diss,Sw","","Qz,Kf,Ser,Chl",""
+"Tibet","","","porphyry","tuffaceoussandstone","","Cu:055-147USC","","","Bo","","Yangetal(2005)"
+"","","","","Palaeogenetuff,tuffbreccia;","","","","","","",""
+"Bangpu,","","","Porphyritic","","","","","Diss,Sw,","Mb,Cp,Py,","Qz,Kf,Ser,","Wangetal(2012b);"
+"","P","Mo-Cu","","Permianvolcanic","","","","","","",""
+"Tibet","","","monzogranite","","","Cu:033","","Br","Bo,Ga,Sph","Chl,Fl","Zhaoetal(2015b)"
+"","","","","tuff,sandstone,limestone","","","","","","",""
+"","","","","Jurassicandesite,","","","","","","",""
+"Lakange,","","","Granodiorite","","","","","","","Qz,Kf,Bi,Ser,",""
+"","P","Cu-Mo","","breccia,quartzschist,","","","","Diss,Sw","Mb,Cp,Py","","Lengetal(2015)"
+"Tibet","","","porphyry","","","","","","","Chl,Kao",""
+"","","","","limestone,marble","","","","","","",""
+"","","","","EarlyCretaceousmarble,","CEPTEDMAN","Cu:071","","","","","Chenetal(2015);"
+"Nuri,","","","Granite","","","","","","Cp,Mb,Sch,","Qz,Gr,Di,Ep,",""
+"","S","Cu-W-Mo","","argillceous","","WO3:022","","Diss,Sw","","","Wuetal(2015);"
+"Tibet","","","porphyry","","","","","","Py","Act,Chl,Cc",""
+"","","","","siltstone,hornfels,tuff","","Mo:0067","","","","","Wangetal(2014b)"
 "","","","Monzogranite","","","","","","","",""
-"","","","","","","","","","","","Hou 
-et 
-al. 
-(2007);"
-"Yulong,","","","porphyry;","Triassic 
-limestone,  marble,","","Cu: 0.52","","","Cp,  Mb,  Py,","Kf, 
-Qz, 
-Ser,",""
+"","","","","","","","","","","","Houetal(2007);"
+"Yulong,","","","porphyry;","Triassiclimestone,marble,","","Cu:052","","","Cp,Mb,Py,","Kf,Qz,Ser,",""
 "","","","","","","","","","","",""
 "","","","","","","","","","","",""
-"Tibet","PS","Cu-Mo","quartz","sand-shale, slate","Mo: 150","Mo: 0.028","","Diss, Sw","Bo, Sph, Ga","Kao, Chl, Ep","Liang 
-et 
-al. 
-(2008,"
+"Tibet","PS","Cu-Mo","quartz","sand-shale,slate","Mo:150","Mo:0028","","Diss,Sw","Bo,Sph,Ga","Kao,Chl,Ep","Liangetal(2008,"
 "","","","","AC","","","","","","","2009a)"
 "","","","","","","","","","","",""
 "","","","monzogranite","","","","","","","",""
 "","","","Monzogranite","","","","","","","",""
-"","","","","Permian 
-volcanic 
-rocks;","","","","","","",""
-"Zhanaga,","","","porphyry,","","","Cu: 0.36","","","Cp,  Mb,  Py,","Kf, 
-Qz, 
-Ser,",""
-"","P","Cu-Mo","","Triassic 
-sandstone,","Cu: 300","","","Diss, Sw","","","He et al. (2014)"
-"Tibet","","","syenogranite","","","Mo: 0.03","","","Mt","Kao, Chl, Ep",""
+"","","","","Permianvolcanicrocks;","","","","","","",""
+"Zhanaga,","","","porphyry,","","","Cu:036","","","Cp,Mb,Py,","Kf,Qz,Ser,",""
+"","P","Cu-Mo","","Triassicsandstone,","Cu:300","","","Diss,Sw","","","Heetal(2014)"
+"Tibet","","","syenogranite","","","Mo:003","","","Mt","Kao,Chl,Ep",""
 "","","","","mudstone","","","","","","",""
 "","","","porphyry","","","","","","","",""
-"","","","Monzogranite","Permian 
-volcanic 
-rocks;","","","","","","",""
-"","","","","","","Cu: 0.34","","","","Kf, 
-Qz, 
-Ser,",""
-"Mangzong","P","Cu-Mo","porphyry,","Triassic 
-sandstone,","Cu: 250","","","Sw","Cp, Mb, Py","","Wu et al. (2011)"
-"","","","","","","Mo: 0.01-0.02","","","","Kao, Chl, Ep",""
+"","","","Monzogranite","Permianvolcanicrocks;","","","","","","",""
+"","","","","","","Cu:034","","","","Kf,Qz,Ser,",""
+"Mangzong","P","Cu-Mo","porphyry,","Triassicsandstone,","Cu:250","","","Sw","Cp,Mb,Py","","Wuetal(2011)"
+"","","","","","","Mo:001-002","","","","Kao,Chl,Ep",""
 "","","","syenogranite","mudstone","","","","","","",""

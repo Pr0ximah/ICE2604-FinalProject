@@ -637,5 +637,20 @@ span.cardtable {
     padding-right: 12px;
     border-radius: 6px;
     border: 2px dashed var(--custom-dark-m3);
-    transition: all 0.2s;
+}
+
+div.table .btn-prev,.btn-next {
+    background-color: white !important;
+    transition: all 0.1s !important;
+    border-radius: 6px !important;
+}
+
+div.table .btn-prev:hover,.btn-next:hover {
+    background-color: var(--custom-light-4_5) !important;
+    box-shadow: 0px 0px 2px var(--custom-dark);
+}
+
+div.table .btn-prev:disabled,.btn-next:disabled {
+    background-color: white !important;
+    box-shadow: 0px 0px 0px;
 }

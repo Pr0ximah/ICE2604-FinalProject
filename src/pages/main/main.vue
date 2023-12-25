@@ -7,7 +7,7 @@ import LOGO from '/src/assets/LOGO.png'
 import { verifyLoginStatus } from '../../components/account_func'
 
 const wallpapercnt = 16
-const enableAll = ref(false)
+const enableAll = ref(true)
 const wallpaperurl = '/HOMEPAPERS/HOMEPAPER' + String(Math.floor(Math.random() * wallpapercnt)) + '.png'
 const url = wallpaperurl;
 const { cookies } = useCookies()
@@ -131,7 +131,7 @@ onMounted(() => {
       <div
         style="position:absolute; bottom: 30px; text-align: center; margin: auto; width: 98%; color: #ffffff; text-shadow: 1px 1px 1px black;">
         <div style="margin: auto"> SJTU ICE2604 Final Project </div>
-        <div style="margin: auto"> © Course Group 10 </div>
+        <div style="margin: auto"> © 2023 Course Group 10 </div>
       </div>
 
       <div v-if="!isSignIn" style="position: absolute; right: 20px; top: 20px;">

@@ -212,7 +212,7 @@ function fetchPDF(paperid) {
                         </div>
                     </template>
 
-                    <div style="margin-left: 20px; margin-top: 10px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['doi'] && carddata['_source']['doi'].length !== 0" style="margin-left: 20px; margin-top: 10px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 DOI
@@ -220,7 +220,7 @@ function fetchPDF(paperid) {
                             {{ carddata['_source']['doi'] }}
                         </span>
                     </div>
-                    <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['year'] && carddata['_source']['year'].length !== 0" style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 Year
@@ -231,7 +231,7 @@ function fetchPDF(paperid) {
                             </span>
                         </span>
                     </div>
-                    <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['journal'] && carddata['_source']['journal'].length !== 0" style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 Journal
@@ -241,7 +241,7 @@ function fetchPDF(paperid) {
                             </span>
                         </span>
                     </div>
-                    <div style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['authors'] && carddata['_source']['authors'].length !== 0" style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 Authors
