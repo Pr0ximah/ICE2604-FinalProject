@@ -1,0 +1,8 @@
+"Method","MovingMNIST","TaxiBJ+","RD"
+"(A)Oursw/oLC","197","28","141"
+"(B)Oursw/oFoTF","166","24","172"
+"(C)Oursw/oTeDev","221","31","178"
+"(D)Oursw/oDecoder","159","22","102"
+"(E)OursTeDev→ViT","235","35","162"
+"(F)OursTeDev→SwinT","213","32","143"
+"Ours(Fullmodel)","149","21","94"

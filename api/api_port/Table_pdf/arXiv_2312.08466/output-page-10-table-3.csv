@@ -1,0 +1,8 @@
+"","","ParameterSharing","","Non-ParameterSharing"
+"","LBF","RWARE","LBF","RWARE"
+"Hiddendimension","128","64","64","64"
+"Learningrate","00003","00005","00001","00005"
+"Rewardstandardisation","True","True","True","True"
+"Networktype","GRU","FC","GRU","FC"
+"Evaluationepsilon","00","005","005","005"
+"Targetupdate","001(soft)","001(soft)","200(hard)","001(soft)"

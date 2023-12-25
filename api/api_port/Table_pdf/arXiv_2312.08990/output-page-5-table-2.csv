@@ -1,0 +1,5 @@
+"Cond④","Cond⑤","simpliﬁedboundfors","witnessparameters",""
+"④","⑤","","v=1s=1s=1",""
+"","","v","","s=1"
+"","","","v=2s=2s=1",""
+"¬④","¬⑤","⌈(v−s)/(s−1)⌉","","s=1"

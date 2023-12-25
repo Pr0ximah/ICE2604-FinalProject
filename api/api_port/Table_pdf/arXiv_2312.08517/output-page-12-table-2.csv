@@ -1,0 +1,6 @@
+"","Yelp2018","Gowalla","Amazon-Books"
+"negativeweight","04","07","06"
+"margin","09","09","04"
+"regularization","-9","-9","-9"
+"numberofnegative","800","800","800"
+"numberofpositive","10","20","50"

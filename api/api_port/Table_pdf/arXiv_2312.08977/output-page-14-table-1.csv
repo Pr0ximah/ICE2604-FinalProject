@@ -1,0 +1,7 @@
+"Dataset","#training","#testing","#Classes","Link"
+"","instances","instances","",""
+"CIFAR100","50,000","10,000","100","Link"
+"CUB200","9,430","2,358","200","Link"
+"ImageNet-R","24,000","6,000","200","Link"
+"Cars196","8,144","8,044","196","Link"
+"VTAB","1,796","8,619","50","Link"

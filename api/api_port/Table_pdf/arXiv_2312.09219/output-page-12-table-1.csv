@@ -1,0 +1,6 @@
+"Hyperparameter","value"
+"learningrateα","01"
+"regularizationrateβ","01"
+"λ1","05"
+"λ2","02"
+"dimensionalityd","200"

@@ -1,0 +1,5 @@
+"Aligned","Model","User","Model","User","Softlabel","Hardlabel","Selected","Selected"
+"model","acc","acc","conf","conf","agreement","agreement","higherconf","lowerconf"
+"RoBERTa","072","069","080","086","025","071","040","005"
+"LSTM","072","070","083","084","039","069","016","014"
+"Davinci","042","066","094","091","053","064","005","005"

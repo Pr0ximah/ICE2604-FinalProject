@@ -1,0 +1,5 @@
+"Behavior","BoolQ","NQ1","NQ2","TruthfulQA"
+"Rejection","575","472","620","392"
+"Acceptance","137","246","397","333"
+"Abstain","443","348","166","198"
+"Sycophancy","266","370","259","457"

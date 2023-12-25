@@ -1,0 +1,6 @@
+"Model","Robustness↑","Model","Knowledge↑"
+"GPT-4","795","GPT-4","955"
+"Vicuna-13B","524","ChatGPT","723"
+"ChatGPT","502","Vicuna-13B","612"
+"Vicuna-7B","368","Llama-2-7B","579"
+"Llama-2-7B","219","Vicuna-7B","510"

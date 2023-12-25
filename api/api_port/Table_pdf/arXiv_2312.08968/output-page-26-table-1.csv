@@ -1,0 +1,4 @@
+"","Precision","Recall","F1"
+"LogitBoost","096","080","087"
+"LogitRegression","090","085","088"
+"SVM","097","087","092"

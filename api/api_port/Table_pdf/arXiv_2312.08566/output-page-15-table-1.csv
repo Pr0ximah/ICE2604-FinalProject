@@ -1,0 +1,6 @@
+"MiniMinecraft","LLMPredicts?","Library?","MiningCraftingCompositional"
+"CodePolicyPrediction","Sub-policies","✓","12%37%11%"
+"Ours","Goal+Operators","✓","100%100%100%"
+"ALFRED(n=3replications)","LLMPredicts?","Library?","Original(Simple+CompositionalTasks)"
+"CodePolicyPrediction","Sub-policies","✓","11%"
+"Ours","Goal+Operators","✓","70%"

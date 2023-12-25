@@ -1,0 +1,5 @@
+"","Yelp2018","Gowalla","Amazon-Books"
+"negativeweight","11","12","11"
+"temperature","05","04","04"
+"regularization","1e-8","1e-8","1e-8"
+"numberofnegative","800","800","800"

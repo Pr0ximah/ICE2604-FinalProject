@@ -1,0 +1,7 @@
+"Model","Accoriginal/subset"
+"RandomBaseline","035/026"
+"TF-IDF","051/028"
+"LSTM(ESIM)","084/072"
+"RoBERTa","084/072"
+"Davinci","059/042"
+"Human","081/072"

@@ -1,0 +1,5 @@
+"Method","Acc(%)","AvgAcc(%)"
+"OnlyOpenface","7044","4676"
+"Attention","7409","5032"
+"Concat","7698","5250"
+"Concat+Attention","7814","5574"

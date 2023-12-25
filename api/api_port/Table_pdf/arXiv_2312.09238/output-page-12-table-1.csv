@@ -1,0 +1,5 @@
+"","ApproachPig","onPlains","ApproachSheeponPlains","ApproachChickenonPlains","AttackCow","onPlains"
+"Method","","","","","",""
+"","avgstep↓","succ(%)↑","avgstep↓succ(%)↑","avgstep↓succ(%)↑","avgstep↓","succ(%)↑"
+"ImitationLearning","1664","250","1734235","1496364","3522","133"
+"Ours","830","673","1024606","1391545","3133","408"

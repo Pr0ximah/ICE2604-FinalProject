@@ -1,0 +1,5 @@
+"Dataset","logical","credibility","emotional"
+"BoolQ","93","91","135"
+"NQ1","94","89","135"
+"NQ2","98","88","126"
+"TruthfulQA","96","95","138"

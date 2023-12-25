@@ -1,0 +1,5 @@
+"Methods","Models","Accuracy(%)","Loss"
+"DIVERSE-NLI(Lietal,2023b)","DeBERTa(Heetal,2020)","613","543"
+"DIVERSE-NLI(Lietal,2023b)","LLaMA2-13B","756","327"
+"DIVERSE-Rule(Lietal,2023b)","-","750","343"
+"MATH-SHEPHERD","LLaMA2-13B(N=4)","850","205"

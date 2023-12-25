@@ -1,0 +1,6 @@
+"Reward","Policy","Reward","Success"
+"Stabilization","Initialization","Type","Rate"
+"✓","✓","Cossim","042±001"
+"","✓","Cossim","033±002"
+"✓","","Cossim","000±000"
+"✓","✓","Softmax","035±003"

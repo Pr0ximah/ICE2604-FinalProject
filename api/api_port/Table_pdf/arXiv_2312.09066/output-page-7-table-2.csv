@@ -1,0 +1,7 @@
+"Feature","Acc(%)","AvgAcc(%)"
+"Openface","7044","4676"
+"I3D","7243","5876"
+"Openface+I3D","7814","5574"
+"Openface+I3D+Audio","7855","5685"
+"Openface+I3D","7142","6023"
+"Openface+I3D+Audio","7460","6370"

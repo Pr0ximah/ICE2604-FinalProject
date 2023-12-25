@@ -1,0 +1,6 @@
+"Models","Win","Loss","Tie"
+"LambvsEmpDG","488%","163%","349%"
+"LambvsCEM","402%","190%","408%"
+"LambvsSEEK","417%","195%","388%"
+"LambvsKEMP","453%","185%","362%"
+"LambvsDCKS","374%","203%","423%"

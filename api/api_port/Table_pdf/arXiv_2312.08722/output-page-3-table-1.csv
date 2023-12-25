@@ -1,0 +1,4 @@
+"Premise","Hypothesis","SoftLabels","HardLabel","Type"
+"Twokidsplayingonastreet","I1:Twochildrenhavefunonastreet","E,E,E,N,N","E","3GS"
+"Agroupofbikerspedalalong","I2:Agroupofcyclistsareinamarathon","N,N,N,N,E","N","4GS"
+"Amanfishingintheocean","I3:Amanisdrivingacar","C,C,C,C,C","C","5GS"

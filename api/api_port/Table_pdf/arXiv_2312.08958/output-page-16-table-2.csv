@@ -1,0 +1,8 @@
+"name","value"
+"Inputimage","64x64x3"
+"Latentdimension","512x4x4"
+"Encoderblockschannels","(64,128,256,512)"
+"Decoderblockschannels","(512,256,128,64)"
+"Activationfunction","ELU"
+"VAElearningrate","5e-4"
+"VAElearningepoch","5"

@@ -1,0 +1,5 @@
+"Method","Step","Resolution","Latency"
+"Baseline","DDIM50-step","16×256×256","60s"
+"VideoLCM","LCM4-step","16×256×256","10s"
+"Baseline","DDIM50-step","16×448×256","104s"
+"VideoLCM","LCM4-step","16×448×256","16s"

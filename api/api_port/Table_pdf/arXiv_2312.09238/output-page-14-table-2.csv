@@ -1,0 +1,5 @@
+"Hyperparameter","Value"
+"Learningrate","1e-4"
+"Batchsize","128"
+"Epochs","25"
+"Optimizer","Adam"

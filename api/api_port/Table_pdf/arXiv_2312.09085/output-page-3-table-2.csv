@@ -1,0 +1,5 @@
+"Dataset","NLIEntail(%)","StrategyAlign(%)"
+"BoolQ","984","998"
+"NQ1","995","999"
+"NQ2","983","999"
+"TruthfulQA","973","998"
