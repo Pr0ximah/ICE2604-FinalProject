@@ -7,7 +7,7 @@ import LOGO from '/src/assets/LOGO.png'
 import { verifyLoginStatus } from '../../components/account_func'
 
 const wallpapercnt = 16
-const enableAll = ref(false)
+const enableAll = ref(true)
 const wallpaperurl = '/HOMEPAPERS/HOMEPAPER' + String(Math.floor(Math.random() * wallpapercnt)) + '.png'
 const url = wallpaperurl;
 const { cookies } = useCookies()

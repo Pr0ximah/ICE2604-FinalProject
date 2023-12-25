@@ -45,6 +45,9 @@ async def read_all_data(type:str, content:str):
         data = json.loads(search.get_json(search.search_author(content)))
     elif type == "Keywords":
         data = json.loads(search.get_json(search.search_keywords(content)))
+    elif type == "All":
+        data = json.loads(search.get_json(search.add_search(content)))
+        data.sort(key=lambda x: x['_score'], reverse=True)
     year_number = GetYear(data)
     return {"data" : data, "year_list": year_number}
 
