@@ -9,7 +9,7 @@ from api_port.db_tool import sql_tool
 dict_all = {}
 
 def get_json_data():
-    datadepot = sql_tool("shan", "finalproject", "100_pdf_metadata")
+    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "100_pdf_metadata")
     s = datadepot.fetch_all()
     for i in s:
         dict_elem = {}
@@ -27,13 +27,17 @@ def get_json_data():
         else:
             dict_elem["keywords"]=[]
         dict_elem["year"]=int(i[4])
-        dict_elem["author"]={"affiliation":i[5].split(","), "name":i[6].split(",")}
+        if i[5]:
+            dict_elem["author"]={"affiliation":i[5].split(","), "name":i[6].split(",")}
+        else:
+            dict_elem["author"] = {"affiliation": "", "name": ""}
         dict_elem["last_page"]=i[7]
         dict_elem["link"]=i[8]
         dict_elem["abstract"]=i[9]
         dict_elem["title"]=i[10]
         dict_elem["paper_id"]=i[11]
-        dict_elem["volume"]=int(i[12])
+        if i[12] is not None:
+            dict_elem["volume"]=int(i[12])
         dict_elem["update_time"]=i[13]
         dict_elem["journal"]=i[14]
         dict_elem["issn"]=i[15]

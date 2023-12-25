@@ -25,13 +25,17 @@ def get_json_data():
         else:
             dict_elem["keywords"]=[]
         dict_elem["year"]=int(i[4])
-        dict_elem["author"]={"affiliation":i[5].split(","), "name":i[6].split(",")}
+        if i[5]:
+            dict_elem["author"]={"affiliation":i[5].split(","), "name":i[6].split(",")}
+        else:
+            dict_elem["author"] = {"affiliation": "", "name": ""}
         dict_elem["last_page"]=i[7]
         dict_elem["link"]=i[8]
         dict_elem["abstract"]=i[9]
         dict_elem["title"]=i[10]
         dict_elem["paper_id"]=i[11]
-        dict_elem["volume"]=int(i[12])
+        if i[12] is not None:
+            dict_elem["volume"]=int(i[12])
         dict_elem["update_time"]=i[13]
         dict_elem["journal"]=i[14]
         dict_elem["issn"]=i[15]
@@ -208,7 +212,7 @@ for value in json_data.values():
 try:
     # es.indices.delete(index = 'mydatabase')
     es.indices.create(index ='mydatabase',body=body,ignore=400)
-    for i in range(100):
+    for i in range(len(json_data)):
         mapping = {"date":date[i],"paper_id":paper_id[i],"title":title[i],"year":year[i],"authors":authors[i],"keywords":keywords[i],"link":link[i],"first_page":first_page[i],"abstract":abstract[i],"journal":journal[i],"doi":doi[i]}
         # mapping = {"title":title[i]}
         res = es.index(index="mydatabase",id=i,body=mapping)

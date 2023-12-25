@@ -222,7 +222,7 @@ async def GetCollectedPaper(item: user_name):
         # return {"error":"This user hasn't collect article!"}
         return ""
     return_dict = {}
-    print(paper_list)
+    # print(paper_list)
     for paper_id in paper_list:
         content_pdf = datadepot_pdf.fetch_specific(
             "paper_id", paper_id

@@ -42,9 +42,9 @@ onMounted(() => {
                 Tables
             </span>
             <span class="cardtable"
-                style="margin-left: 20px; margin-right: 15px; padding-left: 5px; padding-right: 5px; max-width: 91%;">
+                style="margin-left: 20px; margin-right: 15px; padding-left: 5px; padding-right: 5px; width: 91%;">
                 <div>
-                    <ElTable :data="tables[table_num].data" table-layout="auto" max-height="400px">
+                    <ElTable :data="tables[table_num].data" max-height="400px">
                         <ElTableColumn v-for="headitem in tables[table_num].head" :prop="headitem" :label="headitem" />
                     </ElTable>
                 </div>
