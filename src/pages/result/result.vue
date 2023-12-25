@@ -825,7 +825,7 @@ function openAuthorGraph() {
                         <ElText> Final Project </ElText>
                     </ElRow>
                     <ElRow class="bottom-des-row">
-                        <ElText> © Course Group 10 </ElText>
+                        <ElText> © 2023 Course Group 10 </ElText>
                     </ElRow>
                 </ElCol>
             </div>
