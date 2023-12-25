@@ -457,7 +457,7 @@ function openAuthorGraph() {
                 class="detailbg">
             </div>
             <div style="display: flex; width: 85%; z-index: 2; align-items: center;">
-                <ElCard style="width: 100%; max-height: 90vh; overflow: auto;" class="detail">
+                <ElCard style="width: 100%; max-height: 90vh; overflow-y: auto;" class="detail">
                     <template #header>
                         <div class="title"
                             style="margin-left: 20px; margin-top: 20px; margin-right: 20px; display: flex; flex-direction: row;">
@@ -555,7 +555,7 @@ function openAuthorGraph() {
                         </span>
                     </div>
                     <img_pdf ref="img_comp" :paperid="carddata['_source']['paper_id']" />
-                    <table_pdf ref="table_comp" :paperid="carddata['_source']['paper_id']"/>
+                    <table_pdf ref="table_comp" :paperid="carddata['_source']['paper_id']" />
                     <div style="margin: 40px 20px 10px 20px;"
                         v-if="carddata['_source']['paper_id'] && carddata['paper_id'] !== ''">
                         <ElButton class="icon" @click.stop="fetchPDF(carddata['_source']['paper_id'])">

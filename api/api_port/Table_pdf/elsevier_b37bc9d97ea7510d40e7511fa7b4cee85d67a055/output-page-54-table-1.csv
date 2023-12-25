@@ -1,58 +1,36 @@
-"","","No.","","","Fig. 1. Location","","PT","Hypersolvus (coarse","Na-rich Amphiboles &","U-Pb age (Ma)",""
-"Shield Terrane","Geological Map Unit","","Latitude","Longitude","","Rock Type","Mineralogy","","","","Tectonic Timing"
+"","","No","","","Fig1Location","","PT","Hypersolvus(coarse","Na-richAmphiboles&","U-Pbage(Ma)",""
+"ShieldTerrane","GeologicalMapUnit","","Latitude","Longitude","","RockType","Mineralogy","","","","TectonicTiming"
 "","","","","","","","","","","",""
 "","","","","","","","","","","",""
-"Jiddah","Makkah Suiite (dm)","Samples 
-3","210 21'36.45'' N","400 15'44.86'' E","No.
-1","Gabbro-Tonalite","plag+hbl+bi+minor qtz+mag+ti
-I","perthite)","Pyroxenes","Robinson et al. 2014
-845.6","island arc"
+"Jiddah","MakkahSuiite(dm)","Samples3","21021'3645''N","40015'4486''E","No1","Gabbro-Tonalite","plag+hbl+bi+minorqtz+mag+tiI","perthite)","Pyroxenes","Robinsonetal20148456","islandarc"
 "","","","","","","","R","","","",""
-"Hijaz","Shufayyah Complex (su)","3","230 44'42.76'' N","380 46'50.11'' E","20","Granodiorite/Tonalite","plag+qtz+hbl+bi. Accessory mag","","","715.4","synorogenic"
-"Hijaz","Jar-Salajah Complex  (js)","4","240 24'37.62'' N","380 21'23.72'' E","16","Granodiorite","qtz+plag+bi+alk-fld + minor mag and hbl
-USC","","","709.5","synorogenic"
-"Hijaz","Subh Suite (sf)","4","230 45'39.13'' N","380 45'09.74'' E","19","Rhyolite","Rhyolite: alk-fld+qtz+plag (pheoncrysts). Groundmass=qtz+alk-fld","","","698.7","synorogenic"
-"Tathlith","Al Hafoor Suite (ao)","8","200 23'40.32'' N","440 18'05.19'' E","6","","alk-fld+qtz+minor hbl+hast+bi. Accessory mag","","","636","post-orogenic"
-"Asir","Ibn Hasbal Suite (ih)","6","190 29'13.91'' N","420 59'44.39'' E","5","","mic+qtz+bi+minor plag+hbl+hast","","","617.6","post-orogenic"
-"Asir","Wadbah Suite (wb)","4","190 27'09.68' N","420 49'58.70'' E","4","","alk-fld+qtz+bi+minor hbl+mic+plag. Accessory mag+zirc","","","615.9","post-orogenic"
-"Ad Dawadimi","Ar Ruwaydah Suite (ku)","4","240 22'43.75'' N","440 21'40.56'' E","9","","alk-fld +qtz+plag+bi+minor mag+hast","","","611","post-orogenic"
-"","","","210 20'04.76'' N","42044'56.78'' E","","","plag+olv+cpx+minor mag","","","",""
-"","","","210 07'05.04' N","420 53'16.43' E","","","qtz+alk-fld+plag+bi+minor mag+hast. Dioritic enclave=plag+hbl+cpx","","","",""
-"Asir","Kawr Suite (kw)","35","","","3","CEPTED MAN","","","","611.7 & 608","post-orogenic"
-"","","","210 20'10.17'' N","420 45'05.29'' E","","","alk-fld+qtz+aeg+minor bi+ti. Accessory mag+ap","","","",""
-"","","","","","","","alk-fld+qtz+mic+minor bi. Accessory mag+ap. Granitic enclave+qtz+alk-","","","",""
-"","","","200 18'21.19'' N","420 41'39.41'' E","","","","","","",""
-"","","","","","","","fld+plag+minor hast+bi","","","",""
-"Afif","Haml Suite (hla)","4","210 18'13.29'' N","430 51'21.78'' E","7","","alk-fld+plag+minor qtz+hbl+mic+bi. Accessory mag+zirc+ap","","","608.6","post-orogenic"
-"Ad Dawadimi","Najirah Granite (nr)","4","230 43'43.93'' N","440 41'21.06'' E","10","","alk-fld+qtz+plag+bi+minor mag","","","607","post-orogenic"
-"Ha'il","Idah Suite (id)","5","270 03'44.28'' N","410 17'58.70'' E","13","","alk-fld+qtz+minor plag+hbl+bi+hast","","","605.8","post-orogenic"
+"Hijaz","ShufayyahComplex(su)","3","23044'4276''N","38046'5011''E","20","Granodiorite/Tonalite","plag+qtz+hbl+biAccessorymag","","","7154","synorogenic"
+"Hijaz","Jar-SalajahComplex(js)","4","24024'3762''N","38021'2372''E","16","Granodiorite","qtz+plag+bi+alk-fld+minormagandhblUSC","","","7095","synorogenic"
+"Hijaz","SubhSuite(sf)","4","23045'3913''N","38045'0974''E","19","Rhyolite","Rhyolite:alk-fld+qtz+plag(pheoncrysts)Groundmass=qtz+alk-fld","","","6987","synorogenic"
+"Tathlith","AlHafoorSuite(ao)","8","20023'4032''N","44018'0519''E","6","","alk-fld+qtz+minorhbl+hast+biAccessorymag","","","636","post-orogenic"
+"Asir","IbnHasbalSuite(ih)","6","19029'1391''N","42059'4439''E","5","","mic+qtz+bi+minorplag+hbl+hast","","","6176","post-orogenic"
+"Asir","WadbahSuite(wb)","4","19027'0968'N","42049'5870''E","4","","alk-fld+qtz+bi+minorhbl+mic+plagAccessorymag+zirc","","","6159","post-orogenic"
+"AdDawadimi","ArRuwaydahSuite(ku)","4","24022'4375''N","44021'4056''E","9","","alk-fld+qtz+plag+bi+minormag+hast","","","611","post-orogenic"
+"","","","21020'0476''N","42044'5678''E","","","plag+olv+cpx+minormag","","","",""
+"","","","21007'0504'N","42053'1643'E","","","qtz+alk-fld+plag+bi+minormag+hastDioriticenclave=plag+hbl+cpx","","","",""
+"Asir","KawrSuite(kw)","35","","","3","CEPTEDMAN","","","","6117&608","post-orogenic"
+"","","","21020'1017''N","42045'0529''E","","","alk-fld+qtz+aeg+minorbi+tiAccessorymag+ap","","","",""
+"","","","","","","","alk-fld+qtz+mic+minorbiAccessorymag+apGraniticenclave+qtz+alk-","","","",""
+"","","","20018'2119''N","42041'3941''E","","","","","","",""
+"","","","","","","","fld+plag+minorhast+bi","","","",""
+"Afif","HamlSuite(hla)","4","21018'1329''N","43051'2178''E","7","","alk-fld+plag+minorqtz+hbl+mic+biAccessorymag+zirc+ap","","","6086","post-orogenic"
+"AdDawadimi","NajirahGranite(nr)","4","23043'4393''N","44041'2106''E","10","","alk-fld+qtz+plag+bi+minormag","","","607","post-orogenic"
+"Ha'il","IdahSuite(id)","5","27003'4428''N","41017'5870''E","13","","alk-fld+qtz+minorplag+hbl+bi+hast","","","6058","post-orogenic"
 "","","","","","","","","","","",""
 "","","","","","","","","","","",""
-"Afif
-Hijaz","Al Khushaymiyah Suite (ky)
-Rithmah Complex (rt)","5
-4","230 49'39.69'' N
-250 09'07.90'' N","430 11'42.07'' E
-380 11'20.41'' E","AC","Diorite/Gabbro","alk-fld+qtz+plag+hbl+minor mag+bi+mic+ti+hast
-plag+cpx+hbl+minor olv+opx+mag","","","601.2
-600*","post-orogenic
-anorogenic"
+"AfifHijaz","AlKhushaymiyahSuite(ky)RithmahComplex(rt)","54","23049'3969''N25009'0790''N","43011'4207''E38011'2041''E","AC","Diorite/Gabbro","alk-fld+qtz+plag+hbl+minormag+bi+mic+ti+hastplag+cpx+hbl+minorolv+opx+mag","","","6012600*","post-orogenicanorogenic"
 "","","","","","","","","","","",""
 "","","","","","","","","","","",""
-"Ad Dawadimi
-Hijaz","Malik Granite (kg)
-Admar Suite (ad)","5
-5","250 07'56.42'' N
-240 17'53.09'' N","430 47'10.82'' E
-380 24'43.55'' E","18","Leucogranite
-Syenite","qtz+alk-fld+minor plag+gt
-alk-fld+bi+hbl+minor qtz+plag+mic+ti. Accessory mag+zirc+ap","","","599.4
-599.2","anorogenic
-anorogenic"
-"Midyan","Al Bad Granite Super Suite (abg)","6","280 44'32.20'' N","350 20'12.32'' E","14","Alkali-Granite","alk-fld+qtz+minor plag+bi. Accessory mag+zirc+ap+fl","","","597.4","anorogenic"
-"Northern Asir","Al Hawiyah Suite (hwg)","5","210 26'54.04'' N","400 27'16.45'' E","2","Granite","alk-fld+qtz+bi+minor plag+hast+ti. Accessory mag","","","591.9","anorogenic"
-"Ha'il","Abanat Suite (aa)","4","270 18'43.63' N","410 24'33.52'' E","12","Alkali-Granite","alk-fld+qtz+minor plag+aeg+arfv","","","585*","anorogenic"
-"Hijaz","Mardabah Complex (mr)","6","250 11'29.42'' N","380 29'35.33'' E","17","Syenite","alk-fld+bi+hbl+minor qtz+plag+olv. Accessory mag+zirc+ap","","","525.6","anorogenic"
-"","","","","","","","I-type Granite: Egypt (Moghazi, 2002), Israel (Beyth et al. 1994), Oman (Gass et al. 1990) and Sudan (Klemenic and Poole, 1988).","","","",""
-"","References for ANS Geochemistry used in this study","","","","Fractionated A-type Granite: Egypt (El-Sayed et al. 2002), Israel (Beyth et al. 1994) and Jordan (~250 data points from Jarrar et al. 2003 and Jarrar et al. 2008)","","","","","",""
-"","","","","Within-plate A-type Granite: Egypt (Abdel-Rahman and Martin, 1990; El-Baily and Streck, 2009; Katzir et al. 2007), Israel (Mushkin et al. 2003), Sudan (Harris et al. 1983) and Yemen (Coleman et al. 1992; El-Gharbawy, 2011).","","","","","","",""
+"AdDawadimiHijaz","MalikGranite(kg)AdmarSuite(ad)","55","25007'5642''N24017'5309''N","43047'1082''E38024'4355''E","18","LeucograniteSyenite","qtz+alk-fld+minorplag+gtalk-fld+bi+hbl+minorqtz+plag+mic+tiAccessorymag+zirc+ap","","","59945992","anorogenicanorogenic"
+"Midyan","AlBadGraniteSuperSuite(abg)","6","28044'3220''N","35020'1232''E","14","Alkali-Granite","alk-fld+qtz+minorplag+biAccessorymag+zirc+ap+fl","","","5974","anorogenic"
+"NorthernAsir","AlHawiyahSuite(hwg)","5","21026'5404''N","40027'1645''E","2","Granite","alk-fld+qtz+bi+minorplag+hast+tiAccessorymag","","","5919","anorogenic"
+"Ha'il","AbanatSuite(aa)","4","27018'4363'N","41024'3352''E","12","Alkali-Granite","alk-fld+qtz+minorplag+aeg+arfv","","","585*","anorogenic"
+"Hijaz","MardabahComplex(mr)","6","25011'2942''N","38029'3533''E","17","Syenite","alk-fld+bi+hbl+minorqtz+plag+olvAccessorymag+zirc+ap","","","5256","anorogenic"
+"","","","","","","","I-typeGranite:Egypt(Moghazi,2002),Israel(Beythetal1994),Oman(Gassetal1990)andSudan(KlemenicandPoole,1988)","","","",""
+"","ReferencesforANSGeochemistryusedinthisstudy","","","","FractionatedA-typeGranite:Egypt(El-Sayedetal2002),Israel(Beythetal1994)andJordan(~250datapointsfromJarraretal2003andJarraretal2008)","","","","","",""
+"","","","","Within-plateA-typeGranite:Egypt(Abdel-RahmanandMartin,1990;El-BailyandStreck,2009;Katziretal2007),Israel(Mushkinetal2003),Sudan(Harrisetal1983)andYemen(Colemanetal1992;El-Gharbawy,2011)","","","","","","",""
