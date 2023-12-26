@@ -32,6 +32,21 @@ def GetYear(data):
     sorted_year_list = sorted(year_list, key=lambda x: x["year"])
     return sorted_year_list
 
+
+def GetJournal(data):
+    Journal_list = {}
+    for i in data:
+        journal = i["_source"]["journal"]
+        if journal == "" or journal is None:
+            journal = "Others"
+        if journal in Journal_list:
+            Journal_list[journal] += 1
+        else:
+            Journal_list[journal] = 1
+    Journal_list = [{"journal": i, "num": j} for i, j in Journal_list.items()]
+    sorted_Jounral_list = sorted(Journal_list, key=lambda x: x["num"], reverse=True)
+    return sorted_Jounral_list
+
 @app_get.get("/search/content={content}&type={type}")
 async def read_all_data(type:str, content:str):
     Push_Error()
@@ -48,8 +63,19 @@ async def read_all_data(type:str, content:str):
     elif type == "All":
         data = json.loads(search.get_json(search.add_search(content)))
         data.sort(key=lambda x: x['_score'], reverse=True)
+        data_tmp = []
+        id_set = set()
+        for i in data:
+            id = i["_source"]['paper_id']
+            if id in id_set:
+                continue
+            else:
+                id_set.add(id)
+                data_tmp.append(i)
+        data = data_tmp.copy()
     year_number = GetYear(data)
-    return {"data" : data, "year_list": year_number}
+    journal_list = GetJournal(data)
+    return {"data" : data, "year_list": year_number, "journal_list": journal_list}
 
 @app_get.get("/search_yearnumber/content={content}&type={type}")
 async def get_year_number(type:str, content:str):

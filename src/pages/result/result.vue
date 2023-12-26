@@ -26,14 +26,17 @@ let datalist = ref()
 let datalistAllFiltered = ref()
 let datalistAll = ref()
 let childData = ref()
-let filterButtonStatus = ref(true)
+let filterYearButtonStatus = ref(true)
+let filterJournalButtonStatus = ref(true)
 let result_total_num = ref(0)
 const size_per_page = ref(15)   // 每页显示的条目数
 let emptyResult = ref(true)
 let searchOptionVal = ref("")
 let currentPage = ref(1)
-let filterYearList = ref()
 const server_error = ref(false)
+const filterJournalChecked = ref([])
+const filterJournalList = ref()
+const filterYearList = ref()
 const filterYearChecked = ref([])
 const filterYearRange = ref([0, 0])
 const filterYearRangeMax = ref(0)
@@ -73,10 +76,13 @@ function getSearchDataList() {
         server_error.value = false;
         datalistAll.value = e['data']['data']
         filterYearList.value = e['data']['year_list']
+        filterJournalList.value = e['data']['journal_list']
         result_total_num = datalistAll.value.length
         datalistAllFiltered.value = datalistAll.value
-        filterButtonStatus.value = true
+        filterYearButtonStatus.value = true
+        filterJournalButtonStatus.value = true
         selectAllYear()
+        selectAllJournal()
         if (datalistAll.value.length !== 0) {
             filterYearRangeMax.value = filterYearList['_rawValue'][filterYearList.value.length - 1]['year']
             filterYearRangeMin.value = filterYearList['_rawValue'][0]['year']
@@ -114,7 +120,14 @@ function selectAllYear() {
     for (let i = 0; i < filterYearList.value.length; i++) {
         filterYearChecked.value.push(filterYearList.value[i]['year'])
     }
-    refreshFilterYear()
+    refreshFilter()
+}
+
+function selectAllJournal() {
+    for (let i = 0; i < filterJournalList.value.length; i++) {
+        filterJournalChecked.value.push(filterJournalList.value[i]['journal'])
+    }
+    refreshFilter()
 }
 
 function refreshFilterYearRange() {
@@ -148,13 +161,23 @@ function gotoKeyword(keyword) {
 
 function selectNoneYear() {
     filterYearChecked.value = []
-    refreshFilterYear()
+    refreshFilter()
 }
 
-function refreshFilterYear() {
+function selectNoneJournal() {
+    filterJournalChecked.value = []
+    refreshFilter()
+}
+
+function refreshFilter() {
     datalistAllFiltered.value = []
     for (let i = 0; i < datalistAll.value.length; i++) {
-        if (toRaw(filterYearChecked)['_rawValue'].includes(toRaw(datalistAll)['_rawValue'][i]['_source']['year'])) {
+        let journal = toRaw(datalistAll)['_rawValue'][i]['_source']['journal']
+        if (journal == null) {
+            journal = "Others"
+        }
+        if (toRaw(filterYearChecked)['_rawValue'].includes(toRaw(datalistAll)['_rawValue'][i]['_source']['year'])
+            && toRaw(filterJournalChecked)['_rawValue'].includes(journal)) {
             datalistAllFiltered.value.push(datalistAll.value[i])
         }
     }
@@ -175,7 +198,11 @@ function switchPage() {
 }
 
 watch(filterYearChecked, () => {
-    refreshFilterYear()
+    refreshFilter()
+})
+
+watch(filterJournalChecked, () => {
+    refreshFilter()
 })
 
 window.onresize = () => {
@@ -200,12 +227,21 @@ watch(filterYearRange, () => {
     refreshFilterYearRange()
 })
 
-function switchFilterStatus() {
-    filterButtonStatus.value = !filterButtonStatus.value
-    if (filterButtonStatus.value) {
+function switchFilterYearStatus() {
+    filterYearButtonStatus.value = !filterYearButtonStatus.value
+    if (filterYearButtonStatus.value) {
         selectAllYear()
     } else {
         selectNoneYear()
+    }
+}
+
+function switchFilterJournalStatus() {
+    filterJournalButtonStatus.value = !filterJournalButtonStatus.value
+    if (filterJournalButtonStatus.value) {
+        selectAllJournal()
+    } else {
+        selectNoneJournal()
     }
 }
 
@@ -225,17 +261,6 @@ function fetchPDF(paperid) {
         ElMessage("Oops! Internal server error. Try again later.")
     })
 }
-
-function convertList(lists) {
-    let res = ""
-    for (var i = 0; i < lists.length; i++) {
-        res += lists[i]
-        res += ", "
-    }
-    return res.slice(0, -2)
-}
-
-const searchVal = ref(getQueryContent("search"))
 
 function backToHome() {
     window.open("./", "_self")
@@ -280,7 +305,7 @@ function gotoOrigin(url) {
         console.log(url)
         window.open(url, "_blank")
     } else {
-        ElMessage("暂无原文链接")
+        ElMessage("Sorry, the origin link is missing.")
     }
 }
 
@@ -477,7 +502,8 @@ function openAuthorGraph() {
                         </div>
                     </template>
 
-                    <div v-if="carddata['_source']['doi'] && carddata['_source']['doi'].length !== 0" style="margin-left: 20px; margin-top: 10px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['doi'] && carddata['_source']['doi'].length !== 0"
+                        style="margin-left: 20px; margin-top: 10px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 DOI
@@ -485,7 +511,8 @@ function openAuthorGraph() {
                             {{ carddata['_source']['doi'] }}
                         </span>
                     </div>
-                    <div v-if="carddata['_source']['year'] && carddata['_source']['year'].length !== 0" style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['year'] && carddata['_source']['year'].length !== 0"
+                        style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 Year
@@ -496,7 +523,8 @@ function openAuthorGraph() {
                             </span>
                         </span>
                     </div>
-                    <div v-if="carddata['_source']['journal'] && carddata['_source']['journal'].length !== 0" style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['journal'] && carddata['_source']['journal'].length !== 0"
+                        style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 Journal
@@ -506,7 +534,8 @@ function openAuthorGraph() {
                             </span>
                         </span>
                     </div>
-                    <div v-if="carddata['_source']['authors'] && carddata['_source']['authors'].length !== 0" style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
+                    <div v-if="carddata['_source']['authors'] && carddata['_source']['authors'].length !== 0"
+                        style="margin-left: 20px; margin-top: 20px; align-items: center; display: flex;">
                         <span style="margin-left: 5px; margin-right: 5px;">
                             <span class="inflogo">
                                 Authors
@@ -626,9 +655,9 @@ function openAuthorGraph() {
         <ElMain class="result">
             <div
                 style="display: flex; margin: auto; justify-content: center; margin-left: 20px; margin-right: 20px; margin-top: 5px;">
-                <div>
+                <div style="width: 15%;">
                     <ElCard class="preset1"
-                        style="margin-top: 20px; width: 100%; display: flex; align-items: center; justify-content: center;">
+                        style="max-width: 100%; margin-top: 20px; display: flex; align-items: center; justify-content: center;">
                         <div style="text-align: center;">
                             <ElText style="font-size: 22px; letter-spacing: 0.03em;">filter</ElText>
                             <el-icon style="margin-left: 2%;">
@@ -636,30 +665,59 @@ function openAuthorGraph() {
                             </el-icon>
                         </div>
                         <ElDivider border-style="dashed" style="margin-top: 15px; margin-bottom: 15px;"></ElDivider>
-                        <div>
+                        <div style="">
                             <div style="margin-bottom: 10px; text-align: center;">
                                 <ElText style="color: gray">Year</ElText>
-                                <ElButton @click="switchFilterStatus" class="icon" style="margin-left: 5px;" size="small"
-                                    circle="true" :disabled="emptyResult">
-                                    <el-icon v-if="!filterButtonStatus"><Select /></el-icon>
-                                    <el-icon v-if="filterButtonStatus">
+                                <ElButton @click="switchFilterYearStatus" class="icon" style="margin-left: 5px;"
+                                    size="small" circle="true" :disabled="emptyResult">
+                                    <el-icon v-if="!filterYearButtonStatus"><Select /></el-icon>
+                                    <el-icon v-if="filterYearButtonStatus">
                                         <CloseBold />
                                     </el-icon>
                                 </ElButton>
                             </div>
                             <ElCheckboxGroup v-model="filterYearChecked"
-                                style="display: flex; flex-direction: column; justify-items: center; text-align: center; margin-left: 30px; margin-right: 30px;">
-                                <ElCheckbox v-for="year in filterYearList" :label="year['year']" style="margin: auto;">
-                                    <div style="font-size: small; margin: auto;">{{ year['year'] }} <span
+                                style="display: flex; flex-direction: row; flex-wrap: wrap; justify-items: center; text-align: center; margin-left: 20px; margin-right: 20px; justify-content: center;">
+                                <ElCheckbox v-for="year in filterYearList" :label="year['year']" style="margin: auto; margin-left: 10px; margin-right: 10px; text-align: center; align-items: center;">
+                                    <div style="font-size: small; margin: auto; text-align: center;">{{ year['year'] }} <span
                                             style="color: grey; font-size: small">({{ year["num"] }}) </span></div>
                                 </ElCheckbox>
                             </ElCheckboxGroup>
-                            <ElSlider style="width: 85%; margin: auto; margin-top: 5px;" v-model="filterYearRange" range
-                                :max="filterYearRangeMax" :min="filterYearRangeMin" v-if="filterYearRangeShow" />
+                            <div style="width: 100%; display: flex;">
+                                <ElSlider style="margin-left: 25px; margin-right: 25px; margin-top: 5px;"
+                                    v-model="filterYearRange" range :max="filterYearRangeMax" :min="filterYearRangeMin"
+                                    v-if="filterYearRangeShow" />
+                            </div>
+                        </div>
+                        <ElDivider border-style="dashed" style="margin-top: 15px; margin-bottom: 15px;"></ElDivider>
+                        <div style="display: flex; flex-direction: column;">
+                            <div style="margin-bottom: 10px; text-align: center;">
+                                <ElText style="color: gray">Journal</ElText>
+                                <ElButton @click="switchFilterJournalStatus" class="icon" style="margin-left: 5px;"
+                                    size="small" circle="true" :disabled="emptyResult">
+                                    <el-icon v-if="!filterJournalButtonStatus"><Select /></el-icon>
+                                    <el-icon v-if="filterJournalButtonStatus">
+                                        <CloseBold />
+                                    </el-icon>
+                                </ElButton>
+                            </div>
+                            <ElCheckboxGroup v-model="filterJournalChecked" class="JournalFilter" style="display:flex; flex-direction: column; justify-items: center; text-align:">
+                                <ElCheckbox v-for="journal in filterJournalList" :label="journal['journal']" style="width: 76%; margin-top: 6px; margin-bottom: 6px; margin-left: 12%; margin-right: 12%; height: unset;">
+                                    <div style="font-size: small; width: 100%; text-align: left;">
+                                        <span style="white-space: normal; word-break: break-all; line-height: 1.2em;">
+                                        {{
+                                            journal['journal']
+                                        }}
+                                        </span>
+                                        <span style="color: grey; font-size: small; margin-left: 5px;">({{ journal["num"] }})
+                                        </span>
+                                    </div>
+                                </ElCheckbox>
+                            </ElCheckboxGroup>
                         </div>
                     </ElCard>
                 </div>
-                <div style="width: 70%">
+                <div style="width: 65%">
                     <div v-if="emptyResult && !server_error" class="nores" style="margin-top: 5%;"
                         v-show="!showLoadingSkeleton">
                         <div>Sorry! Found no result</div>
@@ -681,7 +739,8 @@ function openAuthorGraph() {
                         </template>
                         <div
                             style="margin: 10px 5px 10px 5px; align-items: center; display: flex; flex-wrap: wrap; row-gap: 15px;">
-                            <span v-if="data['_source']['doi'] && data['_source']['doi'].length !== 0" style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
+                            <span v-if="data['_source']['doi'] && data['_source']['doi'].length !== 0"
+                                style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
                                 <span class="inflogo">
                                     DOI
                                 </span>
@@ -690,7 +749,8 @@ function openAuthorGraph() {
                                 </span>
                             </span>
                             <ElTooltip effect="customized" content="Year" placement="right" show-after="800">
-                                <span v-if="data['_source']['year'] && data['_source']['year'].length !== 0" style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
+                                <span v-if="data['_source']['year'] && data['_source']['year'].length !== 0"
+                                    style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
                                     <el-icon size="small">
                                         <Calendar />
                                     </el-icon>
@@ -701,7 +761,8 @@ function openAuthorGraph() {
                                 </span>
                             </ElTooltip>
                             <ElTooltip effect="customized" content="Journal" placement="right" show-after="800">
-                                <span v-if="data['_source']['journal'] && data['_source']['journal'].length !== 0" style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
+                                <span v-if="data['_source']['journal'] && data['_source']['journal'].length !== 0"
+                                    style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
                                     <el-icon>
                                         <Reading />
                                     </el-icon>
@@ -713,7 +774,8 @@ function openAuthorGraph() {
                         </div>
                         <div style="margin: 15px 5px 10px 5px; align-items: center;">
                             <ElTooltip effect="customized" content="Authors" placement="right" show-after="800">
-                                <span v-if="data['_source']['authors'] && data['_source']['authors'].length !== 0" style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
+                                <span v-if="data['_source']['authors'] && data['_source']['authors'].length !== 0"
+                                    style="margin-left: 5px; margin-right: 15px; font-size: smaller;">
                                     <el-icon>
                                         <User />
                                     </el-icon>
@@ -769,7 +831,8 @@ function openAuthorGraph() {
                     <el-skeleton :rows="10" animated v-show="showLoadingSkeleton"
                         style="margin: auto; margin-top: 5%; width: 80%; justify-self: center;" throttle="500" />
                 </div>
-                <div style="display: flex; flex-direction: column; row-gap: 40px; width: 20%">
+                <div
+                    style="display: flex; flex-direction: column; row-gap: 40px; width: 20%; min-width: 260px; flex-shrink: 0;">
                     <div style="width: 100%; min-width: 210px; height: 25vh; min-height: 210px;">
                         <ElCard style="margin-top: 20px; height: 100%" class="preset1" id="chart">
                             <div style="height: 100%;">
@@ -816,11 +879,11 @@ function openAuthorGraph() {
                 style="float:right; height: 100%; display: flex; align-items: center; justify-content: center; padding-right: 3%;">
                 <ElCol>
                     <ElRow class="bottom-des-row">
-                        <ElText size="large"> IE Search </ElText>
+                        <ElText size="large"> M Scholar </ElText>
                     </ElRow>
                     <ElDivider style="margin-top: 10px; margin-bottom: 10px;" />
                     <ElRow class="bottom-des-row">
-                        <ElText> SJTU Course ICE2604 </ElText>
+                        <ElText> SJTU ICE2604 </ElText>
                     </ElRow>
                     <ElRow class="bottom-des-row">
                         <ElText> Final Project </ElText>
