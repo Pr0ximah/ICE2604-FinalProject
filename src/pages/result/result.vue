@@ -276,7 +276,8 @@ function gotoResult() {
 }
 
 function gotoOrigin(url) {
-    if (url !== undefined) {
+    if (url !== undefined && url !== null && url !== "") {
+        console.log(url)
         window.open(url, "_blank")
     } else {
         ElMessage("暂无原文链接")
