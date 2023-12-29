@@ -53,7 +53,8 @@ class get_img_model(BaseModel):
     id : str = ""
 
 app_post = APIRouter()
-
+passwd = ""
+db_name = ""
 
 def generate_sha256_hash(input_string):
     sha256_hash = hashlib.sha256()
@@ -66,8 +67,7 @@ def generate_sha256_hash(input_string):
 async def Signup(item: login_item):
     user = item.user
     key = item.key
-    # datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
-    datadepot = sql_tool("shan", "finalproject", "users")
+    datadepot = sql_tool(passwd, db_name, "users")
     content = datadepot.fetch_specific("user_name", user)
     if content:
         return False
@@ -91,8 +91,7 @@ async def Signup(item: login_item):
 async def Login(item: login_item):
     user = item.user
     key = item.key
-    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
-    # datadepot = sql_tool("shan", "finalproject", "users")
+    datadepot = sql_tool(passwd, db_name, "users")
     content = datadepot.fetch_specific("user_name", user)
     successlogin = False
     if not content:
@@ -115,8 +114,8 @@ async def Login(item: login_item):
 # 登录的接口，返回password
 @app_post.post("/login_password")
 async def LoginPassword(item: login_time):
-    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
     user = item.user
+    datadepot = sql_tool(passwd, db_name, "users")
     content = datadepot.fetch_specific("user_name", user)
     successsigninpassword = False
     time = datetime.now()
@@ -137,7 +136,7 @@ async def LoginPassword(item: login_time):
 async def Confiem_Password(item: confirm_password):
     user = item.user
     password = item.password
-    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
+    datadepot = sql_tool(passwd, db_name, "users")
     content = datadepot.fetch_specific("user_name", user)
     try:
         password_db = content[0][3]
@@ -153,7 +152,7 @@ async def Confiem_Password(item: confirm_password):
 async def Collect(item: name_paperid):
     user = item.user
     paper_id = item.paper_id
-    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
+    datadepot = sql_tool(passwd, db_name, "users")
     content = datadepot.fetch_specific("user_name", user)
     oldpaper = content[0][2]
     # return oldpaper
@@ -186,7 +185,7 @@ async def Collect(item: name_paperid):
 async def Removepaper(item: name_paperid):
     user = item.user
     paper_id = item.paper_id
-    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
+    datadepot = sql_tool(passwd, db_name, "users")
     content = datadepot.fetch_specific("user_name", user)
     oldpaper = content[0][2]
     if not oldpaper:
@@ -209,8 +208,8 @@ async def GetCollectedPaper(item: user_name):
     user = item.user
     if not user:
         return ""
-    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "users")
-    datadepot_pdf = sql_tool("ADMINROOT", "ice2604_final_project", "100_pdf_metadata")
+    datadepot = sql_tool(passwd, db_name, "users")
+    datadepot_pdf = sql_tool(passwd, db_name, "100_pdf_metadata")
     content_paper = datadepot.fetch_specific("user_name", user)
     content_paper_list_json = content_paper[0][2]
     if not content_paper_list_json:

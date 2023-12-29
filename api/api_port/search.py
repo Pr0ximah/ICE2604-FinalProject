@@ -56,95 +56,9 @@ def json_print(string):
     print(json.dumps(string, sort_keys=True, indent=4, separators=(',', ':')))
     return
 
-# with open('api/api_port/MetaData.json','r',encoding='utf8') as fp:
-#     json_data = json.load(fp)
-
 json_data = dict_all
 
 body = {
-    # "settings": {
-    #   "index": {
-    #   "analysis": {
-    #       "filter": {},
-    #       "analyzer": {
-    #         "keyword_analyzer": {
-    #           "filter": [
-    #             "lowercase",
-    #             "asciifolding",
-    #             "trim"
-    #           ],
-    #           "char_filter": [],
-    #           "type": "custom",
-    #           "tokenizer": "keyword"
-    #         },
-    #         "edge_ngram_analyzer": {
-    #           "filter": [
-    #             "lowercase"
-    #           ],
-    #           "tokenizer": "edge_ngram_tokenizer"
-    #         },
-    #         "edge_ngram_search_analyzer": {
-    #           "tokenizer": "lowercase"
-    #         }
-    #       },
-    #       "tokenizer": {
-    #         "edge_ngram_tokenizer": {
-    #           "type": "edge_ngram",
-    #           "min_gram": 2,
-    #           "max_gram": 5,
-    #           "token_chars": [
-    #             "letter"
-    #           ]
-    #         }
-    #       }
-    #     }
-    #   }
-    # },
-    
-    # "mappings" : {
-    #   "properties" : {
-    #     "date" : {
-    #         "type" : "text"
-    #     },
-    #     "paper_id" : {
-    #         "type" : "text",
-    #     },
-    #     "title" : {
-    #         "type" : "text",
-    #         "fields": {
-    #             "keywordstring":{
-    #                 "type": "text",
-    #                 "analyzer": "keyword_analyzer"
-    #             },
-    #             "edgengram": {
-    #                 "type" : "text",
-    #                 "analyzer" : "edge_ngram_analyzer",
-    #                 "search_analyzer": "edge_ngram_search_analyzer"
-    #             },
-    #             "completion": {
-    #                 "type" : "completion"
-    #             }
-    #         },
-    #         "analyzer": "standard"
-    #     },
-    #     "year" : {
-    #       "type" : "long",
-    #     },
-    #     "authors" :{
-    #         "type" : "list",
-    #     },
-    #     "keywords" : {
-    #         "type" : "list",
-    #     },
-    #     "link" : {
-    #         "type" : "text"
-    #     },
-    #     "first_page" : {
-    #         "type" : "long"
-    #     }
-    #   }
-    # }
-
     "mappings": {
       "properties": {
         "data": {
@@ -306,9 +220,6 @@ try:
                 "wildcard":{
                     "keywords": "*" + str.lower() + "*"
                 }
-                # "match":{
-                #     "keywords": str
-                # }
             }
             ,"sort": [
                 {
@@ -344,39 +255,6 @@ try:
             hit3 = search_keywords(str)
             return hit1+hit2+hit3
 
-    # def title_autocomplete(str):
-    #     query = {
-    #         "query":{
-    #             "match":{
-    #                 "title.edgengram":str
-    #             }
-    #         },
-    #         "size":1000        
-    #     }
-    #     res = es.search(index="mydatabase",body=query,filter_path = ['**.hits'])
-    #     json_print(res)
-
-    # def title_autocomplete(str):
-    #     body = {
-    #         "suggest": {
-    #             "title_suggest": {
-    #                 "text": str,
-    #                 "completion": {    
-    #                     "field": "title",
-    #                     "skip_duplicates": True,
-    #                     "size": 10
-    #                 }
-    #             }
-    #         }
-    #     }
-    #     res = es.search(index="mydatabase",body=body)
-    #     json_print(res)
-
-    # json_print(search_title("tle"))
-    # json_print(search_year(1990))
-    # json_print(search_author("Carlson"))
-    # json_print(search_keywords("try"))
-    # json_print(add_search("mentle"))
 except ConnectionError:
     print("连接错误:无法连接到Elasticsearch。")
     error_name = "ConnectionError"

@@ -8,8 +8,11 @@ from api_port.db_tool import sql_tool
 
 dict_all = {}
 
+passwd = ""
+db_name = ""
+
 def get_json_data():
-    datadepot = sql_tool("ADMINROOT", "ice2604_final_project", "100_pdf_metadata")
+    datadepot = sql_tool(passwd, db_name, "100_pdf_metadata")
     s = datadepot.fetch_all()
     for i in s:
         dict_elem = {}
