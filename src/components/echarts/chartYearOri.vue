@@ -141,7 +141,7 @@ function Bar_authorSearch(dic) {
         yAxis: [
             {
                 type: 'value',
-                interval: Math.floor(y_max/5),
+                interval: Math.max(Math.floor(y_max/5), 1),
                 max: y_max + Math.floor(y_max/6),
                 axisLabel: {
                     formatter: '{value}'
